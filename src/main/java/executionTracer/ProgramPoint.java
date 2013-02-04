@@ -50,7 +50,7 @@ public class ProgramPoint {
 		StringBuffer result = new StringBuffer();
 		boolean found = false;
 
-		result.append(name + postfix + "\n");
+		result.append(name + "\n");
 		for (Variable var : variables) {
 			found=false;
 			for (int i = 0; i < data.length(); i++) {

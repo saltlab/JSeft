@@ -226,7 +226,7 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	private Response createResponse(Response response, Request request) {
 		String type = response.getHeader("Content-Type");
 
-		if (request.getURL().toString().contains("?thisisavarexectracingcall")) {
+		if (request.getURL().toString().contains("?thisisanexecutiontracingcall")) {
 			LOGGER.info("Execution trace request " + request.getURL().toString());
 			JSExecutionTracer.addPoint(new String(request.getContent()));
 			return response;

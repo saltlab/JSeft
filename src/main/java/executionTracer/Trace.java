@@ -30,6 +30,12 @@ public class Trace {
 	public ProgramPoint programPoint(String name) {
 
 
+		for (ProgramPoint p : programPoints) {
+			if (p.getName().equals(name)) {
+				return p;
+			}
+		}
+
 		ProgramPoint p = new ProgramPoint(name);
 		programPoints.add(p);
 

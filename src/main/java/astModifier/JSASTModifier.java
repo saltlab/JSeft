@@ -77,14 +77,17 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		/* add -<number of arguments> to also make sure number of arguments is the same */
 		mapper.put("addClass", "attr('class')");
 		mapper.put("removeClass", "attr('class')");
+		mapper.put("css", "css(%0)");
+		mapper.put("attr", "attr(%0)");
+		mapper.put("prop", "attr(%0)");
 		mapper.put("css-2", "css(%0)");
 		mapper.put("attr-2", "attr(%0)");
 		mapper.put("prop-2", "attr(%0)");
-		mapper.put("append", "text()");
+/*		mapper.put("append", "text()");
 		mapper.put("after", "parent().html()");
 		mapper.put("appendTo", "html()");
 		mapper.put("before","parent().html()");
-		mapper.put("detach", "html()");
+*/		mapper.put("detach", "html()");
 		mapper.put("remove", "html()");
 		mapper.put("empty", "html()");
 		mapper.put("height-1", "height()");
@@ -92,9 +95,9 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		mapper.put("insertBefore", "prev().html()");
 		mapper.put("insertAfter", "next().html()");
 		mapper.put("offset-1", "offset()");
-		mapper.put("prepend", "html()");
+/*		mapper.put("prepend", "html()");
 		mapper.put("prependTo", "html()");
-		mapper.put("html-1", "html()");
+*/		mapper.put("html-1", "html()");
 		mapper.put("setAttribute-2", "getAttribute(%0)");
 		mapper.put("text-1", "text()");
 	//	mapper.put("className", "className");
@@ -307,7 +310,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 					else{
 						objectAndFunction = g.getLeft().toSource()+ "." + objectAndFunction;
 					
-
+					}
 					
 					
 					/* fill in parameters in the "getter" */
@@ -315,7 +318,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 							objectAndFunction =
 								objectAndFunction.replace("%" + i, arguments.get(i).toSource());
 						}
-					}
+					
 					objectAndFunction=objectAndFunction.replace(" ", "____");
 					AstNode parent = makeSureBlockExistsAround(getLineNode(node));
 					

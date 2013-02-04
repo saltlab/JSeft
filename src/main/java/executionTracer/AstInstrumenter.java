@@ -239,7 +239,7 @@ public class AstInstrumenter extends JSASTModifier{
 				}
 			}
 		}
-		else
+		else if(returnVal!=null)
 			result.add(returnVal.toSource());
 		return result.toArray(new String[0]);
 	}

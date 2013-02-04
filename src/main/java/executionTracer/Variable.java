@@ -123,11 +123,12 @@ public class Variable {
 						else
 							return ("0");
 				}
-		} else if (type.equals("object")) {
+		} else {
+			//if (type.equals("object")) {
 			return "\"" + value.toString() + "\"";
 		}
 
-		throw new CrawljaxException("Unhandled type when converting to trace file " + type);
+	//	throw new CrawljaxException("Unhandled type when converting to trace file " + type);
 	}
 
 	
