@@ -16,17 +16,19 @@ public class ProgramPoint {
 	public static final String POINTPOSTFIX = ":::POINT";
 
 	private String name;
+	private ArrayList<Variable> variables;
 
 
 
 	/**
-	 * Construct a new Daikon program point representation.
+	 * Construct a new program point representation.
 	 * 
 	 * @param name
 	 *            The name of the program point.
 	 */
 	public ProgramPoint(String name) {
 		this.name = name;
+		variables = new ArrayList<Variable>();
 	
 
 	}
@@ -44,12 +46,12 @@ public class ProgramPoint {
 
 	
 	
-	public String getData(String postfix, JSONArray data, Variable var) throws CrawljaxException, JSONException {
+	public String getData(String postfix, JSONArray data) throws CrawljaxException, JSONException {
 		StringBuffer result = new StringBuffer();
 		boolean found = false;
 
 		result.append(name + postfix + "\n");
-
+		for (Variable var : variables) {
 			found=false;
 			for (int i = 0; i < data.length(); i++) {
 				JSONArray item = data.getJSONArray(i);
@@ -65,10 +67,15 @@ public class ProgramPoint {
 				result.append(var.getData("undefined"));
 				found = true;
 			}
-		
+		}
 
 		result.append("\n");
 
 		return result.toString();
+	}
+	
+	public void variable(Variable variable){
+		variables.add(variable);
+		
 	}
 }

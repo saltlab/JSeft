@@ -64,8 +64,7 @@ public class JSExecutionTracer
 	}
 	
 	/**
-	* Retrieves the JavaScript instrumentation array from the webbrowser and writes its contents in
-	* Daikon format to a file.
+	* Retrieves the JavaScript instrumentation array from the webbrowser and writes its contents into a file.
 	* 
 	* @param session
 	*            The crawling session.
@@ -98,8 +97,7 @@ public class JSExecutionTracer
 		Trace trace = Trace.parse(points);
 	
 		PrintWriter file = new PrintWriter(filename);
-		file.write(trace.getDeclaration());
-		file.write('\n');
+	
 		file.write(trace.getData(points));
 		file.close();
 		
@@ -146,8 +144,6 @@ public class JSExecutionTracer
 		Trace trace = Trace.parse(points);
 	//	if (!trace.getData(points).equals("")) {
 		PrintWriter file = new PrintWriter(filename);
-		file.write(trace.getDeclaration());
-		file.write('\n');
 		file.write(trace.getData(points));
 		file.close();
 		

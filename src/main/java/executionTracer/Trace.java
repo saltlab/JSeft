@@ -12,9 +12,12 @@ import com.crawljax.core.CrawljaxException;
 public class Trace {
 	private ArrayList<ProgramPoint> programPoints;
 
+
 	
 	public Trace() {
 		programPoints = new ArrayList<ProgramPoint>();
+
+		
 	}
 
 	/**
@@ -47,13 +50,12 @@ public class Trace {
 		for (int j = 0; j < jsonObject.length(); j++) {
 			JSONArray value = jsonObject.getJSONArray(j);
 
-			String programPointName = value.getString(0);
+			String prefix = value.getString(1);
+			String programPointName = value.getString(0)+ prefix;
 			
 			ProgramPoint prog = trace.programPoint(programPointName);
 
-			String prefix = value.getString(1);
-            
-			prog.addPoint(prefix);
+			
 
 			value = value.getJSONArray(2);
 			/* output all the variable values */
@@ -67,29 +69,14 @@ public class Trace {
 		return trace;
 	}
 
-	/**
-	 * @return Daikon declaration string for the complete trace.
-	 * @throws CrawljaxException
-	 *             When an unsupported type is found.
-	 */
-	public String getDeclaration() throws CrawljaxException {
-		StringBuffer result = new StringBuffer();
 
-		result.append("decl-version 2.0\n");
-
-		for (ProgramPoint p : programPoints) {
-			result.append(p.getDeclaration());
-		}
-
-		return result.toString();
-	}
 
 	/**
 	 * Returns all data trace records.
 	 * 
 	 * @param jsonObject
 	 *            Raw trace object.
-	 * @return The Daikon data trace records as a String.
+	 * @return  data trace records as a String.
 	 * @throws CrawljaxException
 	 *             When an unsupported type is encountered.
 	 * @throws JSONException
@@ -100,12 +87,10 @@ public class Trace {
 
 		for (int j = 0; j < jsonObject.length(); j++) {
 			JSONArray value = jsonObject.getJSONArray(j);
-
-			String programPointName = value.getString(0);
+			String prefix = value.getString(1);
+			String programPointName = value.getString(0)+prefix;
 			ProgramPoint prog = programPoint(programPointName);
 			
-			String prefix = value.getString(1);
-
 			result.append(prog.getData(prefix, value.getJSONArray(2)));
 
 		}
