@@ -57,7 +57,7 @@ public class SameGameOrig {
 		p.excludeDefaults();
 		web.addPlugin(p);
 		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
-		tracer.setOutputFolder(outputdir + "/jsassertions");
+		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 
 
