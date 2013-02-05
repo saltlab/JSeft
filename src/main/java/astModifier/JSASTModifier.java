@@ -2,9 +2,11 @@ package astModifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.mozilla.javascript.CompilerEnvirons;
@@ -44,7 +46,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	private final Map<String, String> mapper = new HashMap<String, String>();
 
 	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
-
+	private static HashMap<String,TreeSet<String>> domProps=new HashMap<String,TreeSet<String>>();
 	/**
 	 * This is used by the JavaScript node creation functions that follow.
 	 */
@@ -247,6 +249,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
 				/* add as last statement */
 				func.getBody().addChildToBack(newNode);
+				
 			}
 
 		} 
@@ -279,7 +282,19 @@ public abstract class JSASTModifier implements NodeVisitor  {
 
 			/* the parent is something we can prepend to */
 			parent.addChildBefore(newNode, node);
-
+			
+	/*		if(domProps.get(func.getName())!=null){
+				TreeSet<String> propSet=domProps.get(func.getName());
+				Iterator<String> iter=propSet.iterator();
+				while(iter.hasNext()){
+					String prop=iter.next();
+				AstNode newnode=createPointNode(prop, node.getLineno() + 1);
+				parent.addChildBefore(newnode, node);
+				
+				}
+				domProps.remove(func.getName());
+			}
+*/
 		} else if (node instanceof Name) {
 
 			/* lets detect function calls like .addClass, .css, .attr etc */
@@ -327,14 +342,21 @@ public abstract class JSASTModifier implements NodeVisitor  {
 					AstNode parent = makeSureBlockExistsAround(getLineNode(node));
 					
 
-                    
-			/*		 parent.addChildBefore(createPointNode(objectAndFunction, node.getLineno()),
-					 getLineNode(node));
-			*/		 parent.addChildAfter(
+          		 
+					TreeSet<String> propSet=domProps.get(node.getEnclosingFunction().getName());
+					if(propSet!=null){
+						propSet.add(objectAndFunction);
+					}
+					else{
+						propSet=new TreeSet<String>();
+						propSet.add(objectAndFunction);
+						domProps.put(node.getEnclosingFunction().getName(), propSet);
+					}
+		/*			parent.addChildAfter(
 					 createPointNode(objectAndFunction, node.getLineno() + 1),
 					 getLineNode(node));
                     
-				}
+		*/		}
 			
 				else
 					if(node.toSource().equals("css")) 
@@ -357,12 +379,20 @@ public abstract class JSASTModifier implements NodeVisitor  {
 						    		}	
 						    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
 			                    
-						  /*  		parent.addChildBefore(createPointNode(objectAndFunction, node.getLineno()),
-						    				getLineNode(node));
-						   */ 		parent.addChildAfter(
+						  
+									TreeSet<String> propSet=domProps.get(node.getEnclosingFunction().getName());
+									if(propSet!=null){
+										propSet.add(objectAndFunction);
+									}
+									else{
+										propSet=new TreeSet<String>();
+										propSet.add(objectAndFunction);
+										domProps.put(node.getEnclosingFunction().getName(), propSet);
+									}
+			/*			    		parent.addChildAfter(
 						    				createPointNode(objectAndFunction, node.getLineno() + 1),
 						    				getLineNode(node));
-						    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+			*/			    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
 								
 						    	}
 							}
@@ -384,12 +414,20 @@ public abstract class JSASTModifier implements NodeVisitor  {
 								   			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "") + ")";								    	
 								    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
 					                    
-							/*	    		parent.addChildBefore(createPointNode(objectAndFunction, node.getLineno()),
-								    				getLineNode(node));
-							*/	    		parent.addChildAfter(
+											TreeSet<String> propSet=domProps.get(node.getEnclosingFunction().getName());
+											if(propSet!=null){
+												propSet.add(objectAndFunction);
+											}
+											else{
+												propSet=new TreeSet<String>();
+												propSet.add(objectAndFunction);
+												domProps.put(node.getEnclosingFunction().getName(), propSet);
+											}
+								    		
+			/*					    		parent.addChildAfter(
 								    				createPointNode(objectAndFunction, node.getLineno() + 1),
 								    				getLineNode(node));
-								    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+			*/					    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
 										
 								    	}
 									}

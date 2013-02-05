@@ -2,6 +2,7 @@ package astModifier;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -29,7 +30,6 @@ import executionTracer.JSExecutionTracer;
 public class JSModifyProxyPlugin extends ProxyPlugin {
 	
 	private static final Logger LOGGER = Logger.getLogger(JSModifyProxyPlugin.class.getName());
-
 	private List<String> excludeFilenamePatterns;
 
 	private JSASTModifier modifier;
