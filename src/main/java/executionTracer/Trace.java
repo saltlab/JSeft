@@ -9,6 +9,7 @@ import org.json.JSONException;
 import com.crawljax.core.CrawljaxException;
 
 
+
 public class Trace {
 	private ArrayList<ProgramPoint> programPoints;
 
@@ -30,11 +31,7 @@ public class Trace {
 	public ProgramPoint programPoint(String name) {
 
 
-		for (ProgramPoint p : programPoints) {
-			if (p.getName().equals(name)) {
-				return p;
-			}
-		}
+	
 
 		ProgramPoint p = new ProgramPoint(name);
 		programPoints.add(p);
@@ -50,29 +47,38 @@ public class Trace {
 	 * @return The trace object.
 	 * @throws JSONException
 	 *             On error.
+	 * @throws CrawljaxException 
 	 */
-	public static Trace parse(JSONArray jsonObject) throws JSONException {
-		Trace trace = new Trace();
+	public String getTraceRecord(JSONArray jsonObject) throws JSONException, CrawljaxException {
+	
+		StringBuffer result = new StringBuffer();
 		for (int j = 0; j < jsonObject.length(); j++) {
 			JSONArray value = jsonObject.getJSONArray(j);
 
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+ prefix;
 			
-			ProgramPoint prog = trace.programPoint(programPointName);
-
-			
-
-			value = value.getJSONArray(2);
-			/* output all the variable values */
-			for (int i = 0; i < value.length(); i++) {
-				JSONArray o = value.getJSONArray(i);
+			ProgramPoint prog = new ProgramPoint(programPointName);
+		
+			JSONArray jasonvalue = value.getJSONArray(2);
+			for (int i = 0; i < jasonvalue.length(); i++) {
+				JSONArray o = jasonvalue.getJSONArray(i);
 				prog.variable(Variable.parse(o));
 
+			}	
+			result.append(prog.getData(value.getJSONArray(2)));
+				
+		
+			if(j<jsonObject.length()-1){
+				if(!jsonObject.getJSONArray(j+1).getString(0).equals(value.getString(0)) ||
+						prefix.equals(ProgramPoint.EXITPOSTFIX) &&jsonObject.getJSONArray(j+1).getString(1).equals(ProgramPoint.ENTERPOSTFIX)){
+					result.append("===========================================================================\n");
+				}
 			}
+			
 		}
 
-		return trace;
+		return result.toString();
 	}
 
 
@@ -91,14 +97,24 @@ public class Trace {
 	public String getData(JSONArray jsonObject) throws CrawljaxException, JSONException {
 		StringBuffer result = new StringBuffer();
 
+	
 		for (int j = 0; j < jsonObject.length(); j++) {
 			JSONArray value = jsonObject.getJSONArray(j);
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+prefix;
+			
 			ProgramPoint prog = programPoint(programPointName);
 			
-			result.append(prog.getData(prefix, value.getJSONArray(2)));
-
+			
+			result.append(prog.getData(value.getJSONArray(2)));
+			if(j<jsonObject.length()-1){
+				if(!jsonObject.getJSONArray(j+1).getString(0).equals(value.getString(0)) ||
+						prefix.equals(ProgramPoint.EXITPOSTFIX) &&jsonObject.getJSONArray(j+1).getString(1).equals(ProgramPoint.ENTERPOSTFIX)){
+					result.append("===========================================================================\n");
+				}
+			}
+	
+	
 		}
 
 		return result.toString();

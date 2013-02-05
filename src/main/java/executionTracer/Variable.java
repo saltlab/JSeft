@@ -178,13 +178,6 @@ public class Variable {
 	String getDeclaration() throws CrawljaxException {
 		StringBuffer varDecl = new StringBuffer();
 
-		if (isArray()) {
-			varDecl.append("variable " + name + "[..]\n");
-			
-			
-		} else {
-			varDecl.append("variable " + name + "\n");
-		}
 		/**
 		 * the following if is for tictactoe only
 		 */
@@ -193,12 +186,16 @@ public class Variable {
 			varDecl.append("\t\tdec-type " + "number" + "\n");
 		}
 		else 
-*/		varDecl.append("type " + type + "\n");
+*/		
 		
-
+		varDecl.append("variable::" + name + "\n");
+		if(isArray())
+			varDecl.append("type::" + type +"_array");
+		else
+			varDecl.append("type::" + type);
 		
 		
-	
+			
 		varDecl.append("\n");
 
 		return varDecl.toString();
@@ -243,7 +240,7 @@ public class Variable {
 
 	public String getData(Object value) throws CrawljaxException, JSONException {
 
-		return this.toString() + "\n" + getValue(value) + "\n" + getDeclaration();
+		return  getDeclaration() + "value::" + getValue(value) + "\n";
 	}
 
 	/**
@@ -276,10 +273,6 @@ public class Variable {
 
 	@Override
 	public String toString() {
-		String localName = name;
-		if (isArray()) {
-			localName += "[..]";
-		}
-		return localName;
+		return name;
 	}
 }

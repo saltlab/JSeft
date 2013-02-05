@@ -175,7 +175,7 @@ public class AstInstrumenter extends JSASTModifier{
 	 */
 	private String[] getVariablesNamesInScope(Scope scope) {
 		TreeSet<String> result = new TreeSet<String>();
-        
+        Scope origScope=scope;
 	
 
 		do {
@@ -187,9 +187,16 @@ public class AstInstrumenter extends JSASTModifier{
 					/* read the symbol */
 					Symbol symbol = t.get(key);
 					/* only add variables and function parameters */
-					if (symbol.getDeclType() == Token.LP || symbol.getDeclType() == Token.VAR) {
+					if (symbol.getDeclType() == Token.LP)
+					{
 						result.add(symbol.getName());
-							
+						
+						
+					}
+					else if(symbol.getDeclType()==Token.VAR){
+						if(!origScope.equals(scope))	{
+							result.add(symbol.getName());
+						}
 					}
 				}
 			}

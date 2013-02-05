@@ -46,7 +46,7 @@ public class ProgramPoint {
 
 	
 	
-	public String getData(String postfix, JSONArray data) throws CrawljaxException, JSONException {
+	public String getData(JSONArray data) throws CrawljaxException, JSONException {
 		StringBuffer result = new StringBuffer();
 		boolean found = false;
 
@@ -69,7 +69,7 @@ public class ProgramPoint {
 			}
 		}
 
-		result.append("\n");
+	//	result.append("\n");
 
 		return result.toString();
 	}

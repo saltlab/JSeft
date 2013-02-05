@@ -93,12 +93,12 @@ public class JSExecutionTracer
 		
 		session.getBrowser().executeJavaScript("sendReally();");
 		Thread.sleep(ONE_SEC);
-	
-		Trace trace = Trace.parse(points);
+		Trace trace=new Trace();
+		String result = trace.getTraceRecord(points);
 	
 		PrintWriter file = new PrintWriter(filename);
 	
-		file.write(trace.getData(points));
+		file.write(result);
 		file.close();
 		
 		LOGGER.info("Saved execution trace as " + filename);
@@ -140,11 +140,11 @@ public class JSExecutionTracer
 		
 		session.getBrowser().executeJavaScript("sendReally();");
 		Thread.sleep(ONE_SEC);
-	
-		Trace trace = Trace.parse(points);
+		Trace trace=new Trace();
+		String result = trace.getTraceRecord(points);
 	//	if (!trace.getData(points).equals("")) {
 		PrintWriter file = new PrintWriter(filename);
-		file.write(trace.getData(points));
+		file.write(result);
 		file.close();
 		
 		LOGGER.info("Saved execution trace as " + filename);
