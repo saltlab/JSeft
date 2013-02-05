@@ -243,7 +243,11 @@ public abstract class JSASTModifier implements NodeVisitor  {
 			/* get last line of the function */
 			node = (AstNode) func.getBody().getLastChild();
 			/* if this is not a return statement, we need to add logging here also */
-
+			if (!(node instanceof ReturnStatement)) {
+				newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
+				/* add as last statement */
+				func.getBody().addChildToBack(newNode);
+			}
 
 		} 
 		

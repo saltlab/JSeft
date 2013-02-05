@@ -67,38 +67,56 @@ public class AstInstrumenter extends JSASTModifier{
 	@Override
 	protected AstNode createExitNode(FunctionNode function, ReturnStatement returnNode,String postfix, int lineNo){
 		String name;
-		String code;
-		AstNode returnVal=returnNode.getReturnValue();
-		String[] retuenValues=getReturnValues(returnVal);
-		name = getFunctionName(function);
+		String code="";
+		String vars = "";
+		String[] variables;
+		String[] returnValues=new String[0];
+		variables=getGlobalVarsInScopeAtExitPoint(function);
 		
-
-		/* only add instrumentation code if there are variables to log */
-		if (returnVal instanceof FunctionNode) {
-			code = "/* empty */";
-		} else {
-			
-			
-			code =
-		        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix
-		                + "', new Array(";
-
-			String vars = "";
-			for (int i = 0; i < retuenValues.length; i++) {
-				/* only instrument variables that should not be excluded */
-				if (shouldInstrument(retuenValues[i])) {
-					vars += "addVariable('" + retuenValues[i] + "', " + retuenValues[i] + "),";
-				}
-			}
-			if (vars.length() > 0) {
-				/* remove last comma */
-				vars = vars.substring(0, vars.length() - 1);
-				code += vars + ")));";
-			} else {
-				/* no variables to instrument here, so just return an empty node */
-				code = "/* empty */";
+		if(returnNode!=null){
+			AstNode returnVal=returnNode.getReturnValue();
+			if(!(returnVal instanceof FunctionNode)){
+				returnValues=getReturnValues(returnVal);
 			}
 		}
+		name = getFunctionName(function);
+
+			/* only add instrumentation code if there are variables to log */
+			if (variables.length==0 && returnValues.length==0) {
+				code = "/* empty */";
+			} else {
+				
+				
+				code =
+			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix
+			                + "', new Array(";
+	
+				
+				for(int i=0;i<variables.length;i++){
+					if (shouldInstrument(variables[i])) {
+						vars += "addVariable('" + variables[i] + "', " + variables[i] + "),";
+					}
+				}
+
+			}
+
+		for (int i = 0; i < returnValues.length; i++) {
+			/* only instrument variables that should not be excluded */
+			if (shouldInstrument(returnValues[i])) {
+				vars += "addVariable('" + returnValues[i] + "', " + returnValues[i] + "),";
+			}
+		}
+			
+		
+		if (vars.length() > 0) {
+			/* remove last comma */
+			vars = vars.substring(0, vars.length() - 1);
+			code += vars + ")));";
+		} else {
+			/* no variables to instrument here, so just return an empty node */
+			code = "/* empty */";
+		}
+		
 	return parse(code);
 		
 		
@@ -186,7 +204,7 @@ public class AstInstrumenter extends JSASTModifier{
 				for (String key : t.keySet()) {
 					/* read the symbol */
 					Symbol symbol = t.get(key);
-					/* only add variables and function parameters */
+					/* only add global variables and function parameters */
 					if (symbol.getDeclType() == Token.LP)
 					{
 						result.add(symbol.getName());
@@ -208,6 +226,37 @@ public class AstInstrumenter extends JSASTModifier{
 		/* return the result as a String array */
 		return result.toArray(new String[0]);
 	}
+	
+	private String[] getGlobalVarsInScopeAtExitPoint(Scope scope) {
+		TreeSet<String> result = new TreeSet<String>();
+        Scope origScope=scope;
+	
+
+		do {
+			/* get the symboltable for the current scope */
+			Map<String, Symbol> t = scope.getSymbolTable();
+		
+			if (t != null) {
+				for (String key : t.keySet()) {
+					/* read the symbol */
+					Symbol symbol = t.get(key);
+					//only add global variables
+					if(symbol.getDeclType()==Token.VAR){
+						if(!origScope.equals(scope))	{
+							result.add(symbol.getName());
+						}
+					}
+				}
+			}
+
+			/* get next scope (upwards) */
+			scope = scope.getEnclosingScope();
+		} while (scope != null);
+
+		/* return the result as a String array */
+		return result.toArray(new String[0]);
+	}
+
 
 	@Override
 	public void finish(AstRoot node) {
