@@ -17,7 +17,7 @@ import org.mozilla.javascript.ast.Scope;
 import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.Symbol;
 
-import com.crawljax.plugins.aji.executiontracer.ProgramPoint;
+
 import com.crawljax.util.Helper;
 
 import astModifier.JSASTModifier;
@@ -270,11 +270,12 @@ public class AstInstrumenter extends JSASTModifier{
 	}
 
 	@Override
-	protected AstNode createPointNode(String objectAndFunction, int lineNo) {
+	protected AstNode createPointNode(FunctionNode func, String objectAndFunction, int lineNo) {
 
+		String funcName=getFunctionName(func);
 		String code =
-		        "send(new Array('" + getScopeName() + "line" + lineNo + "', '"
-		                + ProgramPoint.POINTPOSTFIX + lineNo + "', new Array(addVariable('"
+		        "send(new Array('" + getScopeName() + "." + funcName + "', '"
+		                + ProgramPoint.EXITPOSTFIX  + "', new Array(addVariable('"
 		                + objectAndFunction.replaceAll("\\\'", "\\\\\'") + "', "
 		                + objectAndFunction.replace("____", " ") + "))));";
 
