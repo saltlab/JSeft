@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.crawljax.plugins</groupId>
-	<artifactId>JStestGem</artifactId>
+	<artifactId>JStestGen</artifactId>
 	<version>1.1-SNAPSHOT</version>
 	<name></name>
 	<description>
