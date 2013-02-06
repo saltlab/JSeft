@@ -81,6 +81,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		nodesNotTolook.add("send(new Array(");
 		nodesNotTolook.add("new Array(");
 		nodesNotTolook.add("addVariable");
+
 		/* add -<number of arguments> to also make sure number of arguments is the same */
 		mapper.put("addClass", "attr('class')");
 		mapper.put("removeClass", "attr('class')");
@@ -107,6 +108,9 @@ public abstract class JSASTModifier implements NodeVisitor  {
 */		mapper.put("html-1", "html()");
 		mapper.put("setAttribute-2", "getAttribute(%0)");
 		mapper.put("text-1", "text()");
+		mapper.put("getElementById", "getElementById(%0).length");
+		mapper.put("getElementsByTagName", "getElementsByTagName(%0).length");
+		
 	//	mapper.put("className", "className");
 		
 	}
@@ -338,7 +342,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 						objectAndFunction = mapper.get(node.toSource() + "-" + arguments.size());
 					}
 
-/*					if (node.toSource().equals("appendTo") || node.toSource().equals("prependTo") || node.toSource().equals("insertAfter") || node.toSource().equals("insertBefore")){
+					if (node.toSource().equals("appendTo") || node.toSource().equals("prependTo") || node.toSource().equals("insertAfter") || node.toSource().equals("insertBefore")){
 						objectAndFunction="$"+"("+ arguments.get(0).toSource()+")"+"."+objectAndFunction;
 					}
 					else if (node.toSource().equals("before") || node.toSource().equals("after")) {
@@ -347,7 +351,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 					    
 						objectAndFunction= leftMost + "." + objectAndFunction;
 					}
-*/			
+			
 					else{
 						objectAndFunction = g.getLeft().toSource()+ "." + objectAndFunction;
 					
@@ -475,6 +479,8 @@ public abstract class JSASTModifier implements NodeVisitor  {
 			
 			}
 		}
+		
+	
 
 
 		/* have a look at the children of this node */

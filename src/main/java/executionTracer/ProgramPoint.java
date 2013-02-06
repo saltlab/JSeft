@@ -64,7 +64,7 @@ public class ProgramPoint {
 				}
 			}
 			if (!found) {
-				result.append(var.getData("undefined"));
+				result.append(var.getData("Undefined"));
 				found = true;
 			}
 		}

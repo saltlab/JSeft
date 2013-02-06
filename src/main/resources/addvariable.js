@@ -33,6 +33,8 @@ function addVariable(name, value) {
 					else 
 						return new Array(name, 'object_array', value);
 		}
+		else
+			return new Array(name, 'object', value);
 	
 	} else if(typeof(value) != 'undefined' && typeof(value) != 'function') {
 		return new Array(name, typeof(value), value);
