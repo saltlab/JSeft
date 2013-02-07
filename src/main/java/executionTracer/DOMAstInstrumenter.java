@@ -102,7 +102,7 @@ public class DOMAstInstrumenter extends DOMASTModifier {
 		String code = 
 			"send(new Array('" + getScopeName() + "." + funcName + "', '"
             + ProgramPoint.EXITPOSTFIX  + "', new Array(addVariable("
-            + domNode + ", "
+            + domNode.replaceAll("\\\'", "\\\\\'") + ", "
             + objectAndFunction.replace("____", " ") + "))));";
 
 	
