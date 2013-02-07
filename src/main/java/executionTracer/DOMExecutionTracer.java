@@ -195,10 +195,7 @@ public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlu
 	try {
 		PrintStream output = new PrintStream(getOutputFolder() + getAssertionFilename());
 	
-		
-	
 
-	
 		/* close the output file */
 		output.close();
 	} catch (IOException e) {

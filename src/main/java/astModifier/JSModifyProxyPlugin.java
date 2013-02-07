@@ -100,6 +100,7 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	 */
 	public void excludeDefaults() {
 		excludeFilenamePatterns.add(".*jquery[-0-9.]*.js?.*");
+		excludeFilenamePatterns.add(".*jquery-getpath*.js?.*");
 		excludeFilenamePatterns.add(".*jquery.*.js?.*");
 	//	excludeFilenamePatterns.add(".*same-game.*.htm?.*");
 		excludeFilenamePatterns.add(".*prototype.*js?.*");

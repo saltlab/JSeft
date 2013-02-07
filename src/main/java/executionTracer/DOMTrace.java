@@ -55,18 +55,16 @@ private ArrayList<ProgramPoint> programPoints;
 			String prefix = value.getString(1);
 			String domProgramPointName = value.getString(0)+ prefix;
 			result.append(domProgramPointName + "\n");
-//			DOMProgramPoint prog = new DOMProgramPoint(domProgramPointName);
+			DOMProgramPoint prog = new DOMProgramPoint(domProgramPointName);
 		
 			JSONArray jasonvalue = value.getJSONArray(2);
 			for (int i = 0; i < jasonvalue.length(); i++) {
 				JSONArray o = jasonvalue.getJSONArray(i);
-				result.append("selector: " + o.get(0));
-				result.append("\n");
-				result.append("value: " + o.get(1));
+				result.append("selector::" + prog.getData(o.getJSONArray(0)));
+				result.append("value::" + o.get(1));
 				result.append("\n");
 
 			}	
-		
 				
 			result.append("===========================================================================\n");
 				
