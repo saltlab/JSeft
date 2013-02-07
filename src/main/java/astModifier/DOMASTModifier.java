@@ -113,31 +113,7 @@ public abstract class DOMASTModifier implements NodeVisitor {
 		
 	}
 
-	/**
-	 * Find out the function name of a certain node and return "anonymous" if it's an anonymous
-	 * function.
-	 * 
-	 * @param f
-	 *            The function node.
-	 * @return The function name.
-	 */
-	protected String getFunctionName(FunctionNode f) {
-		if (f==null)
-			return "NoFunctionNode";
-	/*	else if(f.getParent() instanceof LabeledStatement){
-			return ((LabeledStatement)f.getParent()).shortName();
-		}
-	*/	else if(f.getParent() instanceof ObjectProperty){
-			return ((ObjectProperty)f.getParent()).getLeft().toSource();
-		}
-		Name functionName = f.getFunctionName();
 
-		if (functionName == null) {
-			return "anonymous" + f.getLineno();
-		} else {
-			return functionName.toSource();
-		}
-	}
 
 	/**
 	 * Creates a node that can be inserted at a certain point in function.

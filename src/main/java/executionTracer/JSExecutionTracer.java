@@ -123,7 +123,7 @@ public class JSExecutionTracer
 	public void onNewState(CrawlSession session) {
 	
 	
-	String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
+	String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
 	
 	filename += session.getCurrentState().getName();
 	
