@@ -7,6 +7,7 @@ import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.ProxyConfiguration;
 import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
 import executionTracer.AstInstrumenter;
+import executionTracer.DOMAstInstrumenter;
 import executionTracer.JSExecutionTracer;
 
 public class SameGameOrig {
@@ -28,7 +29,7 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output2";
-//		System.setProperty("webdriver.firefox.bin" ,"/home/shabnam/program-files/firefox/firefox");
+		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = new CrawljaxConfiguration();
 
         
@@ -36,7 +37,7 @@ public class SameGameOrig {
 
 		CrawlSpecification crawler;
 
-		crawler = new CrawlSpecification("http://localhost:8080/same-game/same-game.htm");
+		crawler = new CrawlSpecification("http://localhost:8080/same-game/same-game.html");
 		
 //		crawler.addCrawlCondition("Only crawl same-game", new UrlCondition("same-game"));
 		
@@ -51,12 +52,12 @@ public class SameGameOrig {
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
 	
-		AstInstrumenter a = new AstInstrumenter();
+		DOMAstInstrumenter a = new DOMAstInstrumenter();
 	
 		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
-		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+		JSExecutionTracer tracer = new JSExecutionTracer("jsdomExecutionTrace");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 

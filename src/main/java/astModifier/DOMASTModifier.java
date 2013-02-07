@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
+import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.Block;
+import org.mozilla.javascript.ast.ExpressionStatement;
 import org.mozilla.javascript.ast.ForLoop;
 import org.mozilla.javascript.ast.FunctionCall;
 import org.mozilla.javascript.ast.FunctionNode;
@@ -19,21 +20,18 @@ import org.mozilla.javascript.ast.IfStatement;
 import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.NodeVisitor;
 import org.mozilla.javascript.ast.ObjectProperty;
+import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.ReturnStatement;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
 
 import com.crawljax.core.CrawljaxController;
 
-import executionTracer.ProgramPoint;
 
-public abstract class JSASTModifier implements NodeVisitor  {
-
-
+public abstract class DOMASTModifier implements NodeVisitor {
 	private final Map<String, String> mapper = new HashMap<String, String>();
 
 	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
-//	private static HashMap<String,TreeSet<String>> domProps=new HashMap<String,TreeSet<String>>();
 	private ArrayList<String> nodesNotTolook=new ArrayList<String>();
 	/**
 	 * This is used by the JavaScript node creation functions that follow.
@@ -63,7 +61,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	/**
 	 * Abstract constructor to initialize the mapper variable.
 	 */
-	protected JSASTModifier() {
+	protected DOMASTModifier() {
 		nodesNotTolook.add("send(new Array(");
 		nodesNotTolook.add("new Array(");
 		nodesNotTolook.add("addVariable");
@@ -225,39 +223,16 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	 *            The node that is currently visited.
 	 * @return Whether to visit the children.
 	 */
-/*	private boolean domPropAdded=false;
-	private FunctionNode enclosedFunc = null;
-	private String objAndFunc = "";
-*/	@Override
+
+	@Override
 	public boolean visit(AstNode node) {
 		
-		if(!shouldVisitNode(node))
-			return false;
-		FunctionNode func;
+
 
 		
 
-		if (node instanceof FunctionNode) {
-			func = (FunctionNode) node;
-
-			/* this is function enter */
-			AstNode newNode = createEnterNode(func, ProgramPoint.ENTERPOSTFIX, func.getLineno());
-
-			func.getBody().addChildToFront(newNode);
-
-			/* get last line of the function */
-			node = (AstNode) func.getBody().getLastChild();
-			/* if this is not a return statement, we need to add logging here also */
-			if (!(node instanceof ReturnStatement)) {
-				newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
-				/* add as last statement */
-				func.getBody().addChildToBack(newNode);
-				
-			}
-
-		} 
 		
-        else if (node instanceof SwitchCase) {
+        if (node instanceof SwitchCase) {
             //Add block around all statements in the switch case
             SwitchCase sc = (SwitchCase)node;
             List<AstNode> statements = sc.getStatements();
@@ -275,42 +250,9 @@ public abstract class JSASTModifier implements NodeVisitor  {
                 sc.setStatements(blockStatement);
             }
         }
-		else if (node instanceof ReturnStatement) {
+        else if (node instanceof Name) {
 			
-			func = node.getEnclosingFunction();
-
-			AstNode newNode = createExitNode(func, (ReturnStatement)node, ProgramPoint.EXITPOSTFIX, node.getLineno());
-
-			AstNode parent = makeSureBlockExistsAround(node);
-
-			/* the parent is something we can prepend to */
-			parent.addChildBefore(newNode, node);
-			
-			
-/*			if(node.getEnclosingFunction().equals(enclosedFunc)){
-			
-				TreeSet<String> props=domProps.get(getFunctionName(enclosedFunc));
-				if(props!=null){
-					Iterator<String> iter=props.iterator();
-					while(iter.hasNext()){
-						String obj=iter.next();
-						AstNode newnode=createPointNode(enclosedFunc,obj, node.getLineno() + 1);
-						
-						parent.addChildBefore(newnode, node);
-			
-					}
-					domPropAdded=false;
-					enclosedFunc=null;
-						
-				}
-				
-				
-			}
-*/			
-		} 
-/*		else if (node instanceof Name) {
-			
-			 lets detect function calls like .addClass, .css, .attr etc 
+			/* lets detect function calls like .addClass, .css, .attr etc */
 			if (node.getParent() instanceof PropertyGet
 			        && node.getParent().getParent() instanceof FunctionCall && !node.getParent().toSource().contains("function")) {
 
@@ -318,11 +260,11 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				        ((FunctionCall) node.getParent().getParent()).getArguments();
 
 				String domNodeToLog;
-	//			domPropAdded=false;
+
 				if (mapper.get(node.toSource()) != null
 				        || mapper.get(node.toSource() + "-" + arguments.size()) != null) {
 					
-					 this seems to be one! 
+					/* this seems to be one! */
 					PropertyGet g = (PropertyGet) node.getParent();
                     
 					String objectAndFunction = mapper.get(node.toSource());
@@ -349,34 +291,14 @@ public abstract class JSASTModifier implements NodeVisitor  {
 					}
 					
 					
-					 fill in parameters in the "getter" 
+					/* fill in parameters in the "getter" */
 						for (int i = 0; i < arguments.size(); i++) {
 							objectAndFunction =
 								objectAndFunction.replace("%" + i, arguments.get(i).toSource());
 						}
 					
 					objectAndFunction=objectAndFunction.replace(" ", "____");
-					AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-					DomNodeVisitor domNodeVisitor=new DomNodeVisitor(var);
-		    		node.getEnclosingFunction().visit(domNodeVisitor);
-		    		String domNode;
-		    		if(domNodeVisitor.getDomNode()!=null)
-		    			domNode=domNodeVisitor.getDomNode().toSource();
-		    		else
-		    			domNode=objectAndFunction;
-					
-					TreeSet<String> propSet=domProps.get(getFunctionName(node.getEnclosingFunction()));
-					if(propSet!=null){
-						domPropAdded=propSet.add(objectAndFunction);
-					}
-					else{
-						propSet=new TreeSet<String>();
-						domPropAdded=propSet.add(objectAndFunction);
-						domProps.put(getFunctionName(node.getEnclosingFunction()), propSet);
-					}
-					enclosedFunc=node.getEnclosingFunction();
-					objAndFunc=objectAndFunction;
-					
+					AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
 					parent.addChildAfter(
 					 createPointNode(node.getEnclosingFunction(),domNodeToLog, objectAndFunction, node.getLineno() + 1),
 					 getLineNode(node));
@@ -404,25 +326,6 @@ public abstract class JSASTModifier implements NodeVisitor  {
 						    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "")+ ")";
 						    		}	
 						    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-						    		DomNodeVisitor domNodeVisitor=new DomNodeVisitor(var);
-						    		node.getEnclosingFunction().visit(domNodeVisitor);
-						    		String domNode;
-						    		if(domNodeVisitor.getDomNode()!=null)
-						    			domNode=domNodeVisitor.getDomNode().toSource();
-						    		else
-						    			domNode=objectAndFunction;
-						    		
-									TreeSet<String> propSet=domProps.get(getFunctionName(node.getEnclosingFunction()));
-									if(propSet!=null){
-										domPropAdded=propSet.add(objectAndFunction);
-									}
-									else{
-										propSet=new TreeSet<String>();
-										domPropAdded=propSet.add(objectAndFunction);
-										domProps.put(getFunctionName(node.getEnclosingFunction()), propSet);
-									}
-									enclosedFunc=node.getEnclosingFunction();
-									objAndFunc=objectAndFunction;
 						    		parent.addChildAfter(
 						    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
 						    				getLineNode(node));
@@ -449,26 +352,6 @@ public abstract class JSASTModifier implements NodeVisitor  {
 
 								   			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "") + ")";								    	
 								    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-								    		DomNodeVisitor domNodeVisitor=new DomNodeVisitor(var);
-								    		node.getEnclosingFunction().visit(domNodeVisitor);
-								    		String domNode;
-								    		if(domNodeVisitor.getDomNode()!=null)
-								    			domNode=domNodeVisitor.getDomNode().toSource();
-								    		else
-								    			domNode=objectAndFunction;
-								    	
-								    		
-											TreeSet<String> propSet=domProps.get(getFunctionName(node.getEnclosingFunction()));
-											if(propSet!=null){
-												domPropAdded=propSet.add(objectAndFunction);
-											}
-											else{
-												propSet=new TreeSet<String>();
-												domPropAdded=propSet.add(objectAndFunction);
-												domProps.put(getFunctionName(node.getEnclosingFunction()), propSet);
-											}
-											enclosedFunc=node.getEnclosingFunction();
-											objAndFunc=objectAndFunction;
 								    		parent.addChildAfter(
 								    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
 								    				getLineNode(node));
@@ -479,18 +362,8 @@ public abstract class JSASTModifier implements NodeVisitor  {
 								}
 							}
 				
-				if(domPropAdded){
-					AstNode last = (AstNode) enclosedFunc.getBody().getLastChild();
-					if(!(last instanceof ReturnStatement)){
-						AstNode newnode=createPointNode(enclosedFunc,objAndFunc, last.getLineno() + 1);
-						enclosedFunc.getBody().addChildToBack(newnode);
-					}
-					
-					
-				}
-			
 			}
-		}*/
+		}
 		
 	
 
@@ -499,14 +372,14 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		return true;
 	}
 
-/*	private AstNode getLineNode(AstNode node) {
+	private AstNode getLineNode(AstNode node) {
 		while ((!(node instanceof ExpressionStatement) && !(node instanceof Assignment))
 		        || node.getParent() instanceof ReturnStatement) {
 			node = node.getParent();
 		}
 		return node;
 	}
-*/
+
 	/**
 	 * This method is called when the complete AST has been traversed.
 	 * 
@@ -520,29 +393,6 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	 */
 	public abstract void start();
 	
-	private boolean shouldVisitNode(AstNode astnode){
-		if (nodesNotTolook.size()==0)
-			return true;
-		String name="";
-		if(astnode instanceof FunctionCall){
-			
-			FunctionCall funcCall=(FunctionCall) astnode;
-			name=funcCall.getTarget().toSource();
-		}
-		else if(astnode instanceof FunctionNode){
-			FunctionNode funcNode=(FunctionNode) astnode;
-			name=funcNode.getName();
-		}
-		for (String node:nodesNotTolook){
-			
-			if (name.contains(node)){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
 
-				
+
 }

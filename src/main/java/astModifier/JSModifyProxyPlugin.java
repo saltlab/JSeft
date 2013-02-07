@@ -33,6 +33,9 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	private List<String> excludeFilenamePatterns;
 
 	private JSASTModifier modifier;
+	private DOMASTModifier domModifier;
+	private boolean jsModify=false;
+	private boolean domModify=false;
 	private String outputfolder;
 
 
@@ -46,6 +49,19 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		
 		excludeFilenamePatterns = new ArrayList<String>();
 		modifier = modify;
+		jsModify=true;
+		domModify=false;
+		
+	}
+	
+	
+	
+	public JSModifyProxyPlugin(DOMASTModifier domModify) {
+		
+		excludeFilenamePatterns = new ArrayList<String>();
+		domModifier = domModify;
+		this.domModify=true;
+		this.jsModify=false;
 		
 	}
 
@@ -189,15 +205,27 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 //			System.out.print(input+"*****\n");
 			ast = rhinoParser.parse(new String(input), scopename, 0);
 
-			modifier.setScopeName(scopename);
+			if(this.jsModify){
+				modifier.setScopeName(scopename);
 
-			modifier.start();
+				modifier.start();
 
-			/* recurse through AST */
-			ast.visit(modifier);
+				/* recurse through AST */
+				ast.visit(modifier);
 
-			modifier.finish(ast);
+				modifier.finish(ast);
+			}
+			else if(this.domModify){
+				domModifier.setScopeName(scopename);
 
+				domModifier.start();
+
+				/* recurse through AST */
+				ast.visit(domModifier);
+
+				domModifier.finish(ast);
+			}
+				
 			/* clean up */
 			Context.exit();
 			System.out.print(ast.toSource()+"*****\n");

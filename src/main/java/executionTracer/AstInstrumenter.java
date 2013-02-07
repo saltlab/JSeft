@@ -270,16 +270,22 @@ public class AstInstrumenter extends JSASTModifier{
 	}
 
 	@Override
-	protected AstNode createPointNode(FunctionNode func, String objectAndFunction, int lineNo) {
+	protected AstNode createPointNode(FunctionNode func, String domNode, String objectAndFunction, int lineNo) {
 
 		String funcName=getFunctionName(func);
-		String code =
-		        "send(new Array('" + getScopeName() + "." + funcName + "', '"
-		                + ProgramPoint.EXITPOSTFIX  + "', new Array(addVariable('"
-		                + objectAndFunction.replaceAll("\\\'", "\\\\\'") + "', "
+		String code="";
+//		if(domNode.equals(objectAndFunction)){
+			code = "send(new Array('" + getScopeName() + "." + funcName + "', '"
+            + ProgramPoint.EXITPOSTFIX  + "', new Array(addVariable('"
+            + domNode.replaceAll("\\\'", "\\\\\'")  + "', " + objectAndFunction.replace("____", " ") + "))));";
+//		}
+/*		else
+			code = "send(new Array('" + getScopeName() + "." + funcName + "', '"
+		                + ProgramPoint.EXITPOSTFIX  + "', new Array(addVariable("
+		                + domNode + ", "
 		                + objectAndFunction.replace("____", " ") + "))));";
 
-	
+*/	
 		return parse(code);
 		
 	}
