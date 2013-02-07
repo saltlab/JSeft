@@ -2,7 +2,6 @@ package astModifier;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -11,12 +10,10 @@ import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.RhinoException;
-import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
 import org.owasp.webscarab.httpclient.HTTPClient;
 import org.owasp.webscarab.model.Request;
 import org.owasp.webscarab.model.Response;
-import org.owasp.webscarab.plugin.proxy.BrowserCache;
 import org.owasp.webscarab.plugin.proxy.ProxyPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -24,6 +21,7 @@ import org.w3c.dom.NodeList;
 
 import com.crawljax.util.Helper;
 
+import executionTracer.DOMExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 
@@ -257,6 +255,12 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		if (request.getURL().toString().contains("?thisisanexecutiontracingcall")) {
 			LOGGER.info("Execution trace request " + request.getURL().toString());
 			JSExecutionTracer.addPoint(new String(request.getContent()));
+			return response;
+		}
+		
+		if(request.getURL().toString().contains("?thisisadomtracingcall")){
+			LOGGER.info("Execution trace request " + request.getURL().toString());
+			DOMExecutionTracer.addPoint(new String(request.getContent()));
 			return response;
 		}
 		

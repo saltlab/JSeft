@@ -25,8 +25,7 @@ import com.crawljax.core.plugin.PreCrawlingPlugin;
 import com.crawljax.core.plugin.PreStateCrawlingPlugin;
 import com.crawljax.util.Helper;
 
-public class JSExecutionTracer
-	implements PreStateCrawlingPlugin, OnNewStatePlugin, PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput {
+public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlugin, PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput {
 
 	private static final int ONE_SEC = 1000;
 	
@@ -37,13 +36,13 @@ public class JSExecutionTracer
 	
 	private static final Logger LOGGER = Logger.getLogger(JSExecutionTracer.class.getName());
 	
-	public static final String EXECUTIONTRACEDIRECTORY = "executiontrace/";
+	public static final String EXECUTIONTRACEDIRECTORY = "domExecutiontrace/";
 	
 	/**
 	* @param filename
 	*            How to name the file that will contain the assertions after execution.
 	*/
-	public JSExecutionTracer(String filename) {
+	public DOMExecutionTracer(String filename) {
 	assertionFilename = filename;
 	}
 	
@@ -76,7 +75,7 @@ public class JSExecutionTracer
 	public void preStateCrawling(CrawlSession session, List<CandidateElement> candidateElements) {
 	
 	
-	String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
+	String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domexecutiontrace-";
 	
 	filename += session.getCurrentState().getName();
 	
@@ -93,7 +92,7 @@ public class JSExecutionTracer
 		
 		session.getBrowser().executeJavaScript("sendReally();");
 		Thread.sleep(ONE_SEC);
-		Trace trace=new Trace();
+		DOMTrace trace=new DOMTrace();
 		String result = trace.getTraceRecord(points);
 	
 		PrintWriter file = new PrintWriter(filename);
@@ -140,7 +139,7 @@ public class JSExecutionTracer
 		
 		session.getBrowser().executeJavaScript("sendReally();");
 		Thread.sleep(ONE_SEC);
-		Trace trace=new Trace();
+		DOMTrace trace=new DOMTrace();
 		String result = trace.getTraceRecord(points);
 	//	if (!trace.getData(points).equals("")) {
 		PrintWriter file = new PrintWriter(filename);
@@ -238,7 +237,6 @@ public class JSExecutionTracer
 	}
 	
 	}
-
 
 
 }
