@@ -17,6 +17,7 @@ function sendReally() {
 function addVariable(name, value) {
 	var pattern=/[.]attr[(]/;
 	var getAttrPattern=/[.]getAttribute[(]/;
+
 	if(typeof(value) == 'object') {
 		if(value instanceof Array) {
 				if(value[0] instanceof Array){
@@ -47,3 +48,5 @@ function addVariable(name, value) {
 	}
 	return new Array(name, typeof(value), 'undefined');
 };
+
+

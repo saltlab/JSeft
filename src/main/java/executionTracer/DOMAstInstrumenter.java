@@ -35,7 +35,7 @@ public class DOMAstInstrumenter extends DOMASTModifier {
 	private AstNode jsLoggingFunctions() {
 		String code;
 
-		File js = new File(this.getClass().getResource("/addvariable.js").getFile());
+		File js = new File(this.getClass().getResource("/domNodeProps.js").getFile());
 		code = Helper.getContent(js);
 		return parse(code);
 	}
@@ -101,9 +101,10 @@ public class DOMAstInstrumenter extends DOMASTModifier {
 		String funcName=getFunctionName(func);
 		String code = 
 			"send(new Array('" + getScopeName() + "." + funcName + "', '"
-            + ProgramPoint.EXITPOSTFIX  + "', new Array(addVariable("
-            + domNode.replaceAll("\\\'", "\\\\\'") + ", "
-            + objectAndFunction.replace("____", " ") + "))));";
+				+ ProgramPoint.POINTPOSTFIX  + "', new Array(AddDomNodeProps("
+	            + domNode + ", "
+	            + "'" + objectAndFunction.replaceAll("\\\'", "\\\\\'") + "'" + ", " + objectAndFunction.replace("____", " ") + "))));";
+
 
 	
 		return parse(code);
