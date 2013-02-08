@@ -36,7 +36,7 @@ var getElementTreeXPath = function(element) {
         
         paths.splice(0, 0, tagName + pathIndex);
     }
-    return paths;
+    return paths.length ? "/" + paths.join("/") : null;
 
 }
 
@@ -53,7 +53,7 @@ function sendReally() {
 	window.xhr.send(JSON.stringify(window.buffer));
 	window.buffer = new Array();
 }
-function AddDomNodeProps(element,value){
+function AddDomNodeProps(element,value,name){
 	var datas = new Array();
 	
 	for(i=0;i<$(element).length;i++){
@@ -68,7 +68,7 @@ function AddDomNodeProps(element,value){
 		});
 	}
 	
-	return new Array(datas, value);
+	return new Array(datas, value, name);
 
 };
 
