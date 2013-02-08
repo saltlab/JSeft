@@ -60,7 +60,7 @@ private ArrayList<ProgramPoint> programPoints;
 			JSONArray jasonvalue = value.getJSONArray(2);
 			for (int i = 0; i < jasonvalue.length(); i++) {
 				JSONArray o = jasonvalue.getJSONArray(i);
-				result.append("node::" + prog.getData(o.getJSONArray(0)));
+				result.append(prog.getData(o.getJSONArray(0)));
 				result.append("property::" + o.get(1) +"\n"); 
 				result.append("value::" + o.get(2));
 				result.append("\n");
