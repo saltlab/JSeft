@@ -6,6 +6,8 @@ import com.crawljax.core.configuration.CrawlSpecification;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.ProxyConfiguration;
 import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
+
+import domMutation.DomTraceReading;
 import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
 
@@ -28,7 +30,7 @@ public class SameGameOrig {
 
 
 
-		String outputdir = "same-output2";
+/*		String outputdir = "same-output2";
 		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = new CrawljaxConfiguration();
 
@@ -77,6 +79,9 @@ public class SameGameOrig {
 			e.printStackTrace();
 		}
 		
+*/		
+		String outputdir = "same-output2";
+		DomTraceReading trace=new DomTraceReading(outputdir);
 		
 
 	}

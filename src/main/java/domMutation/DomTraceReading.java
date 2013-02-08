@@ -68,7 +68,12 @@ public class DomTraceReading {
 				funcName=str[str.length-1];
 				while (!(inputline = input.readLine()).equals("===========================================================================")){
 					if(inputline.contains("node::")){
-						node=inputline.replace("node::", "");
+						String[] nodeArray=inputline.replace("node::", "")
+									.replace("{", "")
+									.replace("}", "").split(":");
+						node=nodeArray[nodeArray.length-1].replaceFirst("\"", "");
+						node=node.substring(0, node.lastIndexOf("\""));
+						
 					}
 					else if(inputline.contains("line::")){
 						line=inputline.replace("line::", "");
