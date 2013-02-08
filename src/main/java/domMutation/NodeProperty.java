@@ -23,9 +23,4 @@ public class NodeProperty {
 		return value;
 	}
 	
-/*	public String extractFuncNameFromLine(){
-		String[] str=line.split("[.:::]");
-		return str[str.length-2];
-	}
-*/
 }
