@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.crawljax.util.Helper;
 import executionTracer.DOMExecutionTracer;
 
@@ -58,7 +61,8 @@ public class DomTraceReading {
 				BufferedReader input =
 					new BufferedReader(new FileReader(filenameAndPath));
 				
-				String node="", line="", inputline="",value="", funcName="";
+				Node domNode = null;
+				String line="", inputline="",value="", funcName="";
 			  while ((inputline = input.readLine()) != null){
 			
 				if ("".equals(inputline))
@@ -68,12 +72,16 @@ public class DomTraceReading {
 				funcName=str[str.length-1];
 				while (!(inputline = input.readLine()).equals("===========================================================================")){
 					if(inputline.contains("node::")){
-						String[] nodeArray=inputline.replace("node::", "")
+						String node=inputline.replace("node::", "");
+						ObjectMapper mapper = new ObjectMapper();  
+					    domNode = mapper.readValue(node, Node.class);  
+					    mapper.writeValueAsString(domNode);  
+/*						String[] nodeArray=inputline.replace("node::", "")
 									.replace("{", "")
 									.replace("}", "").split(":");
 						node=nodeArray[nodeArray.length-1].replaceFirst("\"", "");
 						node=node.substring(0, node.lastIndexOf("\""));
-						
+*/						
 					}
 					else if(inputline.contains("line::")){
 						line=inputline.replace("line::", "");
@@ -84,11 +92,11 @@ public class DomTraceReading {
 				}
 				ArrayList<NodeProperty> nodeProps=func_domNode_map.get(funcName);
 				if(nodeProps!=null){
-					NodeProperty nodeProp=new NodeProperty(node, line, value);
+					NodeProperty nodeProp=new NodeProperty(domNode, line, value);
 					nodeProps.add(nodeProp);
 				}
 				else{
-					NodeProperty nodeProp=new NodeProperty(node, line, value);
+					NodeProperty nodeProp=new NodeProperty(domNode, line, value);
 					ArrayList<NodeProperty> arrayListNodeProp=new ArrayList<NodeProperty>();
 					arrayListNodeProp.add(nodeProp);
 					func_domNode_map.put(funcName, arrayListNodeProp);

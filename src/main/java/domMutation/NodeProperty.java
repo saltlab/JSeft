@@ -1,17 +1,17 @@
 package domMutation;
 
 public class NodeProperty {
-	private String node;
+	private Node node;
 	private String line;
 	private String value;
 	
-	public NodeProperty(String node, String line, String value){
+	public NodeProperty(Node node, String line, String value){
 		this.node=node;
 		this.line=line;
 		this.value=value;
 	}
 	
-	public String getNode(){
+	public Node getNode(){
 		return node;
 	}
 	
