@@ -24,7 +24,12 @@
 			<timezone>+1</timezone>
 		</developer>
 	</developers>
+	<properties>
 
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+
+	</properties>
 	<dependencies>
 
 <!-- 	<dependency>
@@ -98,15 +103,7 @@
 
 		<plugins>
 
-			<!-- Default JDK dependency -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
+
 
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
