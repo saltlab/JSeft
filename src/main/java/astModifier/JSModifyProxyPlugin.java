@@ -32,8 +32,10 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 
 	private JSASTModifier modifier;
 	private DOMASTModifier domModifier;
+	private DOMMuteASTModifier domMuteModifier;
 	private boolean jsModify=false;
 	private boolean domModify=false;
+	private boolean domMuteModify=false;
 	private String outputfolder;
 
 
@@ -60,6 +62,17 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		domModifier = domModify;
 		this.domModify=true;
 		this.jsModify=false;
+		this.domMuteModify=false;
+		
+	}
+	
+	public JSModifyProxyPlugin(DOMMuteASTModifier domMuteModify) {
+		
+		excludeFilenamePatterns = new ArrayList<String>();
+		domMuteModifier = domMuteModify;
+		this.domModify=false;
+		this.jsModify=false;
+		this.domMuteModify=true;
 		
 	}
 
@@ -223,6 +236,17 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 				ast.visit(domModifier);
 
 				domModifier.finish(ast);
+			}
+			
+			else if(this.domMuteModify){
+				domMuteModifier.setScopeName(scopename);
+
+				domMuteModifier.start();
+
+				/* recurse through AST */
+				ast.visit(domMuteModifier);
+
+				domMuteModifier.finish(ast);
 			}
 				
 			/* clean up */

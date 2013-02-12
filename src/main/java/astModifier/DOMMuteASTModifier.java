@@ -32,8 +32,9 @@ import executionTracer.ProgramPoint;
 
 public abstract class DOMMuteASTModifier implements NodeVisitor {
 	
-	private NodeProperty randNodeProp;
-	private String randFuncName;
+	private NodeProperty nodeProp;
+	private String funcName;
+	private boolean shouldDeleteNode;
 
 	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
 	
@@ -65,21 +66,11 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 	/**
 	 * Abstract constructor to initialize the mapper variable.
 	 */
-	protected DOMMuteASTModifier(TreeMap<String, ArrayList<NodeProperty>> func_domNode_map) {
+	protected DOMMuteASTModifier(String funcName,NodeProperty nodeProp, boolean shouldDeleteNode) {
 	//	Set<Entry<String,ArrayList<NodeProperty>>> set=func_domNode_map.entrySet();
-		Set<String> funcs=func_domNode_map.keySet();
-		Iterator<String> it=funcs.iterator();
-		ArrayList<String> funcList=new ArrayList<String>();
-		while(it.hasNext()){
-			funcList.add(it.next());
-		}
-		Random rand=new Random(10);
-		int randItem=rand.nextInt(funcList.size());
-		randFuncName=funcList.get(randItem);
-		ArrayList<NodeProperty> nodeProps=func_domNode_map.get(randFuncName);
-		int randNode=rand.nextInt(nodeProps.size());
-		randNodeProp=nodeProps.get(randNode);
-		
+		this.funcName=funcName;
+		this.nodeProp=nodeProp;
+		this.shouldDeleteNode=shouldDeleteNode;
 		
 		
 	}
@@ -101,7 +92,7 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 
 
 	
-	protected abstract AstNode createMutationNode(FunctionNode function, String xpath, String postfix, String accessType, String property);
+	protected abstract AstNode createMutationNode(FunctionNode function, String xpath, String postfix, String accessType, String property, boolean shouldDeleteNode);
 	
 
 	/**
@@ -170,24 +161,24 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 
 		if(node instanceof FunctionNode){
 			FunctionNode func=(FunctionNode) node;
-			String funcName=getFunctionName(func);
+			String functionName=getFunctionName(func);
 			
-			if(funcName.equals(randFuncName)){	
-				Node domNode=randNodeProp.getNode();
+			if(functionName.equals(funcName)){	
+				Node domNode=nodeProp.getNode();
 				String xpath=domNode.xpath;
-				String line=randNodeProp.getLine();
-				String value=randNodeProp.getValue();
-				String typeofAccess=randNodeProp.getTypeOfAccess();
-				String property=randNodeProp.getProperty();
+				String line=nodeProp.getLine();
+				String value=nodeProp.getValue();
+				String typeofAccess=nodeProp.getTypeOfAccess();
+				String property=nodeProp.getProperty();
 				
-				AstNode newNode=createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
+				AstNode newNode=createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property,shouldDeleteNode);
 				func.getBody().addChildToFront(newNode);
 
 				/* get last line of the function */
 				AstNode lastnode = (AstNode) func.getBody().getLastChild();
 				/* if this is not a return statement, we need to add logging here also */
 				if (!(lastnode instanceof ReturnStatement)) {
-					newNode = createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
+					newNode = createMutationNode(func, xpath, ProgramPoint.EXITPOSTFIX, typeofAccess, property,shouldDeleteNode);
 					/* add as last statement */
 					func.getBody().addChildToBack(newNode);
 					
@@ -219,16 +210,16 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 		 else if (node instanceof ReturnStatement) {
 				
 			 FunctionNode func = node.getEnclosingFunction();
-			 String funcName=getFunctionName(func);
+			 String functionName=getFunctionName(func);
 			 
-			 if(funcName.equals(randFuncName)){	
-				 Node domNode=randNodeProp.getNode();
+			 if(functionName.equals(funcName)){	
+				 Node domNode=nodeProp.getNode();
 				 String xpath=domNode.xpath;
-				 String line=randNodeProp.getLine();
-				 String value=randNodeProp.getValue();
-				 String typeofAccess=randNodeProp.getTypeOfAccess();
-				 String property=randNodeProp.getProperty();
-				 AstNode newNode = createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
+				 String line=nodeProp.getLine();
+				 String value=nodeProp.getValue();
+				 String typeofAccess=nodeProp.getTypeOfAccess();
+				 String property=nodeProp.getProperty();
+				 AstNode newNode = createMutationNode(func, xpath, ProgramPoint.EXITPOSTFIX, typeofAccess, property,shouldDeleteNode);
 				 
 				 AstNode parent = makeSureBlockExistsAround(node);
 				 
