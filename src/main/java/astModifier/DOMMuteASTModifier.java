@@ -3,6 +3,8 @@ package astModifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -29,7 +31,9 @@ import domMutation.NodeProperty;
 import executionTracer.ProgramPoint;
 
 public abstract class DOMMuteASTModifier implements NodeVisitor {
-	private TreeMap<String, ArrayList<NodeProperty>> func_domNode_map;
+	
+	private NodeProperty randNodeProp;
+	private String randFuncName;
 
 	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
 	
@@ -62,7 +66,21 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 	 * Abstract constructor to initialize the mapper variable.
 	 */
 	protected DOMMuteASTModifier(TreeMap<String, ArrayList<NodeProperty>> func_domNode_map) {
-		this.func_domNode_map=func_domNode_map;
+	//	Set<Entry<String,ArrayList<NodeProperty>>> set=func_domNode_map.entrySet();
+		Set<String> funcs=func_domNode_map.keySet();
+		Iterator<String> it=funcs.iterator();
+		ArrayList<String> funcList=new ArrayList<String>();
+		while(it.hasNext()){
+			funcList.add(it.next());
+		}
+		Random rand=new Random(10);
+		int randItem=rand.nextInt(funcList.size());
+		randFuncName=funcList.get(randItem);
+		ArrayList<NodeProperty> nodeProps=func_domNode_map.get(randFuncName);
+		int randNode=rand.nextInt(nodeProps.size());
+		randNodeProp=nodeProps.get(randNode);
+		
+		
 		
 	}
 
@@ -153,64 +171,72 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 		if(node instanceof FunctionNode){
 			FunctionNode func=(FunctionNode) node;
 			String funcName=getFunctionName(func);
-			ArrayList<NodeProperty> nodeProps=func_domNode_map.get(funcName);
-			if(nodeProps!=null){
-				for(int i=0;i<nodeProps.size();i++){
-					NodeProperty nodeProp=nodeProps.get(i);
-					Node domNode=nodeProp.getNode();
-					String xpath=domNode.xpath;
-					String line=nodeProp.getLine();
-					String value=nodeProp.getValue();
-					String typeofAccess=nodeProp.getTypeOfAccess();
-					String property=nodeProp.getProperty();
-					
-					AstNode newNode=createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
-					func.getBody().addChildToFront(newNode);
+			
+			if(funcName.equals(randFuncName)){	
+				Node domNode=randNodeProp.getNode();
+				String xpath=domNode.xpath;
+				String line=randNodeProp.getLine();
+				String value=randNodeProp.getValue();
+				String typeofAccess=randNodeProp.getTypeOfAccess();
+				String property=randNodeProp.getProperty();
+				
+				AstNode newNode=createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
+				func.getBody().addChildToFront(newNode);
 
-					/* get last line of the function */
-					AstNode lastnode = (AstNode) func.getBody().getLastChild();
-					/* if this is not a return statement, we need to add logging here also */
-					if (!(lastnode instanceof ReturnStatement)) {
-						newNode = createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
-						/* add as last statement */
-						func.getBody().addChildToBack(newNode);
-						
-					}
-				}
+				/* get last line of the function */
+				AstNode lastnode = (AstNode) func.getBody().getLastChild();
+				/* if this is not a return statement, we need to add logging here also */
+				if (!(lastnode instanceof ReturnStatement)) {
+					newNode = createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
+					/* add as last statement */
+					func.getBody().addChildToBack(newNode);
 					
+				}
 			}
+				
+					
+			
 		}
 		
 		 else if (node instanceof SwitchCase) {
 	            //Add block around all statements in the switch case
-	            SwitchCase sc = (SwitchCase)node;
-	            List<AstNode> statements = sc.getStatements();
-	            List<AstNode> blockStatement = new ArrayList<AstNode>();
-	            Block b = new Block();
-	           
-	            if (statements != null) {
-	                Iterator<AstNode> it = statements.iterator();
-	                while (it.hasNext()) {
-	                    AstNode stmnt = it.next();
-	                    b.addChild(stmnt);
-	                }
+			 SwitchCase sc = (SwitchCase)node;
+			 List<AstNode> statements = sc.getStatements();
+			 List<AstNode> blockStatement = new ArrayList<AstNode>();
+			 Block b = new Block();
+			 
+			 if (statements != null) {
+				 Iterator<AstNode> it = statements.iterator();
+				 while (it.hasNext()) {
+					 AstNode stmnt = it.next();
+					 b.addChild(stmnt);
+				 }
 	               
-	                blockStatement.add(b);
-	                sc.setStatements(blockStatement);
-	            }
-	        }
-			else if (node instanceof ReturnStatement) {
+				 blockStatement.add(b);
+				 sc.setStatements(blockStatement);
+			 }
+		 }
+		 else if (node instanceof ReturnStatement) {
 				
-				FunctionNode func = node.getEnclosingFunction();
-
-				AstNode newNode = createMutationNode(func, (ReturnStatement)node, ProgramPoint.EXITPOSTFIX, node.getLineno());
-
-				AstNode parent = makeSureBlockExistsAround(node);
-
-				/* the parent is something we can prepend to */
-				parent.addChildBefore(newNode, node);
-							
-			} 
+			 FunctionNode func = node.getEnclosingFunction();
+			 String funcName=getFunctionName(func);
+			 
+			 if(funcName.equals(randFuncName)){	
+				 Node domNode=randNodeProp.getNode();
+				 String xpath=domNode.xpath;
+				 String line=randNodeProp.getLine();
+				 String value=randNodeProp.getValue();
+				 String typeofAccess=randNodeProp.getTypeOfAccess();
+				 String property=randNodeProp.getProperty();
+				 AstNode newNode = createMutationNode(func, xpath, ProgramPoint.ENTERPOSTFIX, typeofAccess, property);
+				 
+				 AstNode parent = makeSureBlockExistsAround(node);
+				 
+				 /* the parent is something we can prepend to */
+				 parent.addChildBefore(newNode, node);
+				 
+			 } 
+		 }
 		
 		return true;
 	}
