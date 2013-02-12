@@ -14,7 +14,7 @@ import com.crawljax.util.Helper;
 import executionTracer.DOMExecutionTracer;
 
 public class DomTraceReading {
-
+	/* <functionName, [domNode, line, value], [domNode, line, value] ....> */
 	private TreeMap<String, ArrayList<NodeProperty>> func_domNode_map=new TreeMap<String, ArrayList<NodeProperty>>();
 	private String outputFolder;
 	private List<String> traceFilenameAndPath;

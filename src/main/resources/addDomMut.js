@@ -40,13 +40,13 @@ function changeCssAttr(xpath, cssProp){
 	}
 }
 
-function changeClassAttr(xpath){
+function changeAttr(xpath, attrType){
 	if(deletedElemOrChangedAttr==false){
 		evaluated=document.evaluate(xpath, document, null, XPathResult.ANY_TYPE,null);
 		thisNode = $(evaluated.iterateNext());
 		if(thisNode.length>0){
-			if(thisNode.attr('class')!=undefined){
-				attribute=thisNode.attr('class');
+			if(thisNode.attr(attrType)!=undefined){
+				attribute=thisNode.attr(attrType);
 				thisNode.removeClass(attribute);
 				deletedElemOrChangedAttr=true;
 			}
