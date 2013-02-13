@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -111,6 +113,19 @@ public class DomTraceReading {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<NodeProperty> getAllNodes(){
+		Set<String> keys=func_domNode_map.keySet();
+		Iterator<String> it=keys.iterator();
+		ArrayList<NodeProperty> nodeProps=new ArrayList<NodeProperty>();
+		while(it.hasNext()){
+			String funcName=it.next();
+			ArrayList<NodeProperty> nodePropList=func_domNode_map.get(funcName);
+			nodeProps.addAll(nodePropList);
+		}
+		
+		return nodeProps;
 	}
 	
 }
