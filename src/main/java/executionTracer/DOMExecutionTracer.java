@@ -97,6 +97,9 @@ public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlu
 	
 		PrintWriter file = new PrintWriter(filename);
 	
+		file.write("state::" + session.getCurrentState().getName() + 
+				"\n" + "===========================================================================\n");
+		
 		file.write(result);
 		file.close();
 		
@@ -142,7 +145,12 @@ public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlu
 		DOMTrace trace=new DOMTrace();
 		String result = trace.getTraceRecord(points);
 	//	if (!trace.getData(points).equals("")) {
+		
+		
 		PrintWriter file = new PrintWriter(filename);
+		
+		file.write("state::" + session.getCurrentState().getName() + 
+				"\n" + "===========================================================================\n");
 		file.write(result);
 		file.close();
 		

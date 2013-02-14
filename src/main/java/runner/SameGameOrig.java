@@ -56,12 +56,12 @@ public class SameGameOrig {
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
 	
-		AstInstrumenter a = new AstInstrumenter();
+		DOMAstInstrumenter a = new DOMAstInstrumenter();
 	
 		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
-		JSExecutionTracer tracer = new JSExecutionTracer("executionTrace");
+		DOMExecutionTracer tracer = new DOMExecutionTracer("domexecutionTrace");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 

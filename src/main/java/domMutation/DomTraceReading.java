@@ -16,7 +16,7 @@ import com.crawljax.util.Helper;
 import executionTracer.DOMExecutionTracer;
 
 public class DomTraceReading {
-	/* <functionName, [domNode, line, value], [domNode, line, value] ....> */
+	/* <stateName-functionName, [domNode, line, value], [domNode, line, value] ....> */
 	private TreeMap<String, ArrayList<NodeProperty>> func_domNode_map=new TreeMap<String, ArrayList<NodeProperty>>();
 	private String outputFolder;
 	private List<String> traceFilenameAndPath;
@@ -69,6 +69,7 @@ public class DomTraceReading {
 			
 				if ("".equals(inputline))
 					break;
+				String stateName=inputline.replace("state::", "");
 				String[] str=inputline.split(":::");
 				str=str[0].split("\\.");
 				funcName=str[str.length-1];
@@ -92,7 +93,7 @@ public class DomTraceReading {
 						value=inputline.replace("value::", "");
 					}
 				}
-				ArrayList<NodeProperty> nodeProps=func_domNode_map.get(funcName);
+				ArrayList<NodeProperty> nodeProps=func_domNode_map.get(stateName + "-" + funcName);
 				if(nodeProps!=null){
 					NodeProperty nodeProp=new NodeProperty(domNode, line, value);
 					nodeProps.add(nodeProp);
@@ -101,7 +102,7 @@ public class DomTraceReading {
 					NodeProperty nodeProp=new NodeProperty(domNode, line, value);
 					ArrayList<NodeProperty> arrayListNodeProp=new ArrayList<NodeProperty>();
 					arrayListNodeProp.add(nodeProp);
-					func_domNode_map.put(funcName, arrayListNodeProp);
+					func_domNode_map.put(stateName + "-" + funcName, arrayListNodeProp);
 				}
 				
 		
@@ -120,8 +121,8 @@ public class DomTraceReading {
 		Iterator<String> it=keys.iterator();
 		ArrayList<NodeProperty> nodeProps=new ArrayList<NodeProperty>();
 		while(it.hasNext()){
-			String funcName=it.next();
-			ArrayList<NodeProperty> nodePropList=func_domNode_map.get(funcName);
+			String stateNameFuncName=it.next();
+			ArrayList<NodeProperty> nodePropList=func_domNode_map.get(stateNameFuncName);
 			nodeProps.addAll(nodePropList);
 		}
 		
