@@ -76,18 +76,18 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 		String jsMethodTobeCalled="";
 		if(shouldDeleteNode){
 		
-			code= "deleteElement" + "(" + xpath + ")" + ";"; 
+			code= "deleteElement" + "(" + "\"" + xpath +  "\"" + ")" + ";"; 
 		}
 		
 		else{
 			switch(accessType){
 			case ".css":
 				jsMethodTobeCalled="changeCssAttr";
-				code=jsMethodTobeCalled + "(" + xpath + "," + property + ")" + ";";  
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + property + ")" + ";";  
 				break;
 			case ".attr":
 				jsMethodTobeCalled="changeAttr";
-				code=jsMethodTobeCalled + "(" + xpath + "," + property + ")" + ";"; 
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + property + ")" + ";"; 
 				break;
 			
 			default:

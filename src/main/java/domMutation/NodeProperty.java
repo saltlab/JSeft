@@ -11,7 +11,7 @@ public class NodeProperty {
 	private String property="";
 	
 	public NodeProperty(Node node, String line, String value){
-		ArrayList<String> accessType=(ArrayList<String>) Arrays.asList(".css", ".attr");
+		ArrayList<String> accessType=new ArrayList<>( Arrays.asList(".css", ".attr"));
 		
 		this.node=node;
 		this.line=line;

@@ -65,11 +65,15 @@ public class DomTraceReading {
 				
 				Node domNode = null;
 				String line="", inputline="",value="", funcName="";
-			  while ((inputline = input.readLine()) != null){
+				inputline=input.readLine();
+				String stateName=inputline.replace("state::", "");
+				input.readLine();
+				while ((inputline = input.readLine()) != null){
 			
 				if ("".equals(inputline))
 					break;
-				String stateName=inputline.replace("state::", "");
+				
+				
 				String[] str=inputline.split(":::");
 				str=str[0].split("\\.");
 				funcName=str[str.length-1];
