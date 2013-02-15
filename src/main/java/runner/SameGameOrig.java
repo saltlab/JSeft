@@ -34,7 +34,7 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output2";
-//		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
+		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = new CrawljaxConfiguration();
 
         
@@ -42,7 +42,7 @@ public class SameGameOrig {
 
 		CrawlSpecification crawler;
 
-		crawler = new CrawlSpecification("http://localhost:8080/same-game/same-game.htm");
+		crawler = new CrawlSpecification("http://localhost:8080/same-game/same-game.html");
 		
 //		crawler.addCrawlCondition("Only crawl same-game", new UrlCondition("same-game"));
 		

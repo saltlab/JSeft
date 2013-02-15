@@ -22,6 +22,7 @@ import com.crawljax.core.plugin.PostCrawlingPlugin;
 import com.crawljax.core.plugin.PreCrawlingPlugin;
 import com.crawljax.core.plugin.PreStateCrawlingPlugin;
 import com.crawljax.util.Helper;
+import com.crawljax.util.XPathHelper;
 
 public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlugin, PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput {
 	private static final int ONE_SEC = 1000;
@@ -98,9 +99,23 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 	public void preStateCrawling(CrawlSession session,
 			List<CandidateElement> candidateElements) {
 		ArrayList<Element> elemList=new ArrayList<Element>();
+		StringBuffer result=new StringBuffer();
 		if(session.getCurrentState().getName().equals(stateName)){
 			try {
 				elemList=getDOMElements(session);
+				for(int i=0;i<elemList.size();i++){
+					Element elem=elemList.get(i);
+					result.append("tagName::" + elem.getTagName() + "\n");
+					result.append("xpath::" + XPathHelper.getXPathExpression(elem) + "\n");
+					for(int j=0;j<elem.getAttributes().getLength();j++){
+						String attrName=elem.getAttributes().item(j).getNodeName();
+						String attrValue=elem.getAttributes().item(j).getNodeValue();
+						result.append(attrName + "::" + attrValue + "\n");
+						
+					}
+					result.append("===========================================================================\n");
+				}
+				
 				
 			
 			
