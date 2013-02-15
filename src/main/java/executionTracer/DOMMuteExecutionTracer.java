@@ -2,7 +2,11 @@ package executionTracer;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -99,9 +103,18 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 	public void preStateCrawling(CrawlSession session,
 			List<CandidateElement> candidateElements) {
 		ArrayList<Element> elemList=new ArrayList<Element>();
-		StringBuffer result=new StringBuffer();
+
+		
+		
 		if(session.getCurrentState().getName().equals(stateName)){
 			try {
+				StringBuffer result=new StringBuffer();
+				String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
+				filename += session.getCurrentState().getName();	
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+				Date date = new Date();
+				filename += dateFormat.format(date) + ".txt";
+				PrintWriter file = new PrintWriter(filename);
 				elemList=getDOMElements(session);
 				for(int i=0;i<elemList.size();i++){
 					Element elem=elemList.get(i);
@@ -117,7 +130,8 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 				}
 				
 				
-			
+				file.write(result.toString());
+				file.close();
 			
 			} catch (SAXException | IOException e) {
 				
