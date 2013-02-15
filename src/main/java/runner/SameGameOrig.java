@@ -66,18 +66,18 @@ public class SameGameOrig {
 		DomMuteHelper helper=new DomMuteHelper(outputdir);
 		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
 		String stateName="";
-		for(int i=0;i<1;i++){
+//		for(int i=0;i<2;i++){
 			a=dommutes.get(1);
 			stateName=a.getStateName();
 			JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 			p.excludeDefaults();
 			web.addPlugin(p);
-		}
+//		}
 /*		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
-		
 */		
+		
 		
 		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domexecutionTrace",stateName);
 		

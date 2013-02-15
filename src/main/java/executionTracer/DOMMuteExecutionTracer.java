@@ -104,9 +104,7 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 			List<CandidateElement> candidateElements) {
 		ArrayList<Element> elemList=new ArrayList<Element>();
 
-		
-		
-		if(session.getCurrentState().getName().equals(stateName)){
+//		if(session.getCurrentState().getName().compareTo(stateName)>=0){
 			try {
 				StringBuffer result=new StringBuffer();
 				String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
@@ -115,6 +113,7 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 				Date date = new Date();
 				filename += dateFormat.format(date) + ".txt";
 				PrintWriter file = new PrintWriter(filename);
+				result.append(session.getCurrentState().getName()+ "\n" +"===========================================================================\n");
 				elemList=getDOMElements(session);
 				for(int i=0;i<elemList.size();i++){
 					Element elem=elemList.get(i);
@@ -137,7 +136,7 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 				
 				e.printStackTrace();
 			}
-		}
+//		}
 		
 	}
 	
