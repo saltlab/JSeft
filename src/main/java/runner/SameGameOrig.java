@@ -67,7 +67,7 @@ public class SameGameOrig {
 		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
 		String stateName="";
 		for(int i=0;i<1;i++){
-			a=dommutes.get(i);
+			a=dommutes.get(1);
 			stateName=a.getStateName();
 			JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 			p.excludeDefaults();

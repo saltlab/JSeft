@@ -83,11 +83,11 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 			switch(accessType){
 			case ".css":
 				jsMethodTobeCalled="changeCssAttr";
-				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + property + ")" + ";";  
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + "\""+ property + "\"" + ")" + ";";  
 				break;
 			case ".attr":
 				jsMethodTobeCalled="changeAttr";
-				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + property + ")" + ";"; 
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + "\"" + property + "\"" + ")" + ";"; 
 				break;
 			
 			default:
