@@ -11,6 +11,7 @@ import domMutation.DomTraceReading;
 import executionTracer.AstInstrumenter;
 import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
+import executionTracer.DOMMuteExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 
@@ -61,7 +62,7 @@ public class SameGameOrig {
 		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
-		DOMExecutionTracer tracer = new DOMExecutionTracer("domexecutionTrace");
+		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domexecutionTrace","state1");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 

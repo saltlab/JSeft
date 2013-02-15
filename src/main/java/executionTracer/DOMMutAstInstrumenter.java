@@ -24,8 +24,8 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 	/**
 	 * Construct without patterns.
 	 */
-	public DOMMutAstInstrumenter(String funcName, NodeProperty nodeProp, boolean shouldDeleteNode) {
-		super(funcName, nodeProp, shouldDeleteNode);
+	public DOMMutAstInstrumenter(String funcName, NodeProperty nodeProp, boolean shouldDeleteNode, String stateName) {
+		super(funcName, nodeProp, shouldDeleteNode, stateName);
 		
 	}
 
@@ -44,10 +44,6 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 		return parse(code);
 	}
 	
-
-
-
-
 	
 	
 	
