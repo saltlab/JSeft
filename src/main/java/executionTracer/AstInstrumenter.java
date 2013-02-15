@@ -2,10 +2,13 @@ package executionTracer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
@@ -69,9 +72,13 @@ public class AstInstrumenter extends JSASTModifier{
 		String name;
 		String code="";
 		String vars = "";
-		String[] variables;
+		String[] variable;
 		String[] returnValues=new String[0];
-		variables=getGlobalVarsInScopeAtExitPoint(function);
+		variable=getGlobalVarsInScopeAtExitPoint(function);
+		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars();
+		function.visit(visitObjectTypeVars);
+		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
+		String[] variables=(String[]) ArrayUtils.addAll(variable, objectVars.toArray());
 		
 		if(returnNode!=null){
 			AstNode returnVal=returnNode.getReturnValue();
@@ -127,7 +134,6 @@ public class AstInstrumenter extends JSASTModifier{
 		String name;
 		String code;
 		String[] variables = getVariablesNamesInScope(function);
-
 		name = getFunctionName(function);
 		
 

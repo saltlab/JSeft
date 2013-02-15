@@ -55,12 +55,12 @@ public class JSExecutionTracer
 	*/
 	@Override
 	public void preCrawling(EmbeddedBrowser browser) {
-	try {
-		Helper.directoryCheck(getOutputFolder());
-		Helper.directoryCheck(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+		try {
+			Helper.directoryCheck(getOutputFolder());
+			Helper.directoryCheck(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -75,42 +75,42 @@ public class JSExecutionTracer
 	@Override
 	public void preStateCrawling(CrawlSession session, List<CandidateElement> candidateElements) {
 	
-	
-	String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
-	
-	filename += session.getCurrentState().getName();
-	
-	DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-	Date date = new Date();
-	filename += dateFormat.format(date) + ".txt";
-	
-	try {
-	
-		LOGGER.info("Reading execution trace");
-	
-		LOGGER.info("Parsing JavaScript execution trace");
-	
 		
-		session.getBrowser().executeJavaScript("sendReally();");
-		Thread.sleep(ONE_SEC);
-		Trace trace=new Trace();
-		String result = trace.getTraceRecord(points);
-	
-		PrintWriter file = new PrintWriter(filename);
-	
-		file.write(result);
-		file.close();
+		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
 		
-		LOGGER.info("Saved execution trace as " + filename);
-	
-		points = new JSONArray();
-	} catch (CrawljaxException we) {
-		we.printStackTrace();
-		LOGGER.error("Unable to get instrumentation log from the browser");
-		return;
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
+		filename += session.getCurrentState().getName();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date date = new Date();
+		filename += dateFormat.format(date) + ".txt";
+		
+		try {
+		
+			LOGGER.info("Reading execution trace");
+		
+			LOGGER.info("Parsing JavaScript execution trace");
+		
+			
+			session.getBrowser().executeJavaScript("sendReally();");
+			Thread.sleep(ONE_SEC);
+			Trace trace=new Trace();
+			String result = trace.getTraceRecord(points);
+		
+			PrintWriter file = new PrintWriter(filename);
+		
+			file.write(result);
+			file.close();
+			
+			LOGGER.info("Saved execution trace as " + filename);
+		
+			points = new JSONArray();
+		} catch (CrawljaxException we) {
+			we.printStackTrace();
+			LOGGER.error("Unable to get instrumentation log from the browser");
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -122,41 +122,41 @@ public class JSExecutionTracer
 	@Override
 	public void onNewState(CrawlSession session) {
 	
-	
-	String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
-	
-	filename += session.getCurrentState().getName();
-	
-	DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-	Date date = new Date();
-	filename += dateFormat.format(date) + ".txt";
-	
-	try {
-	
-		LOGGER.info("Reading execution trace");
-	
-		LOGGER.info("Parsing JavaScript execution trace");
-	
 		
-		session.getBrowser().executeJavaScript("sendReally();");
-		Thread.sleep(ONE_SEC);
-		Trace trace=new Trace();
-		String result = trace.getTraceRecord(points);
-	//	if (!trace.getData(points).equals("")) {
-		PrintWriter file = new PrintWriter(filename);
-		file.write(result);
-		file.close();
+		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
 		
-		LOGGER.info("Saved execution trace as " + filename);
-	
-		points = new JSONArray();
-	} catch (CrawljaxException we) {
-		we.printStackTrace();
-		LOGGER.error("Unable to get instrumentation log from the browser");
-		return;
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
+		filename += session.getCurrentState().getName();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date date = new Date();
+		filename += dateFormat.format(date) + ".txt";
+		
+		try {
+		
+			LOGGER.info("Reading execution trace");
+		
+			LOGGER.info("Parsing JavaScript execution trace");
+		
+			
+			session.getBrowser().executeJavaScript("sendReally();");
+			Thread.sleep(ONE_SEC);
+			Trace trace=new Trace();
+			String result = trace.getTraceRecord(points);
+		//	if (!trace.getData(points).equals("")) {
+			PrintWriter file = new PrintWriter(filename);
+			file.write(result);
+			file.close();
+			
+			LOGGER.info("Saved execution trace as " + filename);
+		
+			points = new JSONArray();
+		} catch (CrawljaxException we) {
+			we.printStackTrace();
+			LOGGER.error("Unable to get instrumentation log from the browser");
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -173,69 +173,69 @@ public class JSExecutionTracer
 	* @return The list.
 	*/
 	public List<String> allTraceFiles() {
-	ArrayList<String> result = new ArrayList<String>();
-	
-	/* find all trace files in the trace directory */
-	File dir = new File(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
-	
-	String[] files = dir.list();
-	if (files == null) {
-		return result;
-	}
-	for (String file : files) {
-		if (file.endsWith(".txt")) {
-			result.add(getOutputFolder() + EXECUTIONTRACEDIRECTORY + file);
+		ArrayList<String> result = new ArrayList<String>();
+		
+		/* find all trace files in the trace directory */
+		File dir = new File(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
+		
+		String[] files = dir.list();
+		if (files == null) {
+			return result;
 		}
-	}
-	
-	return result;
+		for (String file : files) {
+			if (file.endsWith(".txt")) {
+				result.add(getOutputFolder() + EXECUTIONTRACEDIRECTORY + file);
+			}
+		}
+		
+		return result;
 	}
 	
 	@Override
 	public void postCrawling(CrawlSession session) {
-	try {
-		PrintStream output = new PrintStream(getOutputFolder() + getAssertionFilename());
-	
+		try {
+			PrintStream output = new PrintStream(getOutputFolder() + getAssertionFilename());
+		
+			
 		
 	
-
-	
-		/* close the output file */
-		output.close();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+		
+			/* close the output file */
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	* @return Name of the assertion file.
 	*/
 	public String getAssertionFilename() {
-	return assertionFilename;
+		return assertionFilename;
 	}
 	
 	@Override
 	public String getOutputFolder() {
-	return Helper.addFolderSlashIfNeeded(outputFolder);
+		return Helper.addFolderSlashIfNeeded(outputFolder);
 	}
 	
 	@Override
 	public void setOutputFolder(String absolutePath) {
-	outputFolder = absolutePath;
+		outputFolder = absolutePath;
 	}
 	
 
 	public static void addPoint(String string) {
-	JSONArray buffer = null;
-	try {
-		buffer = new JSONArray(string);
-		for (int i = 0; i < buffer.length(); i++) {
-			points.put(buffer.get(i));
+		JSONArray buffer = null;
+		try {
+			buffer = new JSONArray(string);
+			for (int i = 0; i < buffer.length(); i++) {
+				points.put(buffer.get(i));
+			}
+		
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-	
-	} catch (JSONException e) {
-		e.printStackTrace();
-	}
 	
 	}
 

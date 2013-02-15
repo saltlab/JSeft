@@ -35,6 +35,7 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 	private NodeProperty nodeProp;
 	private String funcName;
 	private boolean shouldDeleteNode;
+	private String stateName;
 
 	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
 	
@@ -66,11 +67,12 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 	/**
 	 * Abstract constructor to initialize the mapper variable.
 	 */
-	protected DOMMuteASTModifier(String funcName,NodeProperty nodeProp, boolean shouldDeleteNode) {
+	protected DOMMuteASTModifier(String funcName,NodeProperty nodeProp, boolean shouldDeleteNode, String stateName) {
 	//	Set<Entry<String,ArrayList<NodeProperty>>> set=func_domNode_map.entrySet();
 		this.funcName=funcName;
 		this.nodeProp=nodeProp;
 		this.shouldDeleteNode=shouldDeleteNode;
+		this.stateName=stateName;
 		
 		
 	}
@@ -272,6 +274,8 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 	 */
 	public abstract void start();
 	
-
+	public String getStateName(){
+		return stateName;
+	}
 
 }

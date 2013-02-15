@@ -27,13 +27,16 @@ public class DomMuteHelper {
 		Iterator<String> it=keys.iterator();
 		
 		while(it.hasNext()){
-			String funcName=it.next();
-			ArrayList<NodeProperty> nodeProps=func_domNode_map.get(funcName);
+			String stateNameFuncName=it.next();
+			ArrayList<NodeProperty> nodeProps=func_domNode_map.get(stateNameFuncName);
+			String[] str=stateNameFuncName.split("-");
+			String stateName=str[0];
+			String funcName=str[1];
 			for(int i=0;i<nodeProps.size();i++){
 				
 				NodeProperty nodeProp=nodeProps.get(i);
-				domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, true));
-				domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, false));
+				domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, true, stateName));
+				domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, false, stateName));
 			
 			}
 		}
