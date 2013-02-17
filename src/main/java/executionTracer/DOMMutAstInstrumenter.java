@@ -66,8 +66,8 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 	@Override
 	protected AstNode createMutationNode(FunctionNode function, String xpath,
 			String postfix, String accessType, String property, boolean shouldDeleteNode) {
-		property = property.replaceAll("\\\"", "\\\\\"");
-		property = property.replaceAll("\\\'", "\\\\\'");
+//		property = property.replaceAll("\\\"", "\\\\\"");
+//		property = property.replaceAll("\\\'", "\\\\\'");
 		xpath=xpath.replaceAll("\\\"", "\\\\\"");
 		xpath=xpath.replaceAll("\\\'", "\\\\\'");
 		
@@ -83,11 +83,11 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 			switch(accessType){
 			case ".css":
 				jsMethodTobeCalled="changeCssAttr";
-				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + "\""+ property + "\"" + ")" + ";";  
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + property  + ")" + ";";  
 				break;
 			case ".attr":
 				jsMethodTobeCalled="changeAttr";
-				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + "," + "\"" + property + "\"" + ")" + ";"; 
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
 				break;
 			
 			default:

@@ -95,17 +95,49 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 
 	@Override
 	public void onNewState(CrawlSession session) {
+		try {
+			ArrayList<Element> elemList=new ArrayList<Element>();
+			StringBuffer result=new StringBuffer();
+			String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
+			filename += session.getCurrentState().getName();	
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+			Date date = new Date();
+			filename += dateFormat.format(date) + ".txt";
+			PrintWriter file = new PrintWriter(filename);
+			result.append("state::" + session.getCurrentState().getName()+ "\n" +"===========================================================================\n");
+			elemList=getDOMElements(session);
+			for(int i=0;i<elemList.size();i++){
+				Element elem=elemList.get(i);
+				result.append("tagName::" + elem.getTagName() + "\n");
+				result.append("xpath::" + XPathHelper.getXPathExpression(elem) + "\n");
+				for(int j=0;j<elem.getAttributes().getLength();j++){
+					String attrName=elem.getAttributes().item(j).getNodeName();
+					String attrValue=elem.getAttributes().item(j).getNodeValue();
+					result.append(attrName + "::" + attrValue + "\n");
+					
+				}
+				result.append("===========================================================================\n");
+			}
+			
+			
+			file.write(result.toString());
+			file.close();
 		
+		} catch (SAXException | IOException e) {
+			
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
 	public void preStateCrawling(CrawlSession session,
 			List<CandidateElement> candidateElements) {
-		ArrayList<Element> elemList=new ArrayList<Element>();
+		
 
 //		if(session.getCurrentState().getName().compareTo(stateName)>=0){
 			try {
+				ArrayList<Element> elemList=new ArrayList<Element>();
 				StringBuffer result=new StringBuffer();
 				String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
 				filename += session.getCurrentState().getName();	
@@ -113,7 +145,7 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 				Date date = new Date();
 				filename += dateFormat.format(date) + ".txt";
 				PrintWriter file = new PrintWriter(filename);
-				result.append(session.getCurrentState().getName()+ "\n" +"===========================================================================\n");
+				result.append("state::" + session.getCurrentState().getName()+ "\n" +"===========================================================================\n");
 				elemList=getDOMElements(session);
 				for(int i=0;i<elemList.size();i++){
 					Element elem=elemList.get(i);
