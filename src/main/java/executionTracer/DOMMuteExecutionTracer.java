@@ -28,7 +28,7 @@ import com.crawljax.core.plugin.PreStateCrawlingPlugin;
 import com.crawljax.util.Helper;
 import com.crawljax.util.XPathHelper;
 
-public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlugin, PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput {
+public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
 	private static final int ONE_SEC = 1000;
 	private String stateName;
 	private static String outputFolder;
@@ -63,19 +63,18 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 		}
 	}
 	
-	@Override
+/*	@Override
 	public void postCrawling(CrawlSession session) {
 		try {
 			PrintStream output = new PrintStream(getOutputFolder() + getAssertionFilename());
 		
-	
-			/* close the output file */
+
 			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+*/	
 	/**
 	* @return Name of the assertion file.
 	*/

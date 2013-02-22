@@ -112,8 +112,9 @@ public class DomTraceReading {
 		
 			  }
 			  
-			 
+			 input.close();
 			}
+		
 		}
 		catch (IOException e) {
 			e.printStackTrace();

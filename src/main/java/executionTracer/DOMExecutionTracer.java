@@ -25,7 +25,7 @@ import com.crawljax.core.plugin.PreCrawlingPlugin;
 import com.crawljax.core.plugin.PreStateCrawlingPlugin;
 import com.crawljax.util.Helper;
 
-public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlugin, PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput {
+public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
 
 	private static final int ONE_SEC = 1000;
 	
@@ -198,19 +198,18 @@ public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlu
 		return result;
 	}
 	
-	@Override
+/*	@Override
 	public void postCrawling(CrawlSession session) {
 		try {
 			PrintStream output = new PrintStream(getOutputFolder() + getAssertionFilename());
 		
 	
-			/* close the output file */
 			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+*/	
 	/**
 	* @return Name of the assertion file.
 	*/
