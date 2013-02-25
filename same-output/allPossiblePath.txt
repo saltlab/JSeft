@@ -1,0 +1,106 @@
+index::state7
+tagName::TD
+class::clickable
+data::0.7724183677331298
+id::0-0
+style::background: #0f0;
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[1]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.026218323916643152
+id::2-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[3]
+---------------------------------------------------------------------------
+===========================================================================
+index::state7
+tagName::TD
+class::clickable
+data::0.6842761499629744
+id::3-2
+style::background: #0f0;
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[4]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.026218323916643152
+id::2-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[3]
+---------------------------------------------------------------------------
+===========================================================================
+index::state6
+tagName::TD
+class::clickable
+data::0.9333629064453034
+id::0-3
+style::background: #f00;
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[1]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.15623368358529552
+id::0-1
+style::background: #0f0;
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[1]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.9373406961916094
+id::1-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.28895777701063957
+id::0-3
+style::background: none repeat scroll 0% 0% rgb(0, 0, 255);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[1]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.11002079652561617
+id::1-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]
+---------------------------------------------------------------------------
+===========================================================================
+index::state6
+tagName::TD
+class::clickable
+data::0.4104470161931893
+id::1-3
+style::background: #f00;
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[2]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.15623368358529552
+id::0-1
+style::background: #0f0;
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[1]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.9373406961916094
+id::1-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.28895777701063957
+id::0-3
+style::background: none repeat scroll 0% 0% rgb(0, 0, 255);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[1]
+---------------------------------------------------------------------------
+tagName::TD
+class::clickable
+data::0.11002079652561617
+id::1-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]
+---------------------------------------------------------------------------
+===========================================================================
