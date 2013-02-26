@@ -5,9 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import mutandis.analyser.FunctionSelector;
-
-import astModifier.JSModifyProxyPlugin;
+import mutandis.analyser.JSCyclCompxCalc;
+import mutandis.astModifier.JSModifyProxyPlugin;
+import mutandis.exectionTracer.AstFunctionCallInstrumenter;
+import mutandis.exectionTracer.AstVarInstrumenter;
+import mutandis.exectionTracer.JSFuncExecutionTracer;
+import mutandis.exectionTracer.JSVarExecutionTracer;
 
 import com.crawljax.browser.EmbeddedBrowser.BrowserType;
 import com.crawljax.core.CrawljaxController;
@@ -23,83 +26,72 @@ import com.crawljax.path.Globals;
 import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
-import executionTracer.DOMAstInstrumenter;
-import executionTracer.DOMExecutionTracer;
-
-public class SameGameOrig {
-	
+public class sameGameExecTraceforCodeMutation {
 	private static final String URL = "http://localhost:8080//same-game/same-game.htm";	
 	/* No limit on max depth or max state*/
 	private static final int MAX_DEPTH = 0;
 	private static final int MAX_NUMBER_STATES = 0;
 
-	private SameGameOrig() {
-
-	}
-
+	
 	/**
-	 * Main method.
-	 * 
 	 * @param args
-	 *            Arguments.
 	 */
 	public static void main(String[] args) {
-
-
+		/* tracing function calls or variables? */
+		boolean traceFunc=true;
 		String outputdir = "same-output";
-//		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
-
+	
+	
+				
+//		System.setProperty("webdriver.firefox.bin" ,"/home/shabnam/program-files/firefox/firefox");
 
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
-	
-		DOMAstInstrumenter a=new DOMAstInstrumenter();
-//		DOMMutAstInstrumenter a; //new DOMAstInstrumenter();
-//		DomMuteHelper helper=new DomMuteHelper(outputdir);
-//		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
-		String stateName="";
-//		for(int i=0;i<2;i++){
-//			a=dommutes.get(1);
-//			stateName=a.getStateName();
-			JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
-			p.excludeDefaults();
-			web.addPlugin(p);
-//		}
-/*		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
-		p.excludeDefaults();
-		web.addPlugin(p);
-*/		
-				
-//		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domExecutiontrace",stateName);
-				
-		DOMExecutionTracer tracer = new DOMExecutionTracer("domExecutionTrace");
-		tracer.setOutputFolder(outputdir);
-		config.addPlugin(tracer);
+		if(traceFunc){
+			AstFunctionCallInstrumenter astfuncCallInst = new AstFunctionCallInstrumenter();
+			JSCyclCompxCalc cyclo=new JSCyclCompxCalc(outputdir);
+			JSModifyProxyPlugin proxyPlugin = new JSModifyProxyPlugin(astfuncCallInst,cyclo);
+			proxyPlugin.excludeDefaults();
+			web.addPlugin(proxyPlugin);
+			JSFuncExecutionTracer tracer = new JSFuncExecutionTracer("funcinstrumentation");
+			config.addPlugin(tracer);
+			tracer.setOutputFolder(outputdir);
+			
+		}
+		else{
+			AstVarInstrumenter astVarInst = new AstVarInstrumenter();
+			JSCyclCompxCalc cyclo=new JSCyclCompxCalc(outputdir);
+			JSModifyProxyPlugin proxyPlugin = new JSModifyProxyPlugin(astVarInst,cyclo);
+			proxyPlugin.excludeDefaults();
+			web.addPlugin(proxyPlugin);
+			JSVarExecutionTracer tracer = new JSVarExecutionTracer("varinstrumentation");
+			config.addPlugin(tracer);
+			tracer.setOutputFolder(outputdir);
+			
+		}
+		
 		config.addPlugin(web);
+	//	config.addPlugin(new RandomClickable());
 		config.setProxyConfiguration(prox);
-
+		
 
 		try {
 			CrawljaxController crawljax = new CrawljaxController(config);
 			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
 			for(int i=0;i<allPath.size();i++){
-				Globals.allPath=allPath.get(3);
+				Globals.allPath=allPath.get(0);
 				crawljax.run();
 				break;
 			}
-				
-
+		
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-/*		
-		String outputdir = "same-output2";
-		DomTraceReading trace=new DomTraceReading(outputdir);
-*/		
+
 
 	}
 	
@@ -246,7 +238,5 @@ public class SameGameOrig {
 		}
 		return allPossiblePath;
 	}
-	
-
 
 }
