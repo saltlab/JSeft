@@ -19,14 +19,17 @@ import com.crawljax.core.CandidateElement;
 import com.crawljax.core.CrawlSession;
 import com.crawljax.core.CrawljaxException;
 import com.crawljax.core.plugin.GeneratesOutput;
+import com.crawljax.core.plugin.OnFireEventSuccessPlugin;
 import com.crawljax.core.plugin.OnNewStatePlugin;
 import com.crawljax.core.plugin.PostCrawlingPlugin;
 import com.crawljax.core.plugin.PreCrawlingPlugin;
 import com.crawljax.core.plugin.PreStateCrawlingPlugin;
+import com.crawljax.core.state.Eventable;
+import com.crawljax.core.state.StateMachine;
 import com.crawljax.util.Helper;
 
 public class JSExecutionTracer
-	implements PreStateCrawlingPlugin, OnNewStatePlugin, PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput {
+	implements OnFireEventSuccessPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
 
 	private static final int ONE_SEC = 1000;
 	
@@ -37,7 +40,7 @@ public class JSExecutionTracer
 	
 	private static final Logger LOGGER = Logger.getLogger(JSExecutionTracer.class.getName());
 	
-	public static final String EXECUTIONTRACEDIRECTORY = "executiontrace/";
+	public static final String EXECUTIONTRACEDIRECTORY = "jsExecutiontrace/";
 	
 	/**
 	* @param filename
@@ -73,7 +76,7 @@ public class JSExecutionTracer
 	*/
 	
 	@Override
-	public void preStateCrawling(CrawlSession session, List<CandidateElement> candidateElements) {
+	public void onFireEventSuccessed(Eventable eventable, List<Eventable> pathToSuccess, CrawlSession session, StateMachine stateMachine) {
 	
 		
 		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
@@ -190,23 +193,17 @@ public class JSExecutionTracer
 		
 		return result;
 	}
-	
+/*	
 	@Override
 	public void postCrawling(CrawlSession session) {
 		try {
 			PrintStream output = new PrintStream(getOutputFolder() + getAssertionFilename());
-		
-			
-		
-	
-		
-			/* close the output file */
 			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+*/	
 	/**
 	* @return Name of the assertion file.
 	*/

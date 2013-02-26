@@ -21,14 +21,17 @@ import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.core.CandidateElement;
 import com.crawljax.core.CrawlSession;
 import com.crawljax.core.plugin.GeneratesOutput;
+import com.crawljax.core.plugin.OnFireEventSuccessPlugin;
 import com.crawljax.core.plugin.OnNewStatePlugin;
 import com.crawljax.core.plugin.PostCrawlingPlugin;
 import com.crawljax.core.plugin.PreCrawlingPlugin;
 import com.crawljax.core.plugin.PreStateCrawlingPlugin;
+import com.crawljax.core.state.Eventable;
+import com.crawljax.core.state.StateMachine;
 import com.crawljax.util.Helper;
 import com.crawljax.util.XPathHelper;
 
-public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
+public class DOMMuteExecutionTracer implements OnFireEventSuccessPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
 	private static final int ONE_SEC = 1000;
 	private String stateName;
 	private static String outputFolder;
@@ -130,8 +133,7 @@ public class DOMMuteExecutionTracer implements PreStateCrawlingPlugin, OnNewStat
 	}
 
 	@Override
-	public void preStateCrawling(CrawlSession session,
-			List<CandidateElement> candidateElements) {
+	public void onFireEventSuccessed(Eventable eventable, List<Eventable> pathToSuccess, CrawlSession session, StateMachine stateMachine) {
 		
 
 //		if(session.getCurrentState().getName().compareTo(stateName)>=0){

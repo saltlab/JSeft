@@ -24,7 +24,12 @@ import com.crawljax.core.configuration.ProxyConfiguration;
 import com.crawljax.core.configuration.ThreadConfiguration;
 import com.crawljax.path.AllPath;
 import com.crawljax.path.DOMElement;
+import com.crawljax.path.Globals;
 import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
+import com.crawljax.util.Helper;
+
+import executionTracer.AstInstrumenter;
+import executionTracer.JSExecutionTracer;
 
 public class sameGameMutforCodeMutation {
 
@@ -44,18 +49,18 @@ public class sameGameMutforCodeMutation {
 
 //		crawler.setWaitTimeAfterReloadUrl(30000);
 		String outputdir="same-output";
-		String htmlAdd=URL;
+		
 		if(varMutation){
-			varMutStarter(outputdir, htmlAdd);
+			varMutStarter(outputdir, URL);
 		}
 		else if(branchMutation){
-			branchMuStarter(outputdir, htmlAdd);		
+			branchMuStarter(outputdir, URL);		
 		}
 		else if(jsSpecificMutation){
-			jsSpecMutStarter(outputdir, htmlAdd);
+			jsSpecMutStarter(outputdir, URL);
 		}
 		else if(DomJsMuttaion){
-			jsDomMutStarter(outputdir, htmlAdd);
+			jsDomMutStarter(outputdir, URL);
 		}
 		
 		
@@ -68,21 +73,16 @@ public class sameGameMutforCodeMutation {
 	public static void varMutStarter(String outputdir, String htmlAdd){
 		
 		ProxyConfiguration prox = new ProxyConfiguration();
-		JSModifyProxyPluginforCodeMutation proxyPlugin = new JSModifyProxyPluginforCodeMutation(outputdir);
-		for(int i=0;i<20;i++){
+		AstInstrumenter astInstrumenter=new AstInstrumenter();
+		JSModifyProxyPluginforCodeMutation proxyPlugin = new JSModifyProxyPluginforCodeMutation(outputdir,astInstrumenter);
+		
+		for(int i=0;i<5;i++){
 			try{
 	//		System.setProperty("webdriver.firefox.bin" ,"/home/shabnam/program-files/firefox/firefox");
 				CrawljaxConfiguration config = getCrawljaxConfiguration();
 				config.setOutputFolder(outputdir);
 					
-			
-		/*		crawler.setWaitTimeAfterEvent(20);
-				crawler.click("td").withAttribute("class", "clickable");
-				crawler.setClickOnce(true);
-				crawler.setDepth(2);
-				crawler.setMaximumStates(MAX_STATES);
-				crawler.setWaitTimeAfterReloadUrl(5000);
-		*/		
+	
 				WebScarabWrapper web = new WebScarabWrapper();
 				FunctionSelector funcSel=new FunctionSelector(outputdir);
 				VariableSelector varselec=new VariableSelector(outputdir);		
@@ -92,22 +92,32 @@ public class sameGameMutforCodeMutation {
 					funcname=funcSel.getSelectedFunctionNameandPath();
 					varname=varselec.getSelectedVariable(funcname);
 				}
-		//		funcname=funcname.split("::")[1];
+
 				FunctionNodeVisitor funcNodeVis=new FunctionNodeVisitor(funcname,varname);
 				proxyPlugin.setJSModifyProxyPluginForFuncVis(funcNodeVis);
 				proxyPlugin.excludeDefaults();
 				web.addPlugin(proxyPlugin);
-		//		TestResults results=new TestResults(outputdir);
-		//		config.addPlugin(results);
+
 				config.addPlugin(web);
 				
-		//		config.addPlugin(new RandomClickable());
+
 				
+			
+				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+				tracer.setOutputFolder(outputdir);
+				config.addPlugin(tracer);
+				config.addPlugin(web);
 				config.setProxyConfiguration(prox);
 		
-		
-				CrawljaxController crawljax = new CrawljaxController(config);	
-				crawljax.run();
+				CrawljaxController crawljax = new CrawljaxController(config);
+				String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
+				ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
+				for(int j=0;j<allPath.size();j++){
+					Globals.allPath=allPath.get(0);
+					crawljax.run();
+					break;
+				}
+			
 	
 			}
 			catch (Exception e) {
@@ -120,36 +130,41 @@ public class sameGameMutforCodeMutation {
 	public static void branchMuStarter(String outputdir, String htmlAdd){
 
 		ProxyConfiguration prox = new ProxyConfiguration();
-		JSModifyProxyPlugin proxyPlugin = new JSModifyProxyPlugin(outputdir);
-		
+		AstInstrumenter astInstrumenter=new AstInstrumenter();
+		JSModifyProxyPluginforCodeMutation proxyPlugin = new JSModifyProxyPluginforCodeMutation(outputdir,astInstrumenter);
+	
 		for(int i=0;i<20;i++){
 			try{
 		
 				CrawljaxConfiguration config = getCrawljaxConfiguration();
 				config.setOutputFolder(outputdir);
-				CrawlSpecification crawler = new CrawlSpecification(htmlAdd);	
+		
 				WebScarabWrapper web = new WebScarabWrapper();
 				FunctionSelector funcSel=new FunctionSelector(outputdir);	
 				String funcname=funcSel.getCycloRankSelectedfunction();
-		//		funcname=funcname.split("::")[1];
 				FunctionNodeVisitor funcNodeVis=new FunctionNodeVisitor(funcname);
 				proxyPlugin.setJSModifyProxyPluginForFuncVis(funcNodeVis);
 				proxyPlugin.excludeDefaults();
 				web.addPlugin(proxyPlugin);
-		//		TestResults results=new TestResults(outputdir);
-		//		config.addPlugin(results);
+
+				config.addPlugin(web);
+				
+				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+				tracer.setOutputFolder(outputdir);
+				config.addPlugin(tracer);
 				config.addPlugin(web);
 				config.setProxyConfiguration(prox);
-				
-		/*		crawler.click("td").withAttribute("class", "clickable");
-				crawler.setClickOnce(true);
-				crawler.setDepth(2);
-				crawler.setMaximumStates(MAX_STATES);
-				crawler.setWaitTimeAfterReloadUrl(10000);
-				
-		*/		
+	
+					
 				CrawljaxController crawljax = new CrawljaxController(config);
-				crawljax.run();
+				String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
+				ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
+				for(int j=0;j<allPath.size();j++){
+					Globals.allPath=allPath.get(0);
+					crawljax.run();
+					break;
+				}
+
 			}
 			
 			catch (Exception e) {
@@ -162,7 +177,9 @@ public class sameGameMutforCodeMutation {
 	public static void jsSpecMutStarter(String outputdir, String htmlAdd){
 	
 		ProxyConfiguration prox = new ProxyConfiguration();
-		JSModifyProxyPlugin proxyPlugin = new JSModifyProxyPlugin(outputdir);
+		AstInstrumenter astInstrumenter=new AstInstrumenter();
+		JSModifyProxyPluginforCodeMutation proxyPlugin = new JSModifyProxyPluginforCodeMutation(outputdir,astInstrumenter);
+
 		
 		
 		for(int i=0;i<10;i++){
@@ -175,14 +192,26 @@ public class sameGameMutforCodeMutation {
 				proxyPlugin.excludeDefaults();
 				web.addPlugin(proxyPlugin);
 				config.addPlugin(web);
+				
+				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+				tracer.setOutputFolder(outputdir);
+				config.addPlugin(tracer);
+				config.addPlugin(web);
 				config.setProxyConfiguration(prox);
+			
 				
 		
 		//		crawler.setWaitTimeAfterReloadUrl(2000);
 				
 			
 				CrawljaxController crawljax = new CrawljaxController(config);
-				crawljax.run();
+				String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
+				ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
+				for(int j=0;j<allPath.size();j++){
+					Globals.allPath=allPath.get(0);
+					crawljax.run();
+					break;
+				}
 			}	
 			catch (Exception e) {
 				e.printStackTrace();

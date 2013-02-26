@@ -8,9 +8,20 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.ast.AstRoot;
+import org.owasp.webscarab.model.Request;
+import org.owasp.webscarab.model.Response;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.crawljax.util.Helper;
+
+import executionTracer.JSExecutionTracer;
 
 import mutandis.analyser.JSCyclCompxCalc;
 import mutandis.astModifier.JSASTModifier;
+import mutandis.exectionTracer.JSFuncExecutionTracer;
+import mutandis.exectionTracer.JSVarExecutionTracer;
 import mutandis.mutator.BranchVisitor;
 import mutandis.mutator.NodeMutator;
 import mutandis.mutator.VariableVisitor;
@@ -30,8 +41,9 @@ public class JSModifyProxyPluginforCodeMutation extends mutandis.astModifier.JSM
 		this.modifierToGetMutatedVerInfo=modifierToGetMutatedVerInfo;
 	}
 	
-	public JSModifyProxyPluginforCodeMutation(String outputfolder){
+	public JSModifyProxyPluginforCodeMutation(String outputfolder,  astModifier.JSASTModifier modifierToGetMutatedVerInfo){
 		super(outputfolder);
+		this.modifierToGetMutatedVerInfo=modifierToGetMutatedVerInfo;
 		
 	}
 	
@@ -195,6 +207,77 @@ public class JSModifyProxyPluginforCodeMutation extends mutandis.astModifier.JSM
 		LOGGER.warn("Here is the corresponding buffer: \n" + input + "\n");
 
 		return input;
+	}
+	
+	@Override
+	protected Response createResponse(Response response, Request request) {
+		String type = response.getHeader("Content-Type");
+		
+		if (request.getURL().toString().contains("?thisisanexecutiontracingcall")) {
+			LOGGER.info("Execution trace request " + request.getURL().toString());
+			JSExecutionTracer.addPoint(new String(request.getContent()));
+			return response;
+		}
+
+		if (request.getURL().toString().contains("?thisisavarexectracingcall")) {
+			LOGGER.info("Execution trace request " + request.getURL().toString());
+			JSVarExecutionTracer.addPoint(new String(request.getContent()));
+			return response;
+		}
+		if (request.getURL().toString().contains("?thisisafuncexectracingcall")){
+			
+			LOGGER.info("Execution trace request " + request.getURL().toString());
+			JSFuncExecutionTracer.addPoint(new String(request.getContent()));
+			return response;
+		}
+
+		if (type != null && type.contains("javascript")) {
+
+			/* instrument the code if possible */
+			response.setContent(modifyJS(new String(response.getContent()),
+			        request.getURL().toString()).getBytes());
+		} else if (type != null && type.contains("html")) {
+			try {
+				Document dom = Helper.getDocument(new String(response.getContent()));
+				/* find script nodes in the html */
+				NodeList nodes = dom.getElementsByTagName("script");
+
+				for (int i = 0; i < nodes.getLength(); i++) {
+					Node nType = nodes.item(i).getAttributes().getNamedItem("type");
+					/* instrument if this is a JavaScript node */
+					if ((nType != null && nType.getTextContent() != null && nType
+					        .getTextContent().toLowerCase().contains("javascript"))) {
+						String content = nodes.item(i).getTextContent();
+						if (content.length() > 0) {
+							String js = modifyJS(content, request.getURL() + "script" + i);
+							nodes.item(i).setTextContent(js);
+							continue;
+						}
+					}
+
+					/* also check for the less used language="javascript" type tag */
+					nType = nodes.item(i).getAttributes().getNamedItem("language");
+					if ((nType != null && nType.getTextContent() != null && nType
+					        .getTextContent().toLowerCase().contains("javascript"))) {
+						String content = nodes.item(i).getTextContent();
+						if (content.length() > 0) {
+							String js = modifyJS(content, request.getURL() + "script" + i);
+							nodes.item(i).setTextContent(js);
+						}
+
+					}
+				}
+				/* only modify content when we did modify anything */
+				if (nodes.getLength() > 0) {
+					/* set the new content */
+					response.setContent(Helper.getDocumentToByteArray(dom));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		/* return the response to the webbrowser */
+		return response;
 	}
 
 
