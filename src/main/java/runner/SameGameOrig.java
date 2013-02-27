@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import oracle.JsExecTraceAnalyser;
+
 import mutandis.analyser.FunctionSelector;
 
 import astModifier.JSModifyProxyPlugin;
@@ -47,6 +49,7 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
+//		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
