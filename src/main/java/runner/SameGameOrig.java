@@ -22,7 +22,7 @@ import com.crawljax.core.configuration.ThreadConfiguration;
 import com.crawljax.path.AllPath;
 import com.crawljax.path.DOMElement;
 import com.crawljax.path.Globals;
-import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
+import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
 import executionTracer.DOMAstInstrumenter;
@@ -49,7 +49,7 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
-//		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
+		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);

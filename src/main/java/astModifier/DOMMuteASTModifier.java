@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.Assignment;
@@ -24,6 +23,9 @@ import org.mozilla.javascript.ast.ObjectProperty;
 import org.mozilla.javascript.ast.ReturnStatement;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.crawljax.core.CrawljaxController;
 
 import domMutation.Node;
@@ -37,7 +39,7 @@ public abstract class DOMMuteASTModifier implements NodeVisitor {
 	private boolean shouldDeleteNode;
 	private String stateName;
 
-	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(CrawljaxController.class.getName());
 	
 	/**
 	 * This is used by the JavaScript node creation functions that follow.

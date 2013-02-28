@@ -1,6 +1,8 @@
 package executionTracer;
 
 import java.io.File;
+import java.io.IOException;
+
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.FunctionNode;
@@ -8,6 +10,9 @@ import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.ObjectProperty;
 import org.mozilla.javascript.ast.ReturnStatement;
 import com.crawljax.util.Helper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+
 import astModifier.DOMASTModifier;
 
 public class DOMAstInstrumenter extends DOMASTModifier {
@@ -33,11 +38,16 @@ public class DOMAstInstrumenter extends DOMASTModifier {
 	 * @return The AstNode which contains functions.
 	 */
 	private AstNode jsLoggingFunctions() {
-		String code;
-
-		File js = new File(this.getClass().getResource("/domNodeProps.js").getFile());
+		String code=null;
+		try {
+			code=Resources.toString(DOMAstInstrumenter.class.getResource("/domNodeProps.js"), Charsets.UTF_8);
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		}
+/*		File js = new File(this.getClass().getResource("/domNodeProps.js").getFile());
 		code = Helper.getContent(js);
-		return parse(code);
+*/		return parse(code);
 	}
 	
 	@Override

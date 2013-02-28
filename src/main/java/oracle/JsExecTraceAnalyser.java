@@ -5,10 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import com.crawljax.util.Helper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.TreeMultimap;
 
 import executionTracer.JSExecutionTracer;
 
@@ -22,22 +26,43 @@ public class JsExecTraceAnalyser {
 	
 	ListMultimap<String, ListMultimap<ArrayList<String>, ArrayList<String>>> functionEntryExitMap=
 			ArrayListMultimap.create();
+
+
 	
-	ListMultimap<String, FunctionPoint> funcNameToFuncPointMap=ArrayListMultimap.create();
+	Multimap<String, FunctionPoint> funcNameToFuncPointMap;
+		   
+	
+	
 	private String outputFolder;
 	private List<String> traceFilenameAndPath;
 	
 	public JsExecTraceAnalyser(String outputFolder){
 		this.outputFolder=Helper.addFolderSlashIfNeeded(outputFolder);
 		traceFilenameAndPath=allTraceFiles();
+		Comparator<FunctionPoint> bvc=new Comparator<FunctionPoint>() {
+
+			@Override
+			public int compare(FunctionPoint f1, FunctionPoint f2) {
+		        if(f1.getTime()>f2.getTime())
+		        	return 1;
+		        else if(f1.getTime()>f2.getTime()){
+		        	return -1;
+		        }
+		        else return 0;
+				
+			}
+		};
+		funcNameToFuncPointMap = TreeMultimap.create(Ordering.allEqual(), bvc);
+		
 		startAnalysingJsExecTraceFiles();
+
 	}
 	
 	public List<String> getTraceFilenameAndPath() {
 		return traceFilenameAndPath;
 	}
 	
-	public ListMultimap<String, FunctionPoint> getFuncNameToFuncPointMap(){
+	public Multimap<String, FunctionPoint> getFuncNameToFuncPointMap(){
 		return funcNameToFuncPointMap;
 	}
 	
@@ -92,8 +117,11 @@ public class JsExecTraceAnalyser {
 					functionPoint=new FunctionPoint(pointName, variables, time);
 					funcNameToFuncPointMap.put(funcName, functionPoint);
 					
+				
 					
 				}
+				
+				input.close();
 			  }
 		}
 		catch (IOException e) {
@@ -121,5 +149,8 @@ public class JsExecTraceAnalyser {
 		return result;
 	}
 	
+	
 
 }
+
+

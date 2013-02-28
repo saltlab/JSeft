@@ -1,9 +1,14 @@
 package runner;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import org.owasp.webscarab.model.StoreException;
+import org.owasp.webscarab.plugin.Framework;
+import org.owasp.webscarab.plugin.proxy.Proxy;
 
 import mutandis.analyser.JSCyclCompxCalc;
 import mutandis.astModifier.JSModifyProxyPlugin;
@@ -23,7 +28,7 @@ import com.crawljax.core.configuration.ThreadConfiguration;
 import com.crawljax.path.AllPath;
 import com.crawljax.path.DOMElement;
 import com.crawljax.path.Globals;
-import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
+import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
 public class sameGameExecTraceforCodeMutation {
@@ -35,10 +40,11 @@ public class sameGameExecTraceforCodeMutation {
 	
 	/**
 	 * @param args
+	 * @throws StoreException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws StoreException {
 		/* tracing function calls or variables? */
-		boolean traceFunc=true;
+		boolean traceFunc=false;
 		String outputdir = "same-output";
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -49,6 +55,7 @@ public class sameGameExecTraceforCodeMutation {
 
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
+		
 		if(traceFunc){
 			AstFunctionCallInstrumenter astfuncCallInst = new AstFunctionCallInstrumenter();
 			JSCyclCompxCalc cyclo=new JSCyclCompxCalc(outputdir);
@@ -73,7 +80,6 @@ public class sameGameExecTraceforCodeMutation {
 		}
 		
 		config.addPlugin(web);
-	//	config.addPlugin(new RandomClickable());
 		config.setProxyConfiguration(prox);
 		
 

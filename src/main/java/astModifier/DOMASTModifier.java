@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.Assignment;
@@ -23,6 +22,8 @@ import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.ReturnStatement;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.crawljax.core.CrawljaxController;
 
@@ -30,7 +31,7 @@ import com.crawljax.core.CrawljaxController;
 public abstract class DOMASTModifier implements NodeVisitor {
 	private final Map<String, String> mapper = new HashMap<String, String>();
 
-	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(CrawljaxController.class.getName());
 	private ArrayList<String> nodesNotTolook=new ArrayList<String>();
 	/**
 	 * This is used by the JavaScript node creation functions that follow.

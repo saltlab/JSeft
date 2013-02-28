@@ -25,7 +25,7 @@ import com.crawljax.core.configuration.ThreadConfiguration;
 import com.crawljax.path.AllPath;
 import com.crawljax.path.DOMElement;
 import com.crawljax.path.Globals;
-import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
+import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
 import executionTracer.AstInstrumenter;

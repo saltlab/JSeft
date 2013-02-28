@@ -1,6 +1,7 @@
 package executionTracer;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
@@ -10,6 +11,8 @@ import org.mozilla.javascript.ast.FunctionNode;
 import astModifier.DOMMuteASTModifier;
 
 import com.crawljax.util.Helper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 
 import domMutation.NodeProperty;
 
@@ -37,11 +40,16 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 	 * @return The AstNode which contains functions.
 	 */
 	private AstNode jsLoggingFunctions() {
-		String code;
-
-		File js = new File(this.getClass().getResource("/addDomMut.js").getFile());
+		String code=null;
+		try {
+			code=Resources.toString(DOMMutAstInstrumenter.class.getResource("/addDomMut.js"), Charsets.UTF_8);
+		} catch (IOException e) {
+		
+			e.printStackTrace();
+		}
+/*		File js = new File(this.getClass().getResource("/addDomMut.js").getFile());
 		code = Helper.getContent(js);
-		return parse(code);
+*/		return parse(code);
 	}
 	
 	

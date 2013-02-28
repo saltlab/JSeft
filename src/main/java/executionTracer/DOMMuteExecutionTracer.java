@@ -8,7 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,7 +40,7 @@ public class DOMMuteExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 	private static String assertionFilename;
 	
 	
-	private static final Logger LOGGER = Logger.getLogger(JSExecutionTracer.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(JSExecutionTracer.class.getName());
 	
 	public static final String EXECUTIONTRACEDIRECTORY = "domMuteExecutiontrace/";
 	/**

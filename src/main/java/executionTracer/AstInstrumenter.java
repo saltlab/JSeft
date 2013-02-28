@@ -1,6 +1,7 @@
 package executionTracer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,8 +21,9 @@ import org.mozilla.javascript.ast.Scope;
 import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.Symbol;
 
-
 import com.crawljax.util.Helper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 
 import astModifier.JSASTModifier;
 
@@ -60,11 +62,18 @@ public class AstInstrumenter extends JSASTModifier{
 	 * @return The AstNode which contains functions.
 	 */
 	private AstNode jsLoggingFunctions() {
-		String code;
+		String code=null;
+		
+		try {
+			code=Resources.toString(AstInstrumenter.class.getResource("/addVar.js"), Charsets.UTF_8);
+		} catch (IOException e) {
+	
+			e.printStackTrace();
+		}
 
-		File js = new File(this.getClass().getResource("/addVar.js").getFile());
+	/*	File js = new File(this.getClass().getResource("/addVar.js").getFile());
 		code = Helper.getContent(js);
-		return parse(code);
+	*/	return parse(code);
 	}
 	
 	@Override
