@@ -6,13 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import com.crawljax.util.Helper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Ordering;
-import com.google.common.collect.TreeMultimap;
 
 import executionTracer.JSExecutionTracer;
 
@@ -36,23 +36,26 @@ public class JsExecTraceAnalyser {
 	private String outputFolder;
 	private List<String> traceFilenameAndPath;
 	
+	private Comparator<FunctionPoint> vc;
+	
 	public JsExecTraceAnalyser(String outputFolder){
-		this.outputFolder=Helper.addFolderSlashIfNeeded(outputFolder);
-		traceFilenameAndPath=allTraceFiles();
-		Comparator<FunctionPoint> bvc=new Comparator<FunctionPoint>() {
+		vc=new Comparator<FunctionPoint>() {
 
 			@Override
 			public int compare(FunctionPoint f1, FunctionPoint f2) {
 		        if(f1.getTime()>f2.getTime())
 		        	return 1;
-		        else if(f1.getTime()>f2.getTime()){
+		        else if(f1.getTime()<f2.getTime()){
 		        	return -1;
 		        }
-		        else return 0;
+		        return 0;
 				
 			}
 		};
-		funcNameToFuncPointMap = TreeMultimap.create(Ordering.allEqual(), bvc);
+		this.outputFolder=Helper.addFolderSlashIfNeeded(outputFolder);
+		traceFilenameAndPath=allTraceFiles();
+		
+		funcNameToFuncPointMap = ArrayListMultimap.create();
 		
 		startAnalysingJsExecTraceFiles();
 
@@ -116,14 +119,33 @@ public class JsExecTraceAnalyser {
 					
 					functionPoint=new FunctionPoint(pointName, variables, time);
 					funcNameToFuncPointMap.put(funcName, functionPoint);
-					
-				
-					
+		//			List<FunctionPoint> functionPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
+		//			java.util.Collections.sort(functionPoints, bvc);
+
 				}
-				
 				input.close();
 			  }
-		}
+			
+			Set<String> keys=funcNameToFuncPointMap.keySet();
+			Iterator<String> it=keys.iterator();
+			while(it.hasNext()){
+				String funcName=it.next();
+				List<FunctionPoint> points=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
+				java.util.Collections.sort(points, vc);
+			}
+			
+	/*		Set<String> keysets=funcNameToFuncPointMap.keySet();
+			it=keysets.iterator();
+			while(it.hasNext()){
+				String funcName=it.next();
+				Collection<FunctionPoint> points=funcNameToFuncPointMap.get(funcName);
+				Iterator<FunctionPoint> iter=points.iterator();
+				
+				while(iter.hasNext()){
+					System.out.println(funcName + iter.next().getTime());
+				}
+			}
+	*/	}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
