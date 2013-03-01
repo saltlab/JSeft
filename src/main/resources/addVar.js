@@ -14,7 +14,7 @@ function sendReally() {
 	window.buffer = new Array();
 }
 
-function addVariable(name, value) {
+function addVariable(name, value, variableUsage) {
 	var date = new Date();
 	time=date.getTime();
 	var pattern=/[.]attr[(]/;
@@ -25,30 +25,30 @@ function addVariable(name, value) {
 				if(value[0] instanceof Array){
 					
 					if(value[0].length > 0) 
-						return new Array(name, typeof (value[0][0]) + '_array', value, time);
+						return new Array(name, typeof (value[0][0]) + '_array', value, time, variableUsage);
 				
 					else
-						return new Array(name, 'object_array', value, time);
+						return new Array(name, 'object_array', value, time, variableUsage);
 				}
 				else
 					if(value.length > 0)
-						return new Array(name, typeof (value[0]) + '_array', value, time);
+						return new Array(name, typeof (value[0]) + '_array', value, time, variableUsage);
 					else 
-						return new Array(name, 'object_array', value, time);
+						return new Array(name, 'object_array', value, time, variableUsage);
 		}
 		else
-			return new Array(name, 'object', value, time);
+			return new Array(name, 'object', value, time, variableUsage);
 	
 	} else if(typeof(value) != 'undefined' && typeof(value) != 'function') {
-		return new Array(name, typeof(value), value, time);
+		return new Array(name, typeof(value), value, time, variableUsage);
 	}
 		else if (pattern.test(name) || getAttrPattern.test(name)){
-			return new Array(name, 'string', value, time);//'java.lang.String');
+			return new Array(name, 'string', value, time, variableUsage);//'java.lang.String');
 		}
 	else if (name.match(pattern)==".attr("){
-		return new Array(name, 'string', 'java.lang.String', time);
+		return new Array(name, 'string', 'java.lang.String', time, variableUsage);
 	}
-	return new Array(name, typeof(value), 'undefined', time);
+	return new Array(name, typeof(value), 'undefined', time, variableUsage);
 };
 
 

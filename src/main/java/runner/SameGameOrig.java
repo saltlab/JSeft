@@ -5,9 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import oracle.JsExecTraceAnalyser;
-
-import mutandis.analyser.FunctionSelector;
 
 import astModifier.JSModifyProxyPlugin;
 
@@ -25,8 +22,10 @@ import com.crawljax.path.Globals;
 import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
+import executionTracer.AstInstrumenter;
 import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
+import executionTracer.JSExecutionTracer;
 
 public class SameGameOrig {
 	
@@ -49,7 +48,7 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
-		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
+//		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -58,7 +57,7 @@ public class SameGameOrig {
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
 	
-		DOMAstInstrumenter a=new DOMAstInstrumenter();
+		AstInstrumenter a=new AstInstrumenter();
 //		DOMMutAstInstrumenter a; //new DOMAstInstrumenter();
 //		DomMuteHelper helper=new DomMuteHelper(outputdir);
 //		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
@@ -77,7 +76,7 @@ public class SameGameOrig {
 				
 //		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domExecutiontrace",stateName);
 				
-		DOMExecutionTracer tracer = new DOMExecutionTracer("domExecutionTrace");
+		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 		config.addPlugin(web);
@@ -89,7 +88,7 @@ public class SameGameOrig {
 			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
 			for(int i=0;i<allPath.size();i++){
-				Globals.allPath=allPath.get(3);
+				Globals.allPath=allPath.get(0);
 				crawljax.run();
 				break;
 			}

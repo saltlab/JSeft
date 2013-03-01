@@ -11,9 +11,11 @@ import org.mozilla.javascript.ast.PropertyGet;
 public class VisitObjectTypeVars implements NodeVisitor{
 	
 	private HashSet<String> objectVars;
+	private String varUsage;
 	
-	public VisitObjectTypeVars(){
+	public VisitObjectTypeVars(String varUsage){
 		objectVars=new HashSet<String>();
+		this.varUsage=varUsage;
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public class VisitObjectTypeVars implements NodeVisitor{
 		if(node instanceof Name && node.getParent() instanceof PropertyGet
 				&& !(node.getParent().getParent() instanceof FunctionCall) && !node.getParent().toSource().contains("function")){
 			
-			objectVars.add(node.getParent().toSource());
+			objectVars.add(varUsage + "::" + node.getParent().toSource());
 			
 		}
 		return true;

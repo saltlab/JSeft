@@ -48,6 +48,7 @@ public class ProgramPoint {
 	public String getData(JSONArray data) throws CrawljaxException, JSONException {
 		StringBuffer result = new StringBuffer();
 		String time = "";
+		String variableUsage="";
 		boolean found = false;
 
 		result.append(name + "\n");
@@ -56,15 +57,18 @@ public class ProgramPoint {
 			for (int i = 0; i < data.length(); i++) {
 				JSONArray item = data.getJSONArray(i);
 				time=item.get(3).toString();
+				variableUsage=item.get(4).toString();
 				if (var.getName().equals(item.getString(0))) {
 							
 					result.append(var.getData(item.get(2)));
+					result.append("variableUsage::" + variableUsage + "\n");
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
 				result.append(var.getData("Undefined"));
+				result.append("variableUsage::" + variableUsage + "\n");
 				found = true;
 			}
 		}

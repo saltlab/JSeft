@@ -35,7 +35,7 @@ public class AstInstrumenter extends JSASTModifier{
 	 * List with regular expressions of variables that should not be instrumented.
 	 */
 	private List<String> excludeVariableNamesList = new ArrayList<String>();
-
+	public static enum variableUsageType  {global, inputParam, returnVal};
 
 
 	/**
@@ -84,7 +84,7 @@ public class AstInstrumenter extends JSASTModifier{
 		String[] variable;
 		String[] returnValues=new String[0];
 		variable=getGlobalVarsInScopeAtExitPoint(function);
-		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars();
+		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.returnVal.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
 		String[] variables=(String[]) ArrayUtils.addAll(variable, objectVars.toArray());
@@ -110,7 +110,7 @@ public class AstInstrumenter extends JSASTModifier{
 				
 				for(int i=0;i<variables.length;i++){
 					if (shouldInstrument(variables[i])) {
-						vars += "addVariable('" + variables[i] + "', " + variables[i] + "),";
+						vars += "addVariable('" + variables[i].split("::")[1] + "', " + variables[i].split("::")[1] + ", " + "'" + variables[i].split("::")[0] + "'" + "),";
 					}
 				}
 
@@ -119,7 +119,7 @@ public class AstInstrumenter extends JSASTModifier{
 		for (int i = 0; i < returnValues.length; i++) {
 			/* only instrument variables that should not be excluded */
 			if (shouldInstrument(returnValues[i])) {
-				vars += "addVariable('" + returnValues[i] + "', " + returnValues[i] + "),";
+				vars += "addVariable('" + returnValues[i].split("::")[1] + "', " + returnValues[i].split("::")[1] + ", " + "'" + returnValues[i].split("::")[0] + "'" + "),";
 			}
 		}
 			
@@ -143,6 +143,10 @@ public class AstInstrumenter extends JSASTModifier{
 		String name;
 		String code;
 		String[] variables = getVariablesNamesInScope(function);
+		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.global.toString());
+		function.visit(visitObjectTypeVars);
+		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
+		variables=(String[]) ArrayUtils.addAll(variables, objectVars.toArray());
 		name = getFunctionName(function);
 		
 
@@ -160,7 +164,7 @@ public class AstInstrumenter extends JSASTModifier{
 			for (int i = 0; i < variables.length; i++) {
 				/* only instrument variables that should not be excluded */
 				if (shouldInstrument(variables[i])) {
-					vars += "addVariable('" + variables[i] + "', " + variables[i] + "),";
+					vars += "addVariable('" + variables[i].split("::")[1] + "', " + variables[i].split("::")[1] + ", " + "'" + variables[i].split("::")[0] + "'" + "),";
 				}
 			}
 			if (vars.length() > 0) {
@@ -222,13 +226,13 @@ public class AstInstrumenter extends JSASTModifier{
 					/* only add global variables and function parameters */
 					if (symbol.getDeclType() == Token.LP)
 					{
-						result.add(symbol.getName());
+						result.add(variableUsageType.inputParam + "::" + symbol.getName());
 						
 						
 					}
 					else if(symbol.getDeclType()==Token.VAR){
 						if(!origScope.equals(scope))	{
-							result.add(symbol.getName());
+							result.add(variableUsageType.global + "::" + symbol.getName());
 						}
 					}
 				}
@@ -258,7 +262,7 @@ public class AstInstrumenter extends JSASTModifier{
 					//only add global variables
 					if(symbol.getDeclType()==Token.VAR){
 						if(!origScope.equals(scope))	{
-							result.add(symbol.getName());
+							result.add(variableUsageType.global + "::" + symbol.getName());
 						}
 					}
 				}
@@ -313,12 +317,12 @@ public class AstInstrumenter extends JSASTModifier{
 			
 				for(ObjectProperty op:elements){
 					if(op.getLeft() instanceof StringLiteral)
-						result.add(((StringLiteral) op.getLeft()).getValue());
+						result.add(variableUsageType.returnVal +"::" + ((StringLiteral) op.getLeft()).getValue());
 				}
 			}
 		}
 		else if(returnVal!=null)
-			result.add(returnVal.toSource());
+			result.add(variableUsageType.returnVal +"::" +returnVal.toSource());
 		return result.toArray(new String[0]);
 	}
 		
