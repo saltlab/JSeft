@@ -84,9 +84,11 @@ public class AstInstrumenter extends JSASTModifier{
 		String[] variable;
 		String[] returnValues=new String[0];
 		variable=getGlobalVarsInScopeAtExitPoint(function);
-		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.returnVal.toString());
+/*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.returnVal.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
+*/		
+		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.returnVal.toString());
 		String[] variables=(String[]) ArrayUtils.addAll(variable, objectVars.toArray());
 		
 		if(returnNode!=null){
@@ -143,9 +145,11 @@ public class AstInstrumenter extends JSASTModifier{
 		String name;
 		String code;
 		String[] variables = getVariablesNamesInScope(function);
-		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.global.toString());
+/*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.global.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
+*/		
+		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
 		variables=(String[]) ArrayUtils.addAll(variables, objectVars.toArray());
 		name = getFunctionName(function);
 		
@@ -324,6 +328,24 @@ public class AstInstrumenter extends JSASTModifier{
 		else if(returnVal!=null)
 			result.add(variableUsageType.returnVal +"::" +returnVal.toSource());
 		return result.toArray(new String[0]);
+	}
+	
+	private HashSet<String> findObjectTypeVarsInScope(Scope scope, String varUsage){
+		AstNode node=scope;
+		HashSet<String> objectVars=new HashSet<String>();
+		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(varUsage, scope);
+
+		while(scope!=null){
+
+			scope.visit(visitObjectTypeVars);
+			objectVars.addAll(visitObjectTypeVars.getObjectVars());
+			scope=scope.getEnclosingScope();
+			
+		}
+		
+		return objectVars;
+		
+		
 	}
 		
 	

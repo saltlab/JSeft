@@ -25,6 +25,7 @@ import com.crawljax.util.Helper;
 import executionTracer.AstInstrumenter;
 import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
+import executionTracer.DOMMuteExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 public class SameGameOrig {
