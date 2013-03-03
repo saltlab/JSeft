@@ -15,6 +15,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 
 import executionTracer.JSExecutionTracer;
+import executionTracer.ProgramPoint;
 
 public class JsExecTraceAnalyser {
 	
@@ -24,12 +25,11 @@ public class JsExecTraceAnalyser {
 	 * ArrayList --> (variable, type, value)
 	 */
 	
-	ListMultimap<String, ListMultimap<ArrayList<String>, ArrayList<String>>> functionEntryExitMap=
-			ArrayListMultimap.create();
+	public static Multimap<String, FunctionState> funcNameToFuncStateMap=ArrayListMultimap.create();
 
 
 	
-	Multimap<String, FunctionPoint> funcNameToFuncPointMap;
+	private static Multimap<String, FunctionPoint> funcNameToFuncPointMap;
 		   
 	
 	
@@ -58,6 +58,7 @@ public class JsExecTraceAnalyser {
 		funcNameToFuncPointMap = ArrayListMultimap.create();
 		
 		startAnalysingJsExecTraceFiles();
+		createFuncNameToFuncStateMap();
 
 	}
 	
@@ -86,6 +87,7 @@ public class JsExecTraceAnalyser {
 					String variableName="";
 					String type="";
 					String value="";
+					String variableUsage="";
 					Variable varibale;
 
 					ArrayList<Variable> variables=new ArrayList<Variable>();
@@ -106,12 +108,17 @@ public class JsExecTraceAnalyser {
 							value=line.split("::")[1];
 						}
 						
-						if(variableName!="" && value!="" && type!=""){
-							varibale=new Variable(variableName, value, type);
+						else if(line.contains("variableUsage::")){
+							variableUsage=line.split("::")[1];
+						}
+						
+						if(variableName!="" && value!="" && type!="" && variableUsage!=""){
+							varibale=new Variable(variableName, value, type, variableUsage);
 							variables.add(varibale);
 							variableName="";
 							value="";
 							type="";
+							variableUsage="";
 						}
 						
 					
@@ -169,6 +176,35 @@ public class JsExecTraceAnalyser {
 		}
 
 		return result;
+	}
+	
+	private static void createFuncNameToFuncStateMap(){
+		Set<String> funcNames=funcNameToFuncPointMap.keySet();
+		Iterator<String> iter=funcNames.iterator();
+		while(iter.hasNext()){
+			String funcName=iter.next();
+			List<FunctionPoint> funcPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
+			for(int i=0;i<funcPoints.size();i++){
+				FunctionState funcState;
+				FunctionPoint entry=null;
+				FunctionPoint exit=null;
+				FunctionPoint funcPoint=funcPoints.get(i);
+				String pointName=funcPoint.getPointName();
+				if(pointName.toLowerCase().equals("enter")){
+					entry=funcPoint;
+					for(int j=i+1;j<funcPoints.size();j++){
+						FunctionPoint point=funcPoints.get(j);
+						if(point.getPointName().toLowerCase().equals("exit")){
+							exit=point;
+							break;
+						}
+						
+					}
+					funcState=new FunctionState(entry, exit);
+					funcNameToFuncStateMap.put(funcName, funcState);
+				}
+			}
+		}
 	}
 	
 	
