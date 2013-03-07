@@ -3,10 +3,13 @@ package executionTracer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -81,15 +84,22 @@ public class AstInstrumenter extends JSASTModifier{
 		String name;
 		String code="";
 		String vars = "";
-		String[] variable;
-		String[] returnValues=new String[0];
+		Set<String> variable=new HashSet<String>();
+		TreeSet<String> returnValues=new TreeSet<String>();
 		variable=getGlobalVarsInScopeAtExitPoint(function);
 /*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.returnVal.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
 */		
 		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.returnVal.toString());
-		String[] variables=(String[]) ArrayUtils.addAll(variable, objectVars.toArray());
+		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.returnVal.toString());
+		HashSet<String> variables=new HashSet<String>();
+		
+		variables.addAll(variable);
+		variables.addAll(objectVars);
+		variables.addAll(globVars);
+		
+		
 		
 		if(returnNode!=null){
 			AstNode returnVal=returnNode.getReturnValue();
@@ -100,7 +110,7 @@ public class AstInstrumenter extends JSASTModifier{
 		name = getFunctionName(function);
 
 			/* only add instrumentation code if there are variables to log */
-			if (variables.length==0 && returnValues.length==0) {
+			if (variables.size()==0 && returnValues.size()==0) {
 				code = "/* empty */";
 			} else {
 				
@@ -109,33 +119,37 @@ public class AstInstrumenter extends JSASTModifier{
 			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix
 			                + "', new Array(";
 	
-				
-				for(int i=0;i<variables.length;i++){
-					if (shouldInstrument(variables[i])) {
-						vars += "addVariable('" + variables[i].split("::")[1] + "', " + variables[i].split("::")[1] + ", " + "'" + variables[i].split("::")[0] + "'" + "),";
+				Iterator<String> iter=variables.iterator();
+				while(iter.hasNext()){
+					String var=iter.next();
+					if (shouldInstrument(var)) {
+						vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
 					}
 				}
 
 			}
 
-		for (int i = 0; i < returnValues.length; i++) {
+			Iterator<String> iter=returnValues.iterator();
+			while (iter.hasNext()) {
 			/* only instrument variables that should not be excluded */
-			if (shouldInstrument(returnValues[i])) {
-				vars += "addVariable('" + returnValues[i].split("::")[1] + "', " + returnValues[i].split("::")[1] + ", " + "'" + returnValues[i].split("::")[0] + "'" + "),";
+				String retVal=iter.next();
+				if (shouldInstrument(retVal)) {
+					vars += "addVariable('" + retVal.split("::")[1] + "', " + retVal.split("::")[1] + ", " + "'" + retVal.split("::")[0] + "'" + "),";
+				}
 			}
-		}
 			
 		
-		if (vars.length() > 0) {
+	
+			if (vars.length() > 0) {
 			/* remove last comma */
-			vars = vars.substring(0, vars.length() - 1);
-			code += vars + ")));";
-		} else {
+				vars = vars.substring(0, vars.length() - 1);
+				code += vars + ")));";
+			} else {
 			/* no variables to instrument here, so just return an empty node */
-			code = "/* empty */";
-		}
+				code = "/* empty */";
+			}
 		
-	return parse(code);
+			return parse(code);
 		
 		
 	}
@@ -144,18 +158,22 @@ public class AstInstrumenter extends JSASTModifier{
 	protected AstNode createEnterNode(FunctionNode function, String postfix, int lineNo) {
 		String name;
 		String code;
-		String[] variables = getVariablesNamesInScope(function);
+		TreeSet<String> variables = new TreeSet<String>();
+		variables.addAll(getVariablesNamesInScope(function));
 /*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.global.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
 */		
 		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
-		variables=(String[]) ArrayUtils.addAll(variables, objectVars.toArray());
+		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
+		variables.addAll(objectVars);
+		variables.addAll(globVars);
+
 		name = getFunctionName(function);
 		
 
 		/* only add instrumentation code if there are variables to log */
-		if (variables.length == 0) {
+		if (variables.size() == 0) {
 			code = "/* empty */";
 		} else {
 			/* TODO: this uses JSON.stringify which only works in Firefox? make browser indep. */
@@ -165,10 +183,12 @@ public class AstInstrumenter extends JSASTModifier{
 			                + "', new Array(";
 
 			String vars = "";
-			for (int i = 0; i < variables.length; i++) {
+			Iterator<String> iter=variables.iterator();
+			while (iter.hasNext()) {
+				String var=iter.next();
 				/* only instrument variables that should not be excluded */
-				if (shouldInstrument(variables[i])) {
-					vars += "addVariable('" + variables[i].split("::")[1] + "', " + variables[i].split("::")[1] + ", " + "'" + variables[i].split("::")[0] + "'" + "),";
+				if (shouldInstrument(var)) {
+					vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
 				}
 			}
 			if (vars.length() > 0) {
@@ -214,7 +234,7 @@ public class AstInstrumenter extends JSASTModifier{
 	 *            The function.
 	 * @return All variables in scope.
 	 */
-	private String[] getVariablesNamesInScope(Scope scope) {
+	private TreeSet<String> getVariablesNamesInScope(Scope scope) {
 		TreeSet<String> result = new TreeSet<String>();
         Scope origScope=scope;
 	
@@ -247,10 +267,10 @@ public class AstInstrumenter extends JSASTModifier{
 		} while (scope != null);
 
 		/* return the result as a String array */
-		return result.toArray(new String[0]);
+		return result;
 	}
 	
-	private String[] getGlobalVarsInScopeAtExitPoint(Scope scope) {
+	private TreeSet<String> getGlobalVarsInScopeAtExitPoint(Scope scope) {
 		TreeSet<String> result = new TreeSet<String>();
         Scope origScope=scope;
 	
@@ -277,7 +297,7 @@ public class AstInstrumenter extends JSASTModifier{
 		} while (scope != null);
 
 		/* return the result as a String array */
-		return result.toArray(new String[0]);
+		return result;
 	}
 
 
@@ -313,7 +333,7 @@ public class AstInstrumenter extends JSASTModifier{
 		
 	}
 	
-	private String[] getReturnValues(AstNode returnVal){
+	private TreeSet<String> getReturnValues(AstNode returnVal){
 		TreeSet<String> result = new TreeSet<String>();
 		if(returnVal instanceof ObjectLiteral){
 			List<ObjectProperty> elements=((ObjectLiteral)returnVal).getElements();
@@ -327,11 +347,11 @@ public class AstInstrumenter extends JSASTModifier{
 		}
 		else if(returnVal!=null)
 			result.add(variableUsageType.returnVal +"::" +returnVal.toSource());
-		return result.toArray(new String[0]);
+		return result;
 	}
 	
 	private HashSet<String> findObjectTypeVarsInScope(Scope scope, String varUsage){
-		AstNode node=scope;
+		
 		HashSet<String> objectVars=new HashSet<String>();
 		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(varUsage, scope);
 
@@ -339,6 +359,24 @@ public class AstInstrumenter extends JSASTModifier{
 
 			scope.visit(visitObjectTypeVars);
 			objectVars.addAll(visitObjectTypeVars.getObjectVars());
+			scope=scope.getEnclosingScope();
+			
+		}
+		
+		return objectVars;
+		
+		
+	}
+	
+	private HashSet<String> findGlobalVarsInScope(Scope scope, String varUsage){
+		
+		HashSet<String> objectVars=new HashSet<String>();
+		VisitGlobalVars visitGlobalVars=new VisitGlobalVars(varUsage, scope);
+
+		while(scope!=null){
+
+			scope.visit(visitGlobalVars);
+			objectVars.addAll(visitGlobalVars.getObjectVars());
 			scope=scope.getEnclosingScope();
 			
 		}

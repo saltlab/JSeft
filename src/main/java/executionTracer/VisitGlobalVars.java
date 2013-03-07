@@ -1,27 +1,27 @@
 package executionTracer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
+import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.FunctionCall;
 import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.NodeVisitor;
 import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.Scope;
+import org.mozilla.javascript.ast.VariableDeclaration;
 
 import executionTracer.AstInstrumenter.variableUsageType;
 
-public class VisitObjectTypeVars implements NodeVisitor{
-	
+public class VisitGlobalVars implements NodeVisitor{
+
 	private HashSet<String> objectVars;
 	private String varUsage;
 	private final Scope scope;
 	private ArrayList<String> excludedList=new ArrayList<String>();
 	
-	public VisitObjectTypeVars(String varUsage, Scope scope){
+	public VisitGlobalVars(String varUsage, Scope scope){
 		objectVars=new HashSet<String>();
 		this.varUsage=varUsage;
 		this.scope=scope;
@@ -30,7 +30,7 @@ public class VisitObjectTypeVars implements NodeVisitor{
 	}
 	
 	private boolean shouldVisit(AstNode node){
-	 
+		 
 		for(String excluded:excludedList){
 			if(node.toSource().startsWith(excluded)){
 				return false;
@@ -53,12 +53,17 @@ public class VisitObjectTypeVars implements NodeVisitor{
 		if(!node.toSource().equals(scope.getAstRoot().toSource()) && !node.getEnclosingScope().toSource().contains(this.scope.toSource())){
 			return false;
 		}
-		if(node instanceof Name && node.getParent() instanceof PropertyGet 
-				&& !(node.getParent().getParent() instanceof FunctionCall) && !node.getParent().toSource().contains("function")){
-			
-			objectVars.add(varUsage + "::" + node.getParent().toSource().replaceAll("\\[.*\\]", ""));
-			
+		
+		if(node instanceof VariableDeclaration)
+			return false;
+		
+		if(node instanceof Assignment){
+			if(((Assignment)node).getLeft() instanceof Name){
+				AstNode globNode=((Assignment)node).getLeft();
+				objectVars.add(varUsage + "::" + globNode.toSource());
+			}
 		}
+
 		return true;
 		
 	}
