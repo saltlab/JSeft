@@ -25,11 +25,11 @@ public class JsExecTraceAnalyser {
 	 * ArrayList --> (variable, type, value)
 	 */
 	
-	public static Multimap<String, FunctionState> funcNameToFuncStateMap=ArrayListMultimap.create();
-
+	private Multimap<String, FunctionState> funcNameToFuncStateMap=ArrayListMultimap.create();
+	private Multimap<String, Multimap<FunctionPoint,FunctionPoint>> funcEntryPointToExitPointMap=ArrayListMultimap.create();
 
 	
-	private static Multimap<String, FunctionPoint> funcNameToFuncPointMap;
+	private Multimap<String, FunctionPoint> funcNameToFuncPointMap;
 		   
 	
 	
@@ -59,6 +59,7 @@ public class JsExecTraceAnalyser {
 		
 		startAnalysingJsExecTraceFiles();
 		createFuncNameToFuncStateMap();
+		createFuncEntryToFuncExitMap();
 
 	}
 	
@@ -66,8 +67,12 @@ public class JsExecTraceAnalyser {
 		return traceFilenameAndPath;
 	}
 	
-	public Multimap<String, FunctionPoint> getFuncNameToFuncPointMap(){
-		return funcNameToFuncPointMap;
+	public Multimap<String, FunctionState> getFuncNameToFuncStateMap(){
+		return funcNameToFuncStateMap;
+	}
+	
+	public Multimap<String, Multimap<FunctionPoint, FunctionPoint>> getFuncEntryPointToExitPointMap(){
+		return funcEntryPointToExitPointMap;
 	}
 	
 	private void startAnalysingJsExecTraceFiles(){
@@ -92,10 +97,12 @@ public class JsExecTraceAnalyser {
 
 					ArrayList<Variable> variables=new ArrayList<Variable>();
 					FunctionPoint functionPoint;
+				
 					while (!(line = input.readLine()).equals
 							("===========================================================================")){
 
 						if(line.contains("time::")){
+						
 							time=Long.valueOf(line.split("::")[1]);
 						}
 						else if(line.contains("variable::")){
@@ -119,6 +126,8 @@ public class JsExecTraceAnalyser {
 							value="";
 							type="";
 							variableUsage="";
+							
+							
 						}
 						
 					
@@ -178,7 +187,7 @@ public class JsExecTraceAnalyser {
 		return result;
 	}
 	
-	private static void createFuncNameToFuncStateMap(){
+	private void createFuncNameToFuncStateMap(){
 		Set<String> funcNames=funcNameToFuncPointMap.keySet();
 		Iterator<String> iter=funcNames.iterator();
 		while(iter.hasNext()){
@@ -204,6 +213,46 @@ public class JsExecTraceAnalyser {
 					funcNameToFuncStateMap.put(funcName, funcState);
 				}
 			}
+		}
+	}
+	
+	private void createFuncEntryToFuncExitMap(){
+		Set<String> keys=funcNameToFuncStateMap.keySet();
+		Iterator<String> iter=keys.iterator();
+		while(iter.hasNext()){
+			String funcName=iter.next();
+			List<FunctionState> funcStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
+			Multimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
+			for(int i=0;i<funcStates.size();i++){
+			
+				FunctionState funcState=funcStates.get(i);
+				FunctionPoint funcEntry=funcState.getFunctionEntry();
+				FunctionPoint funcExit=funcState.getFunctionExit();
+				ArrayList<Variable> varList=funcEntry.getVariables();
+				funcPointMltimap.put(funcEntry, funcExit);
+				
+				for(int j=i+1;j<funcStates.size();j++){
+					FunctionPoint nextFuncEntry=funcStates.get(j).getFunctionEntry();
+					ArrayList<Variable> nextVarList=nextFuncEntry.getVariables();
+					boolean equal=true;
+					if(nextVarList.size()==varList.size()){
+						for(int k=0;k<nextVarList.size();k++){
+							if(!nextVarList.get(k).equals(varList.get(k))){
+								equal=false;
+								break;
+							}
+						}
+					}
+					if(equal){
+						FunctionPoint nextFuncExit=funcStates.get(j).getFunctionExit();
+						funcPointMltimap.put(funcEntry, nextFuncExit);
+					}
+					
+				}
+				
+			}
+			funcEntryPointToExitPointMap.put(funcName, funcPointMltimap);
+			
 		}
 	}
 	
