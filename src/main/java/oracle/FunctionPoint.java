@@ -23,4 +23,19 @@ public class FunctionPoint {
 	public long getTime(){
 		return time;
 	}
+	
+	@Override
+	public boolean equals(Object funcPoint){
+		if(funcPoint instanceof FunctionPoint){
+			FunctionPoint functionPoint=(FunctionPoint) funcPoint;
+			if(this.getPointName().equals(functionPoint.getPointName())
+					&& this.getTime()==functionPoint.getTime()
+					&& this.getVariables().equals(functionPoint.getVariables())){
+				return true;
+				
+			}
+		}
+		return false;
+	}
+	
 }

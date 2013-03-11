@@ -217,25 +217,53 @@ public class JsExecTraceAnalyser {
 	}
 	
 	private void createFuncEntryToFuncExitMap(){
+		
 		Set<String> keys=funcNameToFuncStateMap.keySet();
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
 			String funcName=iter.next();
-			List<FunctionState> funcStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
-			Multimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
-			for(int i=0;i<funcStates.size();i++){
+			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
+		//	ArrayList<FunctionState> funcStates=(ArrayList<FunctionState>) ((ArrayList<FunctionState>) funcStatestemp).clone();
 			
-				FunctionState funcState=funcStates.get(i);
+			Multimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
+			Iterator<FunctionState> fStOuterIter=funcStates.iterator();
+			while(fStOuterIter.hasNext()){
+				
+				FunctionState funcState=fStOuterIter.next();
 				FunctionPoint funcEntry=funcState.getFunctionEntry();
 				FunctionPoint funcExit=funcState.getFunctionExit();
 				ArrayList<Variable> varList=funcEntry.getVariables();
 				funcPointMltimap.put(funcEntry, funcExit);
-				
-				for(int j=i+1;j<funcStates.size();j++){
-					FunctionPoint nextFuncEntry=funcStates.get(j).getFunctionEntry();
+				funcStates.remove(funcState);
+				Iterator<FunctionState> fStIter=funcStates.iterator();
+				while(fStIter.hasNext()){
+					FunctionState fState=fStIter.next();
+					FunctionPoint nextFuncEntry=fState.getFunctionEntry();
 					ArrayList<Variable> nextVarList=nextFuncEntry.getVariables();
-					boolean equal=true;
-					if(nextVarList.size()==varList.size()){
+					
+					if(nextVarList.equals(varList)){
+						FunctionState nextFuncState=fState;
+						FunctionPoint nextFuncExit=nextFuncState.getFunctionExit();
+						List<FunctionPoint> exitPointList=(List<FunctionPoint>) funcPointMltimap.get(funcEntry);
+						boolean similar=false;
+						for(int count=0;count<exitPointList.size();count++){
+							if(FunctionPointsSimilar(exitPointList.get(count),nextFuncExit)){
+								similar=true;
+								break;
+							
+							}
+						}
+						if(!similar){
+							
+							funcPointMltimap.put(funcEntry, nextFuncExit);
+							
+						}
+						funcStates.remove(fState);
+						fStIter=funcStates.iterator();
+						
+					}
+					
+		/*			if(nextVarList.size()==varList.size()){
 						for(int k=0;k<nextVarList.size();k++){
 							if(!nextVarList.get(k).equals(varList.get(k))){
 								equal=false;
@@ -243,17 +271,25 @@ public class JsExecTraceAnalyser {
 							}
 						}
 					}
-					if(equal){
-						FunctionPoint nextFuncExit=funcStates.get(j).getFunctionExit();
-						funcPointMltimap.put(funcEntry, nextFuncExit);
-					}
+		*/			
 					
 				}
+				fStOuterIter=funcStates.iterator();
 				
 			}
 			funcEntryPointToExitPointMap.put(funcName, funcPointMltimap);
 			
 		}
+	}
+	
+	private boolean FunctionPointsSimilar(FunctionPoint funcPoint1, FunctionPoint funcPoint2){
+		if(funcPoint1.getPointName().equals(funcPoint2.getPointName())){
+			ArrayList<Variable> varList1=funcPoint1.getVariables();
+			ArrayList<Variable> varList2=funcPoint2.getVariables();
+			if(varList1.equals(varList2))
+				return true;
+		}
+		return false;
 	}
 	
 	

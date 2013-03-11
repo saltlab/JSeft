@@ -40,10 +40,12 @@ public class Variable {
 	
 	@Override
 	public boolean equals(Object variable){
-		Variable var=(Variable) variable;
-		String str=var.toString();
-		if(str.equals(this.toString()))
-			return true;
+		if(variable instanceof Variable){
+			Variable var=(Variable) variable;
+			String str=var.toString();
+			if(this.toString().equals(str))
+				return true;
+		}
 		return false;
 		
 	}
