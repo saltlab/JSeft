@@ -1,0 +1,479 @@
+Warning: Daikon is using a dataflow hierarchy analysis on a data trace that does not appear to be over a program execution, consider running Daikon with the --nohierarchy flag.
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.anonymous428:::ENTER
+areEqualArrays(board, [])
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(colours[]) == 4
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.anonymous428:::EXIT
+height == \old(height)
+width == \old(width)
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(colours[]) == 4
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.cellClicked:::ENTER
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(checked[]) one of { 0, 60 }
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+board.length >= checked.length
+board.length-1 != checked.length
+board.length-1 >= checked.length-1
+checked.length != colours.length
+checked.length != colours.length-1
+checked.length-1 != colours.length
+checked.length-1 != colours.length-1
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.cellClicked:::EXIT
+height == \old(height)
+width == \old(width)
+board.length == checked.length
+board.length == \old(board.length)
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+i == 0.0 || i == 10.0
+width == 10.0
+x >= 0.0
+y >= 0.0
+size(board[]) == 60
+size(colours[]) == 4
+size(coords[]) == 2
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+height != i
+height > y
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < height
+i <= width
+width > x
+width > y
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < width
+board.length >= \old(checked.length)
+board.length-1 != \old(checked.length)
+board.length-1 >= \old(checked.length-1)
+colours.length != \old(checked.length)
+colours.length != \old(checked.length-1)
+colours.length-1 != \old(checked.length)
+colours.length-1 != \old(checked.length-1)
+coords.length != \old(checked.length)
+coords.length != \old(checked.length-1)
+coords.length-1 != \old(checked.length)
+coords.length-1 != \old(checked.length-1)
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.clearChecked:::ENTER
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(checked[]) one of { 0, 60 }
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+board.length >= checked.length
+board.length-1 != checked.length
+board.length-1 >= checked.length-1
+checked.length != colours.length
+checked.length != colours.length-1
+checked.length-1 != colours.length
+checked.length-1 != colours.length-1
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.clearChecked:::EXIT
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+height == y
+height == \old(height)
+width == x
+width == \old(width)
+board.length == checked.length
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(colours[]) == 4
+size(row[]) == 10
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+board.length >= \old(checked.length)
+board.length-1 != \old(checked.length)
+board.length-1 >= \old(checked.length-1)
+colours.length != \old(checked.length)
+colours.length != \old(checked.length-1)
+colours.length-1 != \old(checked.length)
+colours.length-1 != \old(checked.length-1)
+row.length != \old(checked.length)
+row.length != \old(checked.length-1)
+row.length-1 != \old(checked.length)
+row.length-1 != \old(checked.length-1)
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.compactDown:::ENTER
+board.length == checked.length
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.compactDown:::EXIT
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+height == \old(height)
+width == x
+width == \old(width)
+board.length == checked.length
+board.length == \old(checked.length)
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+y == 5.0
+size(board[]) == 60
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < y
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.compactLeft:::ENTER
+board.length == checked.length
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.compactLeft:::EXIT
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+height == y
+height == \old(height)
+width == x
+width == \old(width)
+board.length == checked.length
+board.length == \old(checked.length)
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+lx has only one value
+lx != null
+width == 10.0
+size(board[]) == 60
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+empty <= height
+empty < width
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.drawNewBoard:::ENTER
+warning: method daikon.inv.unary.sequence.EltOneOfFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements one of { 1.0, 2.0, 3.0 }
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(colours[]) == 4
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.drawNewBoard:::EXIT
+height == y
+height == \old(height)
+width == x
+width == \old(width)
+board.length == \old(board.length)
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(colours[]) == 4
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::ENTER
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+x >= 0.0
+y >= 0.0
+size(board[]) == 60
+size(checked[]) one of { 0, 60 }
+checked.length-1 != 0
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+height > y
+width > x
+width > y
+board.length >= checked.length
+board.length-1 != checked.length
+board.length-1 >= checked.length-1
+checked.length != colours.length
+checked.length != colours.length-1
+checked.length-1 != colours.length
+checked.length-1 != colours.length-1
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::EXIT54
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+board.length == checked.length
+board.length == \old(checked.length)
+value == 0.0
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatGreaterEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= value
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: value in board[]
+value <= x
+value <= y
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::EXIT62
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+value == 1.0 || value == 2.0 || value == 3.0
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::EXIT68
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+value == 1.0 || value == 2.0 || value == 3.0
+x >= 1.0
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: value in board[]
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::EXIT74
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+value == 1.0 || value == 2.0 || value == 3.0
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: value in board[]
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::EXIT80
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+value == 1.0 || value == 2.0 || value == 3.0
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: value in board[]
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::EXIT84
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+value == 1.0 || value == 2.0 || value == 3.0
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: value in board[]
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: value in orig(board[])
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.equalNeighbour:::EXIT
+height == \old(height)
+width == \old(width)
+x == \old(x)
+y == \old(y)
+board.length == \old(board.length)
+checked.length == \old(checked.length)
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+value >= 0.0
+width == 10.0
+x >= 0.0
+y >= 0.0
+size(board[]) == 60
+size(checked[]) one of { 0, 60 }
+checked.length-1 != 0
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+height > value
+height > y
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < height
+value < width
+width > x
+width > y
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < width
+board.length >= checked.length
+board.length-1 != checked.length
+board.length-1 >= checked.length-1
+checked.length != colours.length
+checked.length != colours.length-1
+checked.length-1 != colours.length
+checked.length-1 != colours.length-1
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.mark:::ENTER
+board.length == checked.length
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+value == 1.0 || value == 2.0 || value == 3.0
+width == 10.0
+x >= 0.0
+y >= 0.0
+size(board[]) == 60
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+height > value
+height > y
+value < width
+width > x
+width > y
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.mark:::EXIT
+height == \old(height)
+value == \old(value)
+width == \old(width)
+x == \old(x)
+y == \old(y)
+board.length == checked.length
+board.length == \old(board.length)
+board.length == \old(checked.length)
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+value == 1.0 || value == 2.0 || value == 3.0
+width == 10.0
+x >= 0.0
+y >= 0.0
+size(board[]) == 60
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+height > value
+height > y
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < height
+value < width
+width > x
+width > y
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < width
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.randomValues:::ENTER
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(colours[]) == 4
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.randomValues:::EXIT
+height == y
+height == \old(height)
+width == x
+width == \old(width)
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+warning: method daikon.inv.unary.sequence.EltOneOfFloat.format(OutputFormat:JavaScript) needs to be implemented: result[] elements one of { 1.0, 2.0, 3.0 }
+warning: method daikon.inv.unary.sequence.EltOneOfFloat.format(OutputFormat:JavaScript) needs to be implemented: row[] elements one of { 1.0, 2.0, 3.0 }
+width == 10.0
+size(colours[]) == 4
+size(result[]) == 60
+size(row[]) == 10
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.updateBoard:::ENTER
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+width == 10.0
+size(board[]) == 60
+size(checked[]) one of { 0, 60 }
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+board.length >= checked.length
+board.length-1 != checked.length
+board.length-1 >= checked.length-1
+checked.length != colours.length
+checked.length != colours.length-1
+checked.length-1 != colours.length
+checked.length-1 != colours.length-1
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.updateBoard:::EXIT362
+warning: method daikon.inv.binary.twoSequence.SeqSeqIntEqual.format(OutputFormat:JavaScript) needs to be implemented: checked[] == orig(checked[])
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.updateBoard:::EXIT370
+warning: method daikon.inv.binary.twoSequence.SeqSeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] == orig(board[])
+board.length == checked.length
+board.length == \old(checked.length)
+areEqualArrays(board, [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+warning: method daikon.inv.unary.sequence.EltOneOfFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements == 0.0
+warning: method daikon.inv.unary.sequence.OneOfSequence.format(OutputFormat:JavaScript) needs to be implemented: checked[] == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+clickables == 0.0
+areEqualArrays(numCells, [60.0, 0.0, 0.0, 0.0])
+warning: method daikon.inv.unary.sequence.EltOneOfFloat.format(OutputFormat:JavaScript) needs to be implemented: numCells[] elements one of { 0.0, 60.0 }
+warning: method daikon.inv.unary.sequence.OneOfSequence.format(OutputFormat:JavaScript) needs to be implemented: orig(checked[]) has only one value, of length 60
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatEqual.format(OutputFormat:JavaScript) needs to be implemented: board[] elements == clickables
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: clickables in board[]
+warning: method daikon.inv.binary.sequenceScalar.MemberFloat.format(OutputFormat:JavaScript) needs to be implemented: clickables in numCells[]
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1.updateBoard:::EXIT
+height == y
+height == \old(height)
+width == x
+width == \old(width)
+board.length == \old(board.length)
+checked.length == \old(checked.length)
+colours.length == numCells.length
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: board[] elements >= 0.0
+areEqualArrays(colours, ['#000', '#f00', '#0f0', '#00f'])
+height == 6.0
+i == 4.0
+warning: method daikon.inv.unary.sequence.EltLowerBoundFloat.format(OutputFormat:JavaScript) needs to be implemented: numCells[] elements >= 0.0
+width == 10.0
+size(board[]) == 60
+size(checked[]) one of { 0, 60 }
+size(colours[]) == 4
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < i
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: board[] elements < width
+clickables != width
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < height
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < i
+warning: method daikon.inv.binary.sequenceScalar.SeqFloatLessThan.format(OutputFormat:JavaScript) needs to be implemented: orig(board[]) elements < width
+board.length >= checked.length
+board.length-1 != checked.length
+board.length-1 >= checked.length-1
+checked.length != colours.length
+checked.length != colours.length-1
+checked.length-1 != colours.length
+checked.length-1 != colours.length-1
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line276:::POINT276
+result.text() == ""
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line277:::POINT277
+result.text() == ""
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line282:::POINT282
+jQuery('#board').text() == ""
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line283:::POINT283
+jQuery('#board').text() == ""
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line318:::POINT318
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line319:::POINT319
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line324:::POINT324
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line325:::POINT325
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line338:::POINT338
+element.attr('class') == "" || element.attr('class') == "clickable"
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line339:::POINT339
+element.attr('class') == "clickable"
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line342:::POINT342
+element.attr('class') == "" || element.attr('class') == "clickable"
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line343:::POINT343
+element.attr('class') == ""
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line358:::POINT358
+jQuery('#board').text() == ""
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line359:::POINT359
+jQuery('#board').text() == "No clickables left, game over!"
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line370:::POINT370
+jQuery('#board').text() == ""
+===========================================================================
+http://localhost:8080/same-game/same-game.htmlscript1line371:::POINT371
+jQuery('#board').text() == "Game finished, well done!"

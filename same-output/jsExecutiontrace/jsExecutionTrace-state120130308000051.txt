@@ -1,0 +1,2372 @@
+http://localhost:8080//same-game/same-game.htmscript2.cellClicked:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::object_array
+value::[]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650474
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::object_array
+value::[]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::object_array
+value::[]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.clearChecked:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::object_array
+value::[]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::test3
+type::object
+value::"{"test5":4}"
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.clearChecked:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::test.test1
+type::object
+value::"{"test2":4}"
+variableUsage::returnVal
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::2
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::2
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::4
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::2
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::value
+type::number
+value::1
+variableUsage::inputParam
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::4
+variableUsage::inputParam
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.mark:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::found
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650475
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::found
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::found
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactDown:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::found
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactLeft:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.compactLeft:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::found
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+time::1362729650476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::0
+variableUsage::inputParam
+time::1362729650477
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650477
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::0
+variableUsage::inputParam
+time::1362729650478
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650478
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::2
+variableUsage::inputParam
+variable::y
+type::number
+value::0
+variableUsage::inputParam
+time::1362729650479
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650479
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::3
+variableUsage::inputParam
+variable::y
+type::number
+value::0
+variableUsage::inputParam
+time::1362729650479
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650479
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::4
+variableUsage::inputParam
+variable::y
+type::number
+value::0
+variableUsage::inputParam
+time::1362729650480
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650480
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::1
+variableUsage::inputParam
+time::1362729650480
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650480
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::1
+variableUsage::inputParam
+time::1362729650481
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650481
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::2
+variableUsage::inputParam
+variable::y
+type::number
+value::1
+variableUsage::inputParam
+time::1362729650481
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650481
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::3
+variableUsage::inputParam
+variable::y
+type::number
+value::1
+variableUsage::inputParam
+time::1362729650482
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650482
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::4
+variableUsage::inputParam
+variable::y
+type::number
+value::1
+variableUsage::inputParam
+time::1362729650482
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650482
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::2
+variableUsage::inputParam
+time::1362729650483
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650483
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::2
+variableUsage::inputParam
+time::1362729650483
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650483
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::2
+variableUsage::inputParam
+variable::y
+type::number
+value::2
+variableUsage::inputParam
+time::1362729650483
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650483
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::3
+variableUsage::inputParam
+variable::y
+type::number
+value::2
+variableUsage::inputParam
+time::1362729650484
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650484
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::4
+variableUsage::inputParam
+variable::y
+type::number
+value::2
+variableUsage::inputParam
+time::1362729650484
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650484
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650485
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650485
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650485
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650485
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::2
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650486
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650486
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::3
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650486
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650486
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::4
+variableUsage::inputParam
+variable::y
+type::number
+value::3
+variableUsage::inputParam
+time::1362729650487
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650487
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::0
+variableUsage::inputParam
+variable::y
+type::number
+value::4
+variableUsage::inputParam
+time::1362729650487
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650487
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::1
+variableUsage::inputParam
+variable::y
+type::number
+value::4
+variableUsage::inputParam
+time::1362729650488
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650488
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::2
+variableUsage::inputParam
+variable::y
+type::number
+value::4
+variableUsage::inputParam
+time::1362729650489
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650489
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::3
+variableUsage::inputParam
+variable::y
+type::number
+value::4
+variableUsage::inputParam
+time::1362729650489
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::true
+type::boolean
+value::1
+variableUsage::returnVal
+time::1362729650489
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::ENTER
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::x
+type::number
+value::4
+variableUsage::inputParam
+variable::y
+type::number
+value::4
+variableUsage::inputParam
+time::1362729650490
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.equalNeighbour:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+variable::false
+type::boolean
+value::0
+variableUsage::returnVal
+time::1362729650490
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650490
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.cellClicked:::EXIT
+variable::colours
+type::string_array
+value::["#000" "#f00" "#0f0" "#00f"]
+variableUsage::global
+variable::checked
+type::boolean_array
+value::[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0]
+variableUsage::global
+variable::board
+type::number_array
+value::[0 0 2 1 2 2 1 2 2 2 2 3 2 2 1 2 2 2 1 3 2 3 2 2 1]
+variableUsage::global
+variable::width
+type::number
+value::5
+variableUsage::global
+variable::height
+type::number
+value::5
+variableUsage::global
+time::1362729650490
+===========================================================================
