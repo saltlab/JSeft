@@ -11,13 +11,10 @@ import java.util.List;
 import java.util.Set;
 import com.crawljax.util.Helper;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-
 import executionTracer.JSExecutionTracer;
-import executionTracer.ProgramPoint;
 
-public class JsExecTraceAnalyser {
+public abstract class JsExecTraceAnalyser {
 	
 	/**
 	 * (functioni --> (entryi --> (exiti)))
@@ -25,18 +22,18 @@ public class JsExecTraceAnalyser {
 	 * ArrayList --> (variable, type, value)
 	 */
 	
-	private Multimap<String, FunctionState> funcNameToFuncStateMap=ArrayListMultimap.create();
-	private Multimap<String, Multimap<FunctionPoint,FunctionPoint>> funcEntryPointToExitPointMap=ArrayListMultimap.create();
+	protected Multimap<String, FunctionState> funcNameToFuncStateMap=ArrayListMultimap.create();
+
 
 	
-	private Multimap<String, FunctionPoint> funcNameToFuncPointMap;
+	protected Multimap<String, FunctionPoint> funcNameToFuncPointMap;
 		   
 	
 	
-	private String outputFolder;
-	private List<String> traceFilenameAndPath;
+	protected String outputFolder;
+	protected List<String> traceFilenameAndPath;
 	
-	private Comparator<FunctionPoint> vc;
+	protected Comparator<FunctionPoint> vc;
 	
 	public JsExecTraceAnalyser(String outputFolder){
 		vc=new Comparator<FunctionPoint>() {
@@ -59,7 +56,7 @@ public class JsExecTraceAnalyser {
 		
 		startAnalysingJsExecTraceFiles();
 		createFuncNameToFuncStateMap();
-		createFuncEntryToFuncExitMap();
+	
 
 	}
 	
@@ -71,11 +68,9 @@ public class JsExecTraceAnalyser {
 		return funcNameToFuncStateMap;
 	}
 	
-	public Multimap<String, Multimap<FunctionPoint, FunctionPoint>> getFuncEntryPointToExitPointMap(){
-		return funcEntryPointToExitPointMap;
-	}
+
 	
-	private void startAnalysingJsExecTraceFiles(){
+	protected void startAnalysingJsExecTraceFiles(){
 		try{
 			List<String>filenameAndPathList=getTraceFilenameAndPath();
 			for (String filenameAndPath:filenameAndPathList){
@@ -168,7 +163,7 @@ public class JsExecTraceAnalyser {
 	}
 	
 	
-	private List<String> allTraceFiles() {
+	protected List<String> allTraceFiles() {
 		ArrayList<String> result = new ArrayList<String>();
 
 		/* find all trace files in the trace directory */
@@ -187,7 +182,7 @@ public class JsExecTraceAnalyser {
 		return result;
 	}
 	
-	private void createFuncNameToFuncStateMap(){
+	protected void createFuncNameToFuncStateMap(){
 		Set<String> funcNames=funcNameToFuncPointMap.keySet();
 		Iterator<String> iter=funcNames.iterator();
 		while(iter.hasNext()){
@@ -216,73 +211,9 @@ public class JsExecTraceAnalyser {
 		}
 	}
 	
-	private void createFuncEntryToFuncExitMap(){
-		
-		Set<String> keys=funcNameToFuncStateMap.keySet();
-		Iterator<String> iter=keys.iterator();
-		while(iter.hasNext()){
-			String funcName=iter.next();
-			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
-		//	ArrayList<FunctionState> funcStates=(ArrayList<FunctionState>) ((ArrayList<FunctionState>) funcStatestemp).clone();
-			
-			Multimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
-			Iterator<FunctionState> fStOuterIter=funcStates.iterator();
-			while(fStOuterIter.hasNext()){
-				
-				FunctionState funcState=fStOuterIter.next();
-				FunctionPoint funcEntry=funcState.getFunctionEntry();
-				FunctionPoint funcExit=funcState.getFunctionExit();
-				ArrayList<Variable> varList=funcEntry.getVariables();
-				funcPointMltimap.put(funcEntry, funcExit);
-				funcStates.remove(funcState);
-				Iterator<FunctionState> fStIter=funcStates.iterator();
-				while(fStIter.hasNext()){
-					FunctionState fState=fStIter.next();
-					FunctionPoint nextFuncEntry=fState.getFunctionEntry();
-					ArrayList<Variable> nextVarList=nextFuncEntry.getVariables();
-					
-					if(nextVarList.equals(varList)){
-						FunctionState nextFuncState=fState;
-						FunctionPoint nextFuncExit=nextFuncState.getFunctionExit();
-						List<FunctionPoint> exitPointList=(List<FunctionPoint>) funcPointMltimap.get(funcEntry);
-						boolean similar=false;
-						for(int count=0;count<exitPointList.size();count++){
-							if(FunctionPointsSimilar(exitPointList.get(count),nextFuncExit)){
-								similar=true;
-								break;
-							
-							}
-						}
-						if(!similar){
-							
-							funcPointMltimap.put(funcEntry, nextFuncExit);
-							
-						}
-						funcStates.remove(fState);
-						fStIter=funcStates.iterator();
-						
-					}
-					
-		/*			if(nextVarList.size()==varList.size()){
-						for(int k=0;k<nextVarList.size();k++){
-							if(!nextVarList.get(k).equals(varList.get(k))){
-								equal=false;
-								break;
-							}
-						}
-					}
-		*/			
-					
-				}
-				fStOuterIter=funcStates.iterator();
-				
-			}
-			funcEntryPointToExitPointMap.put(funcName, funcPointMltimap);
-			
-		}
-	}
+
 	
-	private boolean FunctionPointsSimilar(FunctionPoint funcPoint1, FunctionPoint funcPoint2){
+	protected boolean functionPointsSimilar(FunctionPoint funcPoint1, FunctionPoint funcPoint2){
 		if(funcPoint1.getPointName().equals(funcPoint2.getPointName())){
 			ArrayList<Variable> varList1=funcPoint1.getVariables();
 			ArrayList<Variable> varList2=funcPoint2.getVariables();
