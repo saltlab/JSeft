@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 
 public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	
-	protected static HashMap<String, Multimap<FunctionPoint,FunctionPoint>> funcEntryPointToExitPointMap=new HashMap<String, Multimap<FunctionPoint,FunctionPoint>>();
+	protected static HashMap<String, ArrayListMultimap<FunctionPoint,FunctionPoint>> funcEntryPointToExitPointMap=new HashMap<String, ArrayListMultimap<FunctionPoint,FunctionPoint>>();
 	
 	public OriginalJsExecTraceAnalyser(String outputFolder){
 		super(outputFolder);
@@ -29,7 +30,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
 		//	ArrayList<FunctionState> funcStates=(ArrayList<FunctionState>) ((ArrayList<FunctionState>) funcStatestemp).clone();
 			
-			Multimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
+			ArrayListMultimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
 			Iterator<FunctionState> fStOuterIter=funcStates.iterator();
 			while(fStOuterIter.hasNext()){
 				
@@ -48,7 +49,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					if(nextVarList.equals(varList)){
 						FunctionState nextFuncState=fState;
 						FunctionPoint nextFuncExit=nextFuncState.getFunctionExit();
-						List<FunctionPoint> exitPointList=(List<FunctionPoint>) funcPointMltimap.get(funcEntry);
+						List<FunctionPoint> exitPointList=funcPointMltimap.get(funcEntry);
 						boolean similar=false;
 						for(int count=0;count<exitPointList.size();count++){
 							if(functionPointsSimilar(exitPointList.get(count),nextFuncExit)){

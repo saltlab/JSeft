@@ -1,17 +1,19 @@
 package oracle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 public class FunctionStateComparator {
 
 	
 	private Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer;
-	
+	private HashMap<String,ArrayListMultimap<FunctionPoint,FunctionPoint>> oracleMultimap=new HashMap<String, ArrayListMultimap<FunctionPoint,FunctionPoint>>();	
 	public FunctionStateComparator(Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer){
 		this.funcNameToFuncStateMap_modifiedVer=funcNameToFuncStateMap_modifiedVer;
 		
@@ -35,13 +37,20 @@ public class FunctionStateComparator {
 				FunctionState modifiedFuncState=funcStates.get(i);
 				FunctionPoint modifiedFuncEntry=modifiedFuncState.getFunctionEntry();
 				FunctionPoint modifiedFuncExit=modifiedFuncState.getFunctionExit();
-				ArrayList<FunctionPoint> origFuncExits=new ArrayList<FunctionPoint>( funcEntryToMultiExit.get(modifiedFuncEntry));
+				FunctionPoint origFuncEntry = null;
+				ArrayList<FunctionPoint> origFuncExits=getFunctinExitsMatchedWithEntryPoint(funcEntryToMultiExit, modifiedFuncEntry, origFuncEntry);
+				boolean same=false;
 				for(int j=0;j<origFuncExits.size();j++){
 					FunctionPoint origFuncExit=origFuncExits.get(j);
-					boolean same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
+					same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
 					if(!same){
 						
+						ArrayListMultimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
+						funcPointMltimap.put(origFuncEntry, origFuncExit);
+						oracleMultimap.put(funcName, funcPointMltimap);
+						break;
 					}
+					
 				}
 				
 				
@@ -59,6 +68,55 @@ public class FunctionStateComparator {
 				return true;
 		}
 		return false;
+	}
+	
+	private ArrayList<FunctionPoint> getFunctinExitsMatchedWithEntryPoint(Multimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit, FunctionPoint funcPoint, FunctionPoint origFuncEntry){
+		
+		ArrayList<FunctionPoint> exitFuncPoints=new ArrayList<FunctionPoint>();
+		Set<FunctionPoint> keys=funcEntryToMultiExit.keySet();
+		Iterator<FunctionPoint> iter=keys.iterator();
+		
+		while(iter.hasNext()){
+			
+			FunctionPoint entryPoint=iter.next();
+			if(entryPoint.getPointName().equals(funcPoint.getPointName())){
+				ArrayList<Variable> origVars=entryPoint.getVariables();
+				ArrayList<Variable> modifiedVars=funcPoint.getVariables();
+				if(origVars.equals(modifiedVars)){
+					origFuncEntry=entryPoint;
+					exitFuncPoints.addAll(funcEntryToMultiExit.get(entryPoint));
+					
+				}
+			}
+		}
+		
+		return exitFuncPoints;
+		
+	}
+	
+	@Deprecated
+	private FunctionPoint getFunctionMatchedEntryPoint(Multimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit, FunctionPoint modifiedFuncPoint){
+		
+		
+		Set<FunctionPoint> keys=funcEntryToMultiExit.keySet();
+		Iterator<FunctionPoint> iter=keys.iterator();
+		
+		while(iter.hasNext()){
+			
+			FunctionPoint entryPoint=iter.next();
+			if(entryPoint.getPointName().equals(modifiedFuncPoint.getPointName())){
+				ArrayList<Variable> origVars=entryPoint.getVariables();
+				ArrayList<Variable> modifiedVars=modifiedFuncPoint.getVariables();
+				if(origVars.equals(modifiedVars)){
+					
+					return entryPoint;
+					
+				}
+			}
+		}
+		
+		return null;
+		
 	}
 	
 }

@@ -14,7 +14,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import executionTracer.JSExecutionTracer;
 
-public abstract class JsExecTraceAnalyser {
+public class JsExecTraceAnalyser {
 	
 	/**
 	 * (functioni --> (entryi --> (exiti)))
