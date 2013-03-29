@@ -1,7 +1,6 @@
 package oracle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +12,7 @@ public class FunctionStateComparator {
 
 	
 	private Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer;
-	private HashMap<String,ArrayListMultimap<FunctionPoint,FunctionPoint>> oracleMultimap=new HashMap<String, ArrayListMultimap<FunctionPoint,FunctionPoint>>();	
+	private ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,FunctionPoint>> oracleMultimap=ArrayListMultimap.create();	
 	public FunctionStateComparator(Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer){
 		this.funcNameToFuncStateMap_modifiedVer=funcNameToFuncStateMap_modifiedVer;
 		
@@ -28,11 +27,13 @@ public class FunctionStateComparator {
 		Set<String> keys=funcNameToFuncStateMap_modifiedVer.keySet();
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
+		
 			String funcName=iter.next();
 			List<FunctionState> funcStates=(List<FunctionState>) funcNameToFuncStateMap_modifiedVer.get(funcName);
 			Multimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit=
 					OriginalJsExecTraceAnalyser.funcEntryPointToExitPointMap.get(funcName);
 			
+		
 			for(int i=0;i<funcStates.size();i++){
 				FunctionState modifiedFuncState=funcStates.get(i);
 				FunctionPoint modifiedFuncEntry=modifiedFuncState.getFunctionEntry();
@@ -43,14 +44,29 @@ public class FunctionStateComparator {
 				for(int j=0;j<origFuncExits.size();j++){
 					FunctionPoint origFuncExit=origFuncExits.get(j);
 					same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
-					if(!same){
+					if (same)
+						break;
+		/*			if(!same){
 						
 						ArrayListMultimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
 						funcPointMltimap.put(origFuncEntry, origFuncExit);
 						oracleMultimap.put(funcName, funcPointMltimap);
 						break;
 					}
-					
+		*/			
+				}
+
+				boolean isFuncEntryRepeatedInOracle=isEntryPointRepeatedInOracleSet(funcName,origFuncEntry);
+				if(!same && !isFuncEntryRepeatedInOracle){
+
+					ArrayListMultimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
+					for(int j=0;j<origFuncExits.size();j++){
+						
+						FunctionPoint origFuncExit=origFuncExits.get(j);
+						funcPointMltimap.put(origFuncEntry, origFuncExit);
+						
+					}
+					oracleMultimap.put(funcName, funcPointMltimap);
 				}
 				
 				
@@ -85,7 +101,7 @@ public class FunctionStateComparator {
 				if(origVars.equals(modifiedVars)){
 					origFuncEntry=entryPoint;
 					exitFuncPoints.addAll(funcEntryToMultiExit.get(entryPoint));
-					
+					break;
 				}
 			}
 		}
@@ -117,6 +133,26 @@ public class FunctionStateComparator {
 		
 		return null;
 		
+	}
+	
+	private boolean isEntryPointRepeatedInOracleSet(String funcName, FunctionPoint origFuncEntry){
+		
+		List<ArrayListMultimap<FunctionPoint, FunctionPoint>> entryExitList=oracleMultimap.get(funcName);
+		for(ArrayListMultimap<FunctionPoint, FunctionPoint> entryExit:entryExitList){
+			
+			Set<FunctionPoint> key=entryExit.keySet();
+			Iterator<FunctionPoint> iterator=key.iterator();
+			while(iterator.hasNext()){
+				FunctionPoint entryPoint=iterator.next();
+				if(entryPoint.getPointName().equals(origFuncEntry.getPointName())){
+					if(entryPoint.getVariables().equals(origFuncEntry.getVariables())){
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 }
