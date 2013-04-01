@@ -25,11 +25,13 @@ import com.crawljax.path.Globals;
 import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
+import domMutation.DomMuteHelper;
 import domMutation.Dom_OrigMut_Analyser;
 
 import executionTracer.AstInstrumenter;
 import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
+import executionTracer.DOMMutAstInstrumenter;
 import executionTracer.DOMMuteExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
@@ -65,25 +67,25 @@ public class SameGameOrig {
 		WebScarabWrapper web = new WebScarabWrapper();
 	
 //		AstInstrumenter a=new AstInstrumenter();
-//		DOMMutAstInstrumenter a; //new DOMAstInstrumenter();
-		DOMAstInstrumenter a=new DOMAstInstrumenter();
-//		DomMuteHelper helper=new DomMuteHelper(outputdir);
-//		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
+		DOMMutAstInstrumenter a;
+//		DOMAstInstrumenter a=new DOMAstInstrumenter();
+		DomMuteHelper helper=new DomMuteHelper(outputdir);
+		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
 		String stateName="";
-//		for(int i=0;i<2;i++){
-//			a=dommutes.get(1);
-//			stateName=a.getStateName();
+		for(int i=0;i<2;i++){
+			a=dommutes.get(1);
+			stateName=a.getStateName();
 			JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 			p.excludeDefaults();
 			web.addPlugin(p);
-//		}
+		}
 /*		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
 */		
 				
-//		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domExecutiontrace",stateName);
-		DOMExecutionTracer tracer = new DOMExecutionTracer("domExecutiontrace");
+		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domMuteExecutiontrace",stateName);
+//		DOMExecutionTracer tracer = new DOMExecutionTracer("domExecutiontrace");
 //		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);

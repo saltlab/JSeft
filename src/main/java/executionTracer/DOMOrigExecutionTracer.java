@@ -143,7 +143,15 @@ public class DOMOrigExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 				Date date = new Date();
 				filename += dateFormat.format(date) + ".txt";
 				PrintWriter file = new PrintWriter(filename);
-				result.append("state::" + session.getCurrentState().getName()+ "\n" +"===========================================================================\n");
+				
+				result.append("clickedOn::");
+				if(!session.getCurrentState().getName().equals("index"))
+					result.append(eventable.toString());
+				else
+					result.append("null");
+				result.append("\n");
+				result.append("state::" + session.getCurrentState().getName());
+				result.append("\n"+"===========================================================================\n");
 				elemList=getDOMElements(session);
 				for(int i=0;i<elemList.size();i++){
 					Element elem=elemList.get(i);
@@ -152,6 +160,8 @@ public class DOMOrigExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 					for(int j=0;j<elem.getAttributes().getLength();j++){
 						String attrName=elem.getAttributes().item(j).getNodeName();
 						String attrValue=elem.getAttributes().item(j).getNodeValue();
+						if(attrValue=="")
+							attrValue="null";
 						result.append(attrName + "::" + attrValue + "\n");
 						
 					}

@@ -33,7 +33,7 @@ import com.crawljax.core.state.StateMachine;
 import com.crawljax.util.Helper;
 import com.crawljax.util.XPathHelper;
 
-public class DOMMuteExecutionTracer implements OnFireEventSuccessPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
+public class DOMMuteExecutionTracer implements OnFireEventSuccessPlugin, /*OnNewStatePlugin, */PreCrawlingPlugin, GeneratesOutput {
 	private static final int ONE_SEC = 1000;
 	private String stateName;
 	private static String outputFolder;
@@ -97,49 +97,12 @@ public class DOMMuteExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 		outputFolder = absolutePath;
 	}
 
-	@Override
+/*	@Override
 	public void onNewState(CrawlSession session) {
+		
+		
 		try {
-			ArrayList<Element> elemList=new ArrayList<Element>();
-			StringBuffer result=new StringBuffer();
-			String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
-			filename += session.getCurrentState().getName();	
-			DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-			Date date = new Date();
-			filename += dateFormat.format(date) + ".txt";
-			PrintWriter file = new PrintWriter(filename);
-			result.append("state::" + session.getCurrentState().getName()+ "\n" +"===========================================================================\n");
-			elemList=getDOMElements(session);
-			for(int i=0;i<elemList.size();i++){
-				Element elem=elemList.get(i);
-				result.append("tagName::" + elem.getTagName() + "\n");
-				result.append("xpath::" + XPathHelper.getXPathExpression(elem) + "\n");
-				for(int j=0;j<elem.getAttributes().getLength();j++){
-					String attrName=elem.getAttributes().item(j).getNodeName();
-					String attrValue=elem.getAttributes().item(j).getNodeValue();
-					result.append(attrName + "::" + attrValue + "\n");
-					
-				}
-				result.append("===========================================================================\n");
-			}
-			
-			
-			file.write(result.toString());
-			file.close();
-		
-		} catch (SAXException | IOException e) {
-			
-			e.printStackTrace();
-		}
-		
-	}
-
-	@Override
-	public void onFireEventSuccessed(Eventable eventable, List<Eventable> pathToSuccess, CrawlSession session, StateMachine stateMachine) {
-		
-
-//		if(session.getCurrentState().getName().compareTo(stateName)>=0){
-			try {
+			if(session.getCurrentState().getName().equals("index")){
 				ArrayList<Element> elemList=new ArrayList<Element>();
 				StringBuffer result=new StringBuffer();
 				String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
@@ -157,6 +120,58 @@ public class DOMMuteExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 					for(int j=0;j<elem.getAttributes().getLength();j++){
 						String attrName=elem.getAttributes().item(j).getNodeName();
 						String attrValue=elem.getAttributes().item(j).getNodeValue();
+						result.append(attrName + "::" + attrValue + "\n");
+						
+					}
+					result.append("===========================================================================\n");
+				}
+				
+				
+				file.write(result.toString());
+				file.close();
+			}
+			
+		} 
+		catch (SAXException | IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+*/
+	@Override
+	public void onFireEventSuccessed(Eventable eventable, List<Eventable> pathToSuccess, CrawlSession session, StateMachine stateMachine) {
+		
+
+//		if(session.getCurrentState().getName().compareTo(stateName)>=0){
+			try {
+				ArrayList<Element> elemList=new ArrayList<Element>();
+				StringBuffer result=new StringBuffer();
+				String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
+				filename += session.getCurrentState().getName();	
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+				Date date = new Date();
+				filename += dateFormat.format(date) + ".txt";
+				PrintWriter file = new PrintWriter(filename);
+				
+				result.append("clickedOn::");
+				if(!session.getCurrentState().getName().equals("index"))
+					result.append(eventable.toString());
+				else
+					result.append("null");
+				result.append("\n");
+				result.append("state::" + session.getCurrentState().getName());
+				result.append("\n"+"===========================================================================\n");
+				elemList=getDOMElements(session);
+				for(int i=0;i<elemList.size();i++){
+					Element elem=elemList.get(i);
+					result.append("tagName::" + elem.getTagName() + "\n");
+					result.append("xpath::" + XPathHelper.getXPathExpression(elem) + "\n");
+					for(int j=0;j<elem.getAttributes().getLength();j++){
+						String attrName=elem.getAttributes().item(j).getNodeName();
+						String attrValue=elem.getAttributes().item(j).getNodeValue();
+						if(attrValue=="")
+							attrValue="null";
 						result.append(attrName + "::" + attrValue + "\n");
 						
 					}

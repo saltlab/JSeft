@@ -59,9 +59,11 @@ public class Dom_OrigMut_Analyser {
 				BufferedReader input =
 					new BufferedReader(new FileReader(filenameAndPath));
 			
-				String state_xpath="", inputline="";
+				String clickedOn_state_xpath="", inputline="";
 				inputline=input.readLine();
-				String stateName=inputline.replace("state::", "");
+				String clickedOn=inputline.split("::")[1];
+				inputline=input.readLine();
+				String stateName=inputline.split("::")[1];
 				input.readLine();
 				while ((inputline = input.readLine()) != null){
 			
@@ -75,18 +77,18 @@ public class Dom_OrigMut_Analyser {
 
 						if(inputline.contains("xpath::")){
 							xpath=inputline.split("::")[1];
-							state_xpath=stateName+"_"+xpath;
-							boolean repeatedAttr=isAttributeRepeated(state_xpath, attr);
+							clickedOn_state_xpath=clickedOn + "_" + stateName + "_" + xpath;
+							boolean repeatedAttr=isAttributeRepeated(clickedOn_state_xpath, attr);
 							if(!repeatedAttr)
-								stateXpathToNodeAttrsMap.put(state_xpath, attr);
+								stateXpathToNodeAttrsMap.put(clickedOn_state_xpath, attr);
 						}
 						else {
 							String attrName=inputline.split("::")[0];
 							String attrValue=inputline.split("::")[1];
 							DomAttribute domAttr=new DomAttribute(attrName, attrValue);
-							boolean repeatedAttr=isAttributeRepeated(state_xpath, domAttr);
+							boolean repeatedAttr=isAttributeRepeated(clickedOn_state_xpath, domAttr);
 							if(!repeatedAttr)
-								stateXpathToNodeAttrsMap.put(state_xpath, domAttr);
+								stateXpathToNodeAttrsMap.put(clickedOn_state_xpath, domAttr);
 						}
 					}
 	
@@ -105,9 +107,9 @@ public class Dom_OrigMut_Analyser {
 	}
 	
 	
-	private boolean isAttributeRepeated(String state_xpath, DomAttribute domAttr){
+	private boolean isAttributeRepeated(String clickedOn_state_xpath, DomAttribute domAttr){
 		boolean repeatedAttr=false;
-		List<DomAttribute> attrList=stateXpathToNodeAttrsMap.get(state_xpath);
+		List<DomAttribute> attrList=stateXpathToNodeAttrsMap.get(clickedOn_state_xpath);
 		if(attrList!=null){
 			for(DomAttribute attribute:attrList){
 				if(attribute.equals(domAttr)){
