@@ -13,7 +13,7 @@ import executionTracer.DOMMuteExecutionTracer;
 
 public class Dom_OrigMut_Analyser {
 	/*<stateName-xpath->attribute1, attribute2,...>*/
-	private Multimap<String, DomAttribute> stateXpathToNodeAttrsMap=ArrayListMultimap.create();
+	private ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap=ArrayListMultimap.create();
 	private String outputFolder;
 	private List<String> traceFilenameAndPath;
 	
@@ -44,7 +44,7 @@ public class Dom_OrigMut_Analyser {
 		return result;
 	}
 	
-	public Multimap<String, DomAttribute> getstateXpathToNodeAttrsMap(){
+	public ArrayListMultimap<String, DomAttribute> getstateXpathToNodeAttrsMap(){
 		return stateXpathToNodeAttrsMap;
 	}
 	
@@ -76,13 +76,17 @@ public class Dom_OrigMut_Analyser {
 						if(inputline.contains("xpath::")){
 							xpath=inputline.split("::")[1];
 							state_xpath=stateName+"_"+xpath;
-							stateXpathToNodeAttrsMap.put(state_xpath, attr);
+							boolean repeatedAttr=isAttributeRepeated(state_xpath, attr);
+							if(!repeatedAttr)
+								stateXpathToNodeAttrsMap.put(state_xpath, attr);
 						}
 						else {
 							String attrName=inputline.split("::")[0];
 							String attrValue=inputline.split("::")[1];
 							DomAttribute domAttr=new DomAttribute(attrName, attrValue);
-							stateXpathToNodeAttrsMap.put(state_xpath, domAttr);
+							boolean repeatedAttr=isAttributeRepeated(state_xpath, domAttr);
+							if(!repeatedAttr)
+								stateXpathToNodeAttrsMap.put(state_xpath, domAttr);
 						}
 					}
 	
@@ -98,6 +102,21 @@ public class Dom_OrigMut_Analyser {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private boolean isAttributeRepeated(String state_xpath, DomAttribute domAttr){
+		boolean repeatedAttr=false;
+		List<DomAttribute> attrList=stateXpathToNodeAttrsMap.get(state_xpath);
+		if(attrList!=null){
+			for(DomAttribute attribute:attrList){
+				if(attribute.equals(domAttr)){
+					repeatedAttr=true;
+					break;
+				}
+			}
+		}
+		return repeatedAttr;
 	}
 	
 	
