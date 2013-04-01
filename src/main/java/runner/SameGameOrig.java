@@ -25,6 +25,8 @@ import com.crawljax.path.Globals;
 import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
+import domMutation.Dom_OrigMut_Analyser;
+
 import executionTracer.AstInstrumenter;
 import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
@@ -52,7 +54,8 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
-		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
+//		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
+		Dom_OrigMut_Analyser dom_origMut_Analyser=new Dom_OrigMut_Analyser(outputdir);
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -61,8 +64,9 @@ public class SameGameOrig {
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
 	
-		AstInstrumenter a=new AstInstrumenter();
+//		AstInstrumenter a=new AstInstrumenter();
 //		DOMMutAstInstrumenter a; //new DOMAstInstrumenter();
+		DOMAstInstrumenter a=new DOMAstInstrumenter();
 //		DomMuteHelper helper=new DomMuteHelper(outputdir);
 //		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
 		String stateName="";
@@ -79,8 +83,8 @@ public class SameGameOrig {
 */		
 				
 //		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domExecutiontrace",stateName);
-				
-		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+		DOMExecutionTracer tracer = new DOMExecutionTracer("domExecutiontrace");
+//		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 		config.addPlugin(web);
