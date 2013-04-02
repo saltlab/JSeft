@@ -6,31 +6,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.crawljax.util.Helper;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import executionTracer.DOMMuteExecutionTracer;
 
-public abstract class Dom_OrigMut_Analyser {
-	/*<clickedOn_stateName_xpath->attribute1, attribute2,...>*/
-//	protected static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap=ArrayListMultimap.create();
-	protected String outputFolder;
-	private List<String> traceFilenameAndPath;
+import com.google.common.collect.ArrayListMultimap;
+
+import executionTracer.DOMExecutionTracer;
+
+public class Dom_Orig_Analyser extends Dom_OrigMut_Analyser {
 	
-	public Dom_OrigMut_Analyser(String outputFolder){
-	
-		this.outputFolder=Helper.addFolderSlashIfNeeded(outputFolder);
-		traceFilenameAndPath=allTraceFiles();
-		startReadingDomTraceFiles();
+	private static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap=ArrayListMultimap.create();
+
+	public Dom_Orig_Analyser(String outputFolder) {
+		super(outputFolder);
 		
 	}
-	
-	protected abstract List<String> allTraceFiles();
-/*	{
+
+	@Override
+	protected List<String> allTraceFiles() {
+		
 		ArrayList<String> result = new ArrayList<String>();
 
 		// find all trace files in the trace directory
-		File dir = new File(outputFolder +  DOMMuteExecutionTracer.EXECUTIONTRACEDIRECTORY);
+		File dir = new File(outputFolder +  DOMExecutionTracer.EXECUTIONTRACEDIRECTORY);
 
 		String[] files = dir.list();
 		if (files == null) {
@@ -38,23 +34,19 @@ public abstract class Dom_OrigMut_Analyser {
 		}
 		for (String file : files) {
 			if (file.endsWith(".txt")) {
-				result.add(outputFolder + DOMMuteExecutionTracer.EXECUTIONTRACEDIRECTORY + file);
+				result.add(outputFolder + DOMExecutionTracer.EXECUTIONTRACEDIRECTORY + file);
 			}
 		}
 
 		return result;
+		
+		
+		
 	}
-*/	
-/*	public ArrayListMultimap<String, DomAttribute> getstateXpathToNodeAttrsMap(){
-		return stateXpathToNodeAttrsMap;
-	}
-*/	
-	public List<String> getTraceFilenameAndPath() {
-		return traceFilenameAndPath;
-	}
-	
-	protected abstract void startReadingDomTraceFiles();
-/*	{
+
+	@Override
+	protected void startReadingDomTraceFiles() {
+
 		try{
 			List<String>filenameAndPathList=getTraceFilenameAndPath();
 			for (String filenameAndPath:filenameAndPathList){
@@ -106,10 +98,10 @@ public abstract class Dom_OrigMut_Analyser {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
-*/	
 	
-/*	private boolean isAttributeRepeated(String clickedOn_state_xpath, DomAttribute domAttr){
+	private boolean isAttributeRepeated(String clickedOn_state_xpath, DomAttribute domAttr){
 		boolean repeatedAttr=false;
 		List<DomAttribute> attrList=stateXpathToNodeAttrsMap.get(clickedOn_state_xpath);
 		if(attrList!=null){
@@ -122,11 +114,5 @@ public abstract class Dom_OrigMut_Analyser {
 		}
 		return repeatedAttr;
 	}
-*/	
-	
-	
-	
-	
+
 }
-
-

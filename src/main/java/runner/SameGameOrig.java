@@ -26,6 +26,7 @@ import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
 import domMutation.DomMuteHelper;
+import domMutation.Dom_Mut_Analyser;
 import domMutation.Dom_OrigMut_Analyser;
 
 import executionTracer.AstInstrumenter;
@@ -57,7 +58,7 @@ public class SameGameOrig {
 
 		String outputdir = "same-output";
 //		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
-		Dom_OrigMut_Analyser dom_origMut_Analyser=new Dom_OrigMut_Analyser(outputdir);
+		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);

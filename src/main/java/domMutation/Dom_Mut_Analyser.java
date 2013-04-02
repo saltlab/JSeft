@@ -6,27 +6,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.crawljax.util.Helper;
+
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+
 import executionTracer.DOMMuteExecutionTracer;
 
-public abstract class Dom_OrigMut_Analyser {
-	/*<clickedOn_stateName_xpath->attribute1, attribute2,...>*/
-//	protected static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap=ArrayListMultimap.create();
-	protected String outputFolder;
-	private List<String> traceFilenameAndPath;
-	
-	public Dom_OrigMut_Analyser(String outputFolder){
-	
-		this.outputFolder=Helper.addFolderSlashIfNeeded(outputFolder);
-		traceFilenameAndPath=allTraceFiles();
-		startReadingDomTraceFiles();
+public class Dom_Mut_Analyser extends Dom_OrigMut_Analyser{
+
+	protected static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap_MutVer=ArrayListMultimap.create();
+	public Dom_Mut_Analyser(String outputFolder) {
+		super(outputFolder);
 		
 	}
-	
-	protected abstract List<String> allTraceFiles();
-/*	{
+
+	@Override
+	protected List<String> allTraceFiles() {
 		ArrayList<String> result = new ArrayList<String>();
 
 		// find all trace files in the trace directory
@@ -43,18 +37,13 @@ public abstract class Dom_OrigMut_Analyser {
 		}
 
 		return result;
+		
+		
+		
 	}
-*/	
-/*	public ArrayListMultimap<String, DomAttribute> getstateXpathToNodeAttrsMap(){
-		return stateXpathToNodeAttrsMap;
-	}
-*/	
-	public List<String> getTraceFilenameAndPath() {
-		return traceFilenameAndPath;
-	}
-	
-	protected abstract void startReadingDomTraceFiles();
-/*	{
+
+	@Override
+	protected void startReadingDomTraceFiles() {
 		try{
 			List<String>filenameAndPathList=getTraceFilenameAndPath();
 			for (String filenameAndPath:filenameAndPathList){
@@ -82,7 +71,7 @@ public abstract class Dom_OrigMut_Analyser {
 							clickedOn_state_xpath=clickedOn + "_" + stateName + "_" + xpath;
 							boolean repeatedAttr=isAttributeRepeated(clickedOn_state_xpath, attr);
 							if(!repeatedAttr)
-								stateXpathToNodeAttrsMap.put(clickedOn_state_xpath, attr);
+								stateXpathToNodeAttrsMap_MutVer.put(clickedOn_state_xpath, attr);
 						}
 						else {
 							String attrName=inputline.split("::")[0];
@@ -90,7 +79,7 @@ public abstract class Dom_OrigMut_Analyser {
 							DomAttribute domAttr=new DomAttribute(attrName, attrValue);
 							boolean repeatedAttr=isAttributeRepeated(clickedOn_state_xpath, domAttr);
 							if(!repeatedAttr)
-								stateXpathToNodeAttrsMap.put(clickedOn_state_xpath, domAttr);
+								stateXpathToNodeAttrsMap_MutVer.put(clickedOn_state_xpath, domAttr);
 						}
 					}
 	
@@ -106,12 +95,13 @@ public abstract class Dom_OrigMut_Analyser {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
-*/	
 	
-/*	private boolean isAttributeRepeated(String clickedOn_state_xpath, DomAttribute domAttr){
+	private boolean isAttributeRepeated(String clickedOn_state_xpath, DomAttribute domAttr){
 		boolean repeatedAttr=false;
-		List<DomAttribute> attrList=stateXpathToNodeAttrsMap.get(clickedOn_state_xpath);
+		List<DomAttribute> attrList=stateXpathToNodeAttrsMap_MutVer.get(clickedOn_state_xpath);
 		if(attrList!=null){
 			for(DomAttribute attribute:attrList){
 				if(attribute.equals(domAttr)){
@@ -122,11 +112,6 @@ public abstract class Dom_OrigMut_Analyser {
 		}
 		return repeatedAttr;
 	}
-*/	
-	
-	
-	
-	
+
+
 }
-
-
