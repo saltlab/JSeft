@@ -13,11 +13,13 @@ import executionTracer.DOMMuteExecutionTracer;
 
 public class Dom_Mut_Analyser extends Dom_OrigMut_Analyser{
 
-	protected static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap_MutVer=ArrayListMultimap.create();
+	public static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap_MutVer=ArrayListMultimap.create();
 	public Dom_Mut_Analyser(String outputFolder) {
 		super(outputFolder);
 		
 	}
+	
+
 
 	@Override
 	protected List<String> allTraceFiles() {

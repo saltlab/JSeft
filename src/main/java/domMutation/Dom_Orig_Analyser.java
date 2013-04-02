@@ -13,12 +13,13 @@ import executionTracer.DOMExecutionTracer;
 
 public class Dom_Orig_Analyser extends Dom_OrigMut_Analyser {
 	
-	private static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap=ArrayListMultimap.create();
+	public static ArrayListMultimap<String, DomAttribute> stateXpathToNodeAttrsMap=ArrayListMultimap.create();
 
 	public Dom_Orig_Analyser(String outputFolder) {
 		super(outputFolder);
 		
 	}
+
 
 	@Override
 	protected List<String> allTraceFiles() {
