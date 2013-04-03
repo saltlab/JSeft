@@ -103,7 +103,7 @@ public class sameGameMutforCodeMutation {
 
 				
 			
-				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace",true);
 				tracer.setOutputFolder(outputdir);
 				config.addPlugin(tracer);
 				config.addPlugin(web);
@@ -149,7 +149,7 @@ public class sameGameMutforCodeMutation {
 
 				config.addPlugin(web);
 				
-				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace", true);
 				tracer.setOutputFolder(outputdir);
 				config.addPlugin(tracer);
 				config.addPlugin(web);
@@ -193,7 +193,7 @@ public class sameGameMutforCodeMutation {
 				web.addPlugin(proxyPlugin);
 				config.addPlugin(web);
 				
-				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
+				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace", true);
 				tracer.setOutputFolder(outputdir);
 				config.addPlugin(tracer);
 				config.addPlugin(web);

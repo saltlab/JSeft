@@ -1,6 +1,7 @@
 package oracle;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,14 +12,37 @@ import java.util.Set;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import executionTracer.JSExecutionTracer;
+
 public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 
+	
 	public static Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer=ArrayListMultimap.create();
 
 	private Multimap<String, FunctionPoint> funcNameToFuncPointMap=ArrayListMultimap.create();
 	public MutatedJsExecTraceAnalyser(String outputFolder) {
 		super(outputFolder);
 		
+	}
+	
+	@Override
+	protected List<String> allTraceFiles() {
+		ArrayList<String> result = new ArrayList<String>();
+
+		/* find all trace files in the trace directory */
+		File dir = new File(outputFolder +  JSExecutionTracer.MUTATEDEXECUTIONTRACEDIRECTORY);
+
+		String[] files = dir.list();
+		if (files == null) {
+			return result;
+		}
+		for (String file : files) {
+			if (file.endsWith(".txt")) {
+				result.add(outputFolder + JSExecutionTracer.MUTATEDEXECUTIONTRACEDIRECTORY + file);
+			}
+		}
+
+		return result;
 	}
 	
 	@Override

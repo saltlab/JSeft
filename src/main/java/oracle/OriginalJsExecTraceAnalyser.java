@@ -1,6 +1,7 @@
 package oracle;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.Set;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+
+import executionTracer.JSExecutionTracer;
 
 public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	
@@ -28,6 +31,26 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 
 	public Multimap<String, FunctionState> getFuncNameToFuncStateMap(){
 		return funcNameToFuncStateMap;
+	}
+	
+	@Override
+	protected List<String> allTraceFiles() {
+		ArrayList<String> result = new ArrayList<String>();
+
+		/* find all trace files in the trace directory */
+		File dir = new File(outputFolder +  JSExecutionTracer.EXECUTIONTRACEDIRECTORY);
+
+		String[] files = dir.list();
+		if (files == null) {
+			return result;
+		}
+		for (String file : files) {
+			if (file.endsWith(".txt")) {
+				result.add(outputFolder + JSExecutionTracer.EXECUTIONTRACEDIRECTORY + file);
+			}
+		}
+
+		return result;
 	}
 	
 	@Override
@@ -220,6 +243,8 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			
 		}
 	}
+	
+	
 	
 	
 	private boolean functionPointsSimilar(FunctionPoint funcPoint1, FunctionPoint funcPoint2){

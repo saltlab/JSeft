@@ -41,14 +41,18 @@ public class JSExecutionTracer
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(JSExecutionTracer.class.getName());
 	
-	public static final String EXECUTIONTRACEDIRECTORY = "jsExecutiontrace/";
+	public static String EXECUTIONTRACEDIRECTORY="jsExecutiontrace/";
+	public static String MUTATEDEXECUTIONTRACEDIRECTORY="jsMutatedExecutiontrace/";
+	private boolean execTraceForMutatedVer=false;
 	
 	/**
 	* @param filename
 	*            How to name the file that will contain the assertions after execution.
 	*/
-	public JSExecutionTracer(String filename) {
+	public JSExecutionTracer(String filename, boolean execTraceForMutatedVer) {
 	assertionFilename = filename;
+	this.execTraceForMutatedVer=execTraceForMutatedVer;
+	
 	}
 	
 	/**
@@ -61,7 +65,10 @@ public class JSExecutionTracer
 	public void preCrawling(EmbeddedBrowser browser) {
 		try {
 			Helper.directoryCheck(getOutputFolder());
-			Helper.directoryCheck(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
+			if(execTraceForMutatedVer)
+				Helper.directoryCheck(getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY);
+			else
+				Helper.directoryCheck(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -79,8 +86,11 @@ public class JSExecutionTracer
 	@Override
 	public void onFireEventSuccessed(Eventable eventable, List<Eventable> pathToSuccess, CrawlSession session, StateMachine stateMachine) {
 	
-		
-		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
+		String filename;
+		if(execTraceForMutatedVer)
+			filename = getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
+		else
+			filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
 		
 		filename += session.getCurrentState().getName();
 		
@@ -127,8 +137,11 @@ public class JSExecutionTracer
 	public void onNewState(CrawlSession session) {
 	
 		
-		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
-		
+		String filename;
+		if(execTraceForMutatedVer)
+			filename=getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
+		else
+			filename=getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
 		filename += session.getCurrentState().getName();
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -179,16 +192,26 @@ public class JSExecutionTracer
 	public List<String> allTraceFiles() {
 		ArrayList<String> result = new ArrayList<String>();
 		
-		/* find all trace files in the trace directory */
-		File dir = new File(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
 		
+		File dir;
+		if(execTraceForMutatedVer)
+			/* find all trace files in the trace directory */
+			dir = new File(getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY);
+		else
+			/* find all trace files in the trace directory */
+			dir = new File(getOutputFolder() + EXECUTIONTRACEDIRECTORY);
+			
 		String[] files = dir.list();
 		if (files == null) {
 			return result;
 		}
 		for (String file : files) {
 			if (file.endsWith(".txt")) {
-				result.add(getOutputFolder() + EXECUTIONTRACEDIRECTORY + file);
+				if(execTraceForMutatedVer)
+					
+					result.add(getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY + file);
+				else
+					result.add(getOutputFolder() + EXECUTIONTRACEDIRECTORY + file);
 			}
 		}
 		

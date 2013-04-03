@@ -146,10 +146,11 @@ public abstract class JsExecTraceAnalyser {
 	}
 	
 */	
-	protected List<String> allTraceFiles() {
+	protected abstract List<String> allTraceFiles(); 
+/*	{
 		ArrayList<String> result = new ArrayList<String>();
 
-		/* find all trace files in the trace directory */
+		// find all trace files in the trace directory
 		File dir = new File(outputFolder +  JSExecutionTracer.EXECUTIONTRACEDIRECTORY);
 
 		String[] files = dir.list();
@@ -164,7 +165,7 @@ public abstract class JsExecTraceAnalyser {
 
 		return result;
 	}
-	
+*/	
 	
 	protected abstract void createFuncNameToFuncStateMap();
 /*	{
