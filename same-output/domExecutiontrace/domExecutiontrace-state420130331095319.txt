@@ -1,0 +1,382 @@
+state::state4
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.cellClicked:::POINT
+node::{"selector":"","id":"0-3","tagName":"TD","className":"clickable","xpath":"//*[@id=\"0-3\"]"}
+line::jQuery(this).attr('id')
+value::0-3
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-0","id":"0-0","tagName":"TD","className":"","xpath":"//*[@id=\"0-0\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-0","id":"0-0","tagName":"TD","className":"","xpath":"//*[@id=\"0-0\"]"}
+line::element.attr('data')
+value::0.0779662388435579
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-0","id":"0-0","tagName":"TD","className":"","xpath":"//*[@id=\"0-0\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-0","id":"1-0","tagName":"TD","className":"","xpath":"//*[@id=\"1-0\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-0","id":"1-0","tagName":"TD","className":"","xpath":"//*[@id=\"1-0\"]"}
+line::element.attr('data')
+value::0.9851124054052374
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-0","id":"1-0","tagName":"TD","className":"","xpath":"//*[@id=\"1-0\"]"}
+line::element.attr('class')
+value::null
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-0","id":"2-0","tagName":"TD","className":"","xpath":"//*[@id=\"2-0\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-0","id":"2-0","tagName":"TD","className":"","xpath":"//*[@id=\"2-0\"]"}
+line::element.attr('data')
+value::0.39942895705630266
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-0","id":"2-0","tagName":"TD","className":"","xpath":"//*[@id=\"2-0\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-0","id":"3-0","tagName":"TD","className":"","xpath":"//*[@id=\"3-0\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-0","id":"3-0","tagName":"TD","className":"","xpath":"//*[@id=\"3-0\"]"}
+line::element.attr('data')
+value::0.3600260334222914
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-0","id":"3-0","tagName":"TD","className":"","xpath":"//*[@id=\"3-0\"]"}
+line::element.attr('class')
+value::null
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-0","id":"4-0","tagName":"TD","className":"","xpath":"//*[@id=\"4-0\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-0","id":"4-0","tagName":"TD","className":"","xpath":"//*[@id=\"4-0\"]"}
+line::element.attr('data')
+value::0.16420298715790083
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-0","id":"4-0","tagName":"TD","className":"","xpath":"//*[@id=\"4-0\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-1","id":"0-1","tagName":"TD","className":"","xpath":"//*[@id=\"0-1\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-1","id":"0-1","tagName":"TD","className":"","xpath":"//*[@id=\"0-1\"]"}
+line::element.attr('data')
+value::0.5668219381472338
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-1","id":"0-1","tagName":"TD","className":"","xpath":"//*[@id=\"0-1\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-1","id":"1-1","tagName":"TD","className":"","xpath":"//*[@id=\"1-1\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-1","id":"1-1","tagName":"TD","className":"","xpath":"//*[@id=\"1-1\"]"}
+line::element.attr('data')
+value::0.86979908224596
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-1","id":"1-1","tagName":"TD","className":"","xpath":"//*[@id=\"1-1\"]"}
+line::element.attr('class')
+value::null
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-1","id":"2-1","tagName":"TD","className":"","xpath":"//*[@id=\"2-1\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-1","id":"2-1","tagName":"TD","className":"","xpath":"//*[@id=\"2-1\"]"}
+line::element.attr('data')
+value::0.22410183383850796
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-1","id":"2-1","tagName":"TD","className":"","xpath":"//*[@id=\"2-1\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-1","id":"3-1","tagName":"TD","className":"","xpath":"//*[@id=\"3-1\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-1","id":"3-1","tagName":"TD","className":"","xpath":"//*[@id=\"3-1\"]"}
+line::element.attr('data')
+value::0.5226969492018476
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-1","id":"3-1","tagName":"TD","className":"","xpath":"//*[@id=\"3-1\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-1","id":"4-1","tagName":"TD","className":"","xpath":"//*[@id=\"4-1\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-1","id":"4-1","tagName":"TD","className":"","xpath":"//*[@id=\"4-1\"]"}
+line::element.attr('data')
+value::0.45102355063620014
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-1","id":"4-1","tagName":"TD","className":"","xpath":"//*[@id=\"4-1\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-2","id":"0-2","tagName":"TD","className":"","xpath":"//*[@id=\"0-2\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-2","id":"0-2","tagName":"TD","className":"","xpath":"//*[@id=\"0-2\"]"}
+line::element.attr('data')
+value::0.05019117062271554
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-2","id":"0-2","tagName":"TD","className":"","xpath":"//*[@id=\"0-2\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-2","id":"1-2","tagName":"TD","className":"","xpath":"//*[@id=\"1-2\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-2","id":"1-2","tagName":"TD","className":"","xpath":"//*[@id=\"1-2\"]"}
+line::element.attr('data')
+value::0.4731845077250818
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-2","id":"1-2","tagName":"TD","className":"","xpath":"//*[@id=\"1-2\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-2","id":"2-2","tagName":"TD","className":"","xpath":"//*[@id=\"2-2\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-2","id":"2-2","tagName":"TD","className":"","xpath":"//*[@id=\"2-2\"]"}
+line::element.attr('data')
+value::0.8173431752839231
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-2","id":"2-2","tagName":"TD","className":"","xpath":"//*[@id=\"2-2\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-2","id":"3-2","tagName":"TD","className":"","xpath":"//*[@id=\"3-2\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-2","id":"3-2","tagName":"TD","className":"","xpath":"//*[@id=\"3-2\"]"}
+line::element.attr('data')
+value::0.2268778980238463
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-2","id":"3-2","tagName":"TD","className":"","xpath":"//*[@id=\"3-2\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-2","id":"4-2","tagName":"TD","className":"","xpath":"//*[@id=\"4-2\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-2","id":"4-2","tagName":"TD","className":"","xpath":"//*[@id=\"4-2\"]"}
+line::element.attr('data')
+value::0.015626021252634684
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-2","id":"4-2","tagName":"TD","className":"","xpath":"//*[@id=\"4-2\"]"}
+line::element.attr('class')
+value::null
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-3","id":"0-3","tagName":"TD","className":"clickable","xpath":"//*[@id=\"0-3\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-3","id":"0-3","tagName":"TD","className":"clickable","xpath":"//*[@id=\"0-3\"]"}
+line::element.attr('data')
+value::0.762355909624905
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-3","id":"0-3","tagName":"TD","className":"","xpath":"//*[@id=\"0-3\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-3","id":"1-3","tagName":"TD","className":"","xpath":"//*[@id=\"1-3\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-3","id":"1-3","tagName":"TD","className":"","xpath":"//*[@id=\"1-3\"]"}
+line::element.attr('data')
+value::0.06207037855145761
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-3","id":"1-3","tagName":"TD","className":"","xpath":"//*[@id=\"1-3\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-3","id":"2-3","tagName":"TD","className":"","xpath":"//*[@id=\"2-3\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-3","id":"2-3","tagName":"TD","className":"","xpath":"//*[@id=\"2-3\"]"}
+line::element.attr('data')
+value::0.921318902154341
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-3","id":"2-3","tagName":"TD","className":"","xpath":"//*[@id=\"2-3\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-3","id":"3-3","tagName":"TD","className":"","xpath":"//*[@id=\"3-3\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-3","id":"3-3","tagName":"TD","className":"","xpath":"//*[@id=\"3-3\"]"}
+line::element.attr('data')
+value::0.6376252827320888
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-3","id":"3-3","tagName":"TD","className":"","xpath":"//*[@id=\"3-3\"]"}
+line::element.attr('class')
+value::null
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-3","id":"4-3","tagName":"TD","className":"","xpath":"//*[@id=\"4-3\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-3","id":"4-3","tagName":"TD","className":"","xpath":"//*[@id=\"4-3\"]"}
+line::element.attr('data')
+value::0.3487076669600524
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-3","id":"4-3","tagName":"TD","className":"","xpath":"//*[@id=\"4-3\"]"}
+line::element.attr('class')
+value::null
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-4","id":"0-4","tagName":"TD","className":"clickable","xpath":"//*[@id=\"0-4\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-4","id":"0-4","tagName":"TD","className":"clickable","xpath":"//*[@id=\"0-4\"]"}
+line::element.attr('data')
+value::0.2538960036384832
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #0-4","id":"0-4","tagName":"TD","className":"clickable","xpath":"//*[@id=\"0-4\"]"}
+line::element.attr('class')
+value::clickable
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-4","id":"1-4","tagName":"TD","className":"clickable","xpath":"//*[@id=\"1-4\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-4","id":"1-4","tagName":"TD","className":"clickable","xpath":"//*[@id=\"1-4\"]"}
+line::element.attr('data')
+value::0.11002079652561617
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #1-4","id":"1-4","tagName":"TD","className":"clickable","xpath":"//*[@id=\"1-4\"]"}
+line::element.attr('class')
+value::clickable
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-4","id":"2-4","tagName":"TD","className":"","xpath":"//*[@id=\"2-4\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-4","id":"2-4","tagName":"TD","className":"","xpath":"//*[@id=\"2-4\"]"}
+line::element.attr('data')
+value::0.8224581031340771
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #2-4","id":"2-4","tagName":"TD","className":"","xpath":"//*[@id=\"2-4\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-4","id":"3-4","tagName":"TD","className":"","xpath":"//*[@id=\"3-4\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-4","id":"3-4","tagName":"TD","className":"","xpath":"//*[@id=\"3-4\"]"}
+line::element.attr('data')
+value::0.11237704815002077
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #3-4","id":"3-4","tagName":"TD","className":"","xpath":"//*[@id=\"3-4\"]"}
+line::element.attr('class')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-4","id":"4-4","tagName":"TD","className":"","xpath":"//*[@id=\"4-4\"]"}
+line::element.css('background')
+value::
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-4","id":"4-4","tagName":"TD","className":"","xpath":"//*[@id=\"4-4\"]"}
+line::element.attr('data')
+value::0.612509921586873
+===========================================================================
+http://localhost:8080//same-game/same-game.htmscript2.updateBoard:::POINT
+node::{"selector":"#board #4-4","id":"4-4","tagName":"TD","className":"","xpath":"//*[@id=\"4-4\"]"}
+line::element.attr('class')
+value::null
+===========================================================================

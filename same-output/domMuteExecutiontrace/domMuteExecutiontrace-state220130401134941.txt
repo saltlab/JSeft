@@ -1,0 +1,244 @@
+clickedOn::" " TD: class="clickable" data="0.850490514340408" id="2-1" style="background: #0f0;" click xpath /HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[3]
+state::state2
+===========================================================================
+tagName::HTML
+xpath::/HTML[1]
+xmlns::http://www.w3.org/1999/xhtml
+===========================================================================
+tagName::HEAD
+xpath::/HTML[1]/HEAD[1]
+===========================================================================
+tagName::META
+xpath::/HTML[1]/HEAD[1]/META[1]
+content::text/html; charset=UTF-8
+http-equiv::Content-Type
+===========================================================================
+tagName::META
+xpath::/HTML[1]/HEAD[1]/META[2]
+content::text/html; charset=UTF-8
+http-equiv::Content-Type
+===========================================================================
+tagName::META
+xpath::/HTML[1]/HEAD[1]/META[3]
+content::text/html; charset=UTF-8
+http-equiv::Content-Type
+===========================================================================
+tagName::META
+xpath::/HTML[1]/HEAD[1]/META[4]
+content::text/html; charset=ISO-8859-1
+http-equiv::content-type
+===========================================================================
+tagName::STYLE
+xpath::/HTML[1]/HEAD[1]/STYLE[1]
+type::text/css
+===========================================================================
+tagName::SCRIPT
+xpath::/HTML[1]/HEAD[1]/SCRIPT[1]
+src::same-game_files/jquery1.js
+type::text/javascript
+===========================================================================
+tagName::SCRIPT
+xpath::/HTML[1]/HEAD[1]/SCRIPT[2]
+src::same-game_files/seedrandom-min.js
+type::text/javascript
+===========================================================================
+tagName::SCRIPT
+xpath::/HTML[1]/HEAD[1]/SCRIPT[3]
+type::text/javascript
+===========================================================================
+tagName::BODY
+xpath::/HTML[1]/BODY[1]
+===========================================================================
+tagName::DIV
+xpath::/HTML[1]/BODY[1]/DIV[1]
+id::board
+===========================================================================
+tagName::TABLE
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]
+===========================================================================
+tagName::TBODY
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]
+===========================================================================
+tagName::TR
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[1]
+class::null
+data::0.8356950891483325
+id::0-0
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[2]
+data::0.4274909487737108
+id::1-0
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[3]
+class::null
+data::0.4635108207605631
+id::2-0
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[4]
+data::0.024887884422634017
+id::3-0
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[5]
+class::null
+data::0.8221207729591675
+id::4-0
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TR
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[1]
+class::null
+data::0.28692262496972054
+id::0-1
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[2]
+data::0.988926341904338
+id::1-1
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[3]
+class::null
+data::0.13165514531824163
+id::2-1
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[4]
+class::null
+data::0.7645315332812135
+id::3-1
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[5]
+class::null
+data::0.4311088843123191
+id::4-1
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TR
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[1]
+class::null
+data::0.14105886094837386
+id::0-2
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[2]
+class::null
+data::0.2973779229311896
+id::1-2
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[3]
+class::null
+data::0.24195208436258817
+id::2-2
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[4]
+class::null
+data::0.3388733639485729
+id::3-2
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[5]
+data::0.9988714229930106
+id::4-2
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TR
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[1]
+class::clickable
+data::0.32262105684161857
+id::0-3
+style::background: none repeat scroll 0% 0% rgb(0, 0, 255);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[2]
+class::clickable
+data::0.5269007614422824
+id::1-3
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[3]
+class::null
+data::0.7989218297488313
+id::2-3
+style::background: none repeat scroll 0% 0% rgb(0, 0, 255);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[4]
+data::0.4693055800583204
+id::3-3
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[5]
+data::0.48080128177359177
+id::4-3
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TR
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[1]
+class::clickable
+data::0.9952885992945738
+id::0-4
+style::background: none repeat scroll 0% 0% rgb(0, 0, 255);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]
+class::clickable
+data::0.9373406961916094
+id::1-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[3]
+class::clickable
+data::0.04254109903251563
+id::2-4
+style::background: none repeat scroll 0% 0% rgb(255, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[4]
+class::null
+data::0.6119001892582699
+id::3-4
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
+tagName::TD
+xpath::/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[5]
+data::0.05457050694643135
+id::4-4
+style::background: none repeat scroll 0% 0% rgb(0, 0, 0);
+===========================================================================
