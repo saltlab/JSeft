@@ -1,70 +1,28 @@
 package oracle;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
-import com.crawljax.util.Helper;
-import executionTracer.JSExecutionTracer;
+import java.util.Set;
 
-public abstract class JsExecTraceAnalyser {
-	
-	/**
-	 * (functioni --> (entryi --> (exiti)))
-	 * 
-	 * ArrayList --> (variable, type, value)
-	 */
-	
-//	protected Multimap<String, FunctionState> funcNameToFuncStateMap=ArrayListMultimap.create();
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
+public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 
-	
-//	protected Multimap<String, FunctionPoint> funcNameToFuncPointMap;
-		   
-	
-	
-	protected String outputFolder;
-	protected List<String> traceFilenameAndPath;
-	
-	protected Comparator<FunctionPoint> vc;
-	
-	public JsExecTraceAnalyser(String outputFolder){
-		vc=new Comparator<FunctionPoint>() {
+	public static Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer=ArrayListMultimap.create();
 
-			@Override
-			public int compare(FunctionPoint f1, FunctionPoint f2) {
-		        if(f1.getTime()>f2.getTime())
-		        	return 1;
-		        else if(f1.getTime()<f2.getTime()){
-		        	return -1;
-		        }
-		        return 0;
-				
-			}
-		};
-		this.outputFolder=Helper.addFolderSlashIfNeeded(outputFolder);
-		traceFilenameAndPath=allTraceFiles();
+	private Multimap<String, FunctionPoint> funcNameToFuncPointMap=ArrayListMultimap.create();
+	public MutatedJsExecTraceAnalyser(String outputFolder) {
+		super(outputFolder);
 		
-//		funcNameToFuncPointMap = ArrayListMultimap.create();
-		
-		startAnalysingJsExecTraceFiles();
-		createFuncNameToFuncStateMap();
-	
-
 	}
 	
-	public List<String> getTraceFilenameAndPath() {
-		return traceFilenameAndPath;
-	}
-	
-/*	public Multimap<String, FunctionState> getFuncNameToFuncStateMap(){
-		return funcNameToFuncStateMap;
-	}
-*/	
-
-	
-	protected abstract void startAnalysingJsExecTraceFiles();
-/*	{
+	@Override
+	protected void startAnalysingJsExecTraceFiles(){
 		try{
 			List<String>filenameAndPathList=getTraceFilenameAndPath();
 			for (String filenameAndPath:filenameAndPathList){
@@ -139,35 +97,25 @@ public abstract class JsExecTraceAnalyser {
 				java.util.Collections.sort(points, vc);
 			}
 			
-		}
+	/*		Set<String> keysets=funcNameToFuncPointMap.keySet();
+			it=keysets.iterator();
+			while(it.hasNext()){
+				String funcName=it.next();
+				Collection<FunctionPoint> points=funcNameToFuncPointMap.get(funcName);
+				Iterator<FunctionPoint> iter=points.iterator();
+				
+				while(iter.hasNext()){
+					System.out.println(funcName + iter.next().getTime());
+				}
+			}
+	*/	}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-*/	
-	protected List<String> allTraceFiles() {
-		ArrayList<String> result = new ArrayList<String>();
-
-		/* find all trace files in the trace directory */
-		File dir = new File(outputFolder +  JSExecutionTracer.EXECUTIONTRACEDIRECTORY);
-
-		String[] files = dir.list();
-		if (files == null) {
-			return result;
-		}
-		for (String file : files) {
-			if (file.endsWith(".txt")) {
-				result.add(outputFolder + JSExecutionTracer.EXECUTIONTRACEDIRECTORY + file);
-			}
-		}
-
-		return result;
-	}
-	
-	
-	protected abstract void createFuncNameToFuncStateMap();
-/*	{
+	@Override
+	protected void createFuncNameToFuncStateMap(){
 		Set<String> funcNames=funcNameToFuncPointMap.keySet();
 		Iterator<String> iter=funcNames.iterator();
 		while(iter.hasNext()){
@@ -190,18 +138,12 @@ public abstract class JsExecTraceAnalyser {
 						
 					}
 					funcState=new FunctionState(entry, exit);
-					funcNameToFuncStateMap.put(funcName, funcState);
+					funcNameToFuncStateMap_modifiedVer.put(funcName, funcState);
 				}
 			}
 		}
 	}
 	
-*/
-	
-	
-	
-	
+
 
 }
-
-

@@ -11,9 +11,10 @@ import com.google.common.collect.Multimap;
 public class FunctionStateComparator {
 
 	
-	private Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer;
+//	private Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer;
+	/* (funcName->(entrypoint->exitpoint)) */
 	private ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,FunctionPoint>> oracleMultimap=ArrayListMultimap.create();	
-	public FunctionStateComparator(Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer){
+/*	public FunctionStateComparator(Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer){
 		this.funcNameToFuncStateMap_modifiedVer=funcNameToFuncStateMap_modifiedVer;
 		
 	}
@@ -21,15 +22,15 @@ public class FunctionStateComparator {
 	public Multimap<String, FunctionState> getFuncNameToFuncStateMap_modifiedVer(){
 		return funcNameToFuncStateMap_modifiedVer;
 	}
-	
+*/	
 	public void analysingOutputDiffs(){
 		
-		Set<String> keys=funcNameToFuncStateMap_modifiedVer.keySet();
+		Set<String> keys=MutatedJsExecTraceAnalyser.funcNameToFuncStateMap_modifiedVer.keySet();
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
 		
 			String funcName=iter.next();
-			List<FunctionState> funcStates=(List<FunctionState>) funcNameToFuncStateMap_modifiedVer.get(funcName);
+			List<FunctionState> funcStates=(List<FunctionState>) MutatedJsExecTraceAnalyser.funcNameToFuncStateMap_modifiedVer.get(funcName);
 			Multimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit=
 					OriginalJsExecTraceAnalyser.funcEntryPointToExitPointMap.get(funcName);
 			
