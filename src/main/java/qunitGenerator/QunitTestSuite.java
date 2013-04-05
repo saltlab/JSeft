@@ -26,7 +26,7 @@ public class QunitTestSuite {
 				while(funcEntryIter.hasNext()){
 					FunctionPoint funcEntry=funcEntryIter.next();
 					List<FunctionPoint> funcExits=funcEntryExit.get(funcEntry);
-					QunitTestCase qunitTestCase=new QunitTestCase(funcEntry, funcExits);
+					QunitTestCase qunitTestCase=new QunitTestCase(funcEntry, funcExits, funcName);
 					qunitTestCases.add(qunitTestCase);
 				}
 			}
