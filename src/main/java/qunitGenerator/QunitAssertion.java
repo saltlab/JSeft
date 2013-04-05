@@ -14,9 +14,10 @@ public class QunitAssertion {
 	private String actual; 
 	private String functionName;
 	
-	public QunitAssertion(String actual, Variable expected){
+	public QunitAssertion(String actual, Variable expected, AssertionType assertionType){
 		this.expected=expected;
 		this.actual=actual;
+		this.assertionType=assertionType;
 	}
 
 	

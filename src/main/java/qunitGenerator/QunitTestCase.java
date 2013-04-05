@@ -7,6 +7,7 @@ import executionTracer.AstInstrumenter.variableUsageType;
 
 import oracle.FunctionPoint;
 import oracle.Variable;
+import qunitGenerator.QunitAssertion.AssertionType;
 
 public class QunitTestCase {
 	
@@ -42,8 +43,11 @@ public class QunitTestCase {
 			
 			ArrayList<Variable> exitVars=funcExit.getVariables();
 			for(Variable exitVar:exitVars){
-				QunitAssertion qunitAssertion=new QunitAssertion(actual,exitVar);
-				qunitAssertions.add(qunitAssertion);
+				String varUsage=exitVar.getVariableUsage();
+				if(varUsage.equals(variableUsageType.returnVal.toString())){
+					QunitAssertion qunitAssertion=new QunitAssertion(actual,exitVar, AssertionType.equal);
+					qunitAssertions.add(qunitAssertion);
+				}
 			}
 			
 		}
