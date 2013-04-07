@@ -101,16 +101,16 @@ public class Variable {
 						
 					if (json.length()>0 )
 						if (json.get(0).toString().equals("true")) {
-							result+= "1";
+							result+= "true";
 						} else {
-							result+= "0";						
+							result+= "false";						
 						}
 					for (int i=1;i< json.length();i++) 
 					
 						if (json.get(i).toString().equals("true")) {
-							result+= ",1";
+							result+= ",true";
 						} else {
-							result+= ",0";
+							result+= ",false";
 						}
 					result+="]";
 					return result;
@@ -118,9 +118,9 @@ public class Variable {
 				else{
 	//				if (type.equals("boolean"))
 						if (value.toString()=="true")
-							return("1");
+							return("true");
 						else
-							return ("0");
+							return ("false");
 				}
 		} else {
 			//if (type.equals("object")) {
@@ -144,7 +144,7 @@ public class Variable {
 		result=result + "]";
 		if (isArray()){ 
 			if(result.endsWith("]]")){// && result.endsWith("]]")){
-				result="["+result.replace("[","").replace("]", "").replace(",", " ")+"]";
+				result="["+result.replace("[","").replace("]", "")+"]";
 //				result=result.replace(",", " ");
 				}
 
@@ -165,7 +165,7 @@ public class Variable {
 		result=result + "]";
 		if (isArray()){ 
 			if(result.endsWith("]]")){// && result.endsWith("]]")){
-				result="["+result.replace("[","").replace("]", "").replace(",", " ")+"]";
+				result="["+result.replace("[","").replace("]", "")+"]";
 //				result=result.replace(",", " ");
 				}
 

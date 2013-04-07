@@ -21,21 +21,24 @@ public class QunitTestCase {
 	public QunitTestCase(FunctionPoint functionEntry, List<FunctionPoint> functionExits, String funcName){
 		String[] funcAndScope=funcName.split(".");
 		functionName=funcAndScope[funcAndScope.length-1];
-		testCaseName="\"" + "Testing " + this.functionName;
+		testCaseName="\"" + "Testing " + this.functionName + "\"";
 
-		String actual="var result= ";
+		testCaseCode="var result= ";
 		ArrayList<Variable> entryVars=functionEntry.getVariables();
 		if(!functionName.contains("anonymous")){
-			actual="function" + "(";
+			testCaseCode="function" + "(";
 			for(Variable entryVar:entryVars){
 				String varUsage=entryVar.getVariableUsage();
 				if(varUsage.equals(variableUsageType.inputParam.toString())){
 					String varName=entryVar.getVariableName();
-					actual+=varName + ", ";
+					testCaseCode+=varName + ", ";
 				}
 			}
-			actual=actual.substring(0, actual.length()-2);
-			actual+=")";
+			if(testCaseCode.endsWith(", ")){
+				testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
+			}
+			testCaseCode+=")" + ";";
+			testCaseCode += "\n";
 		}
 		
 		for(FunctionPoint funcExit:functionExits){
@@ -44,12 +47,53 @@ public class QunitTestCase {
 			ArrayList<Variable> exitVars=funcExit.getVariables();
 			for(Variable exitVar:exitVars){
 				String varUsage=exitVar.getVariableUsage();
+				
+				
 				if(varUsage.equals(variableUsageType.returnVal.toString())){
-					QunitAssertion qunitAssertion=new QunitAssertion(actual,exitVar, AssertionType.equal);
-					qunitAssertions.add(qunitAssertion);
+					if(exitVar.getValue().equals("[]")){
+						QunitAssertion qunitAssertionForValueChecking=new QunitAssertion("result.length","0", AssertionType.ok, exitVar, functionEntry,funcExit );
+						qunitAssertions.add(qunitAssertionForValueChecking);
+					}
+					else{
+						QunitAssertion qunitAssertionForValueChecking=new QunitAssertion("result",exitVar.getValue(), AssertionType.deepEqual, exitVar, functionEntry,funcExit);
+						qunitAssertions.add(qunitAssertionForValueChecking);
+					}
+					
+					String actualType="getType(result)" + " == " + exitVar.getType(); 
+					QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion(actualType,exitVar.getType(), AssertionType.ok, exitVar, functionEntry,funcExit);
+					qunitAssertions.add(qunitAssertionForTypeChecking);
+				}
+				else{
+					
+					
+					if(varUsage.equals(variableUsageType.global.toString())){
+						
+						String actual=exitVar.getVariableName();
+						if(exitVar.getValue().equals("[]")){
+							actual+= ".length";
+							QunitAssertion qunitAssertionForValueChecking=new QunitAssertion(actual,"0", AssertionType.ok, exitVar, functionEntry,funcExit);
+							qunitAssertions.add(qunitAssertionForValueChecking);
+						}
+						else{
+							
+							QunitAssertion qunitAssertionForValueChecking=new QunitAssertion(actual,exitVar.getValue(), AssertionType.deepEqual, exitVar, functionEntry,funcExit);
+							qunitAssertions.add(qunitAssertionForValueChecking);
+						}
+						
+						String actualType="getType"+ "(" + actual + ")" + " == " + exitVar.getType(); 
+						QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion(actualType,exitVar.getType(), AssertionType.ok, exitVar, functionEntry,funcExit);
+						qunitAssertions.add(qunitAssertionForTypeChecking);
+					}
+					
 				}
 			}
 			
+		}
+		
+		for(QunitAssertion qunitAssertion:qunitAssertions){
+			String assertionCode=qunitAssertion.getAssertionCode();
+			testCaseCode+=assertionCode;
+			testCaseCode+="\n";
 		}
 		
 	}

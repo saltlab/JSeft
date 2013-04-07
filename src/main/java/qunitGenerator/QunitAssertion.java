@@ -9,15 +9,24 @@ public class QunitAssertion {
 	
 	public static enum AssertionType {ok, equal, deepEqual};
 	private AssertionType assertionType;
-	private String assertionMsg;
-	private Variable expected;
+	private String assertionMsg="";
+	private String expected;
 	private String actual; 
-	private String functionName;
+	private String assertionCode;
+
+	private Variable expectedVar;
+	private FunctionPoint entryPoint;
+	private FunctionPoint exitPoint;
 	
-	public QunitAssertion(String actual, Variable expected, AssertionType assertionType){
+	public QunitAssertion(String actual, String expected, AssertionType assertionType, Variable expectedVar, FunctionPoint entryPoint,
+		FunctionPoint exitPoint){
 		this.expected=expected;
 		this.actual=actual;
 		this.assertionType=assertionType;
+		this.expectedVar=expectedVar;
+		this.entryPoint=entryPoint;
+		this.exitPoint=exitPoint;
+		assertionCode=assertionType.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
 	}
 
 	
@@ -29,15 +38,30 @@ public class QunitAssertion {
 		return assertionMsg;
 	}
 	
-	public Variable getExpected(){
+	public String getExpected(){
 		return expected;
+	}
+	
+	public Variable getExpectedVar(){
+		return expectedVar;
+	}
+	
+	public FunctionPoint getEntryPoint(){
+		return entryPoint;
+	}
+	
+	public FunctionPoint getExitPoint(){
+		return exitPoint;
 	}
 	
 	public String getActual(){
 		return actual;
 	}
 	
-	public String getFunctionName(){
-		return functionName;
+	
+	
+	public String getAssertionCode(){
+		return assertionCode;
 	}
 }
+
