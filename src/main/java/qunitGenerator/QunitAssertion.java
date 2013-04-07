@@ -26,7 +26,14 @@ public class QunitAssertion {
 		this.expectedVar=expectedVar;
 		this.entryPoint=entryPoint;
 		this.exitPoint=exitPoint;
-		assertionCode=assertionType.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+		if(assertionType.name().equals(AssertionType.ok)){
+			
+			assertionCode=assertionType.toString() + "(" + actual +" == " + expected + ", " + "" +")" + ";";
+		}
+		else{
+			
+			assertionCode=assertionType.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+		}
 	}
 
 	
