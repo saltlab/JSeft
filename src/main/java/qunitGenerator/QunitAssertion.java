@@ -10,9 +10,9 @@ public class QunitAssertion {
 	public static enum AssertionType {ok, equal, deepEqual};
 	private AssertionType assertionType;
 	private String assertionMsg="";
-	private String expected;
-	private String actual; 
-	private String assertionCode;
+	private String expected="";
+	private String actual=""; 
+	private String assertionCode="";
 
 	private Variable expectedVar;
 	private FunctionPoint entryPoint;
