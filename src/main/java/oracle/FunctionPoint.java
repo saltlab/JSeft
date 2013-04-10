@@ -2,6 +2,8 @@ package oracle;
 
 import java.util.ArrayList;
 
+import domMutation.NodeProperty;
+
 public class FunctionPoint {
 
 	private String pointName;
