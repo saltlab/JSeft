@@ -35,9 +35,15 @@ public class DomMuteHelper {
 			for(int i=0;i<nodeProps.size();i++){
 				
 				NodeProperty nodeProp=nodeProps.get(i);
-				domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, true, stateName));
-				domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, false, stateName));
-			
+				
+				if(nodeProp.getTypeOfAccess().equals("DIRECTACCESS")){
+					domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, true, stateName));
+				}
+				else{
+				
+					domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, true, stateName));
+					domMutAstInstrumenterList.add(new DOMMutAstInstrumenter(funcName, nodeProp, false, stateName));
+				}
 			}
 		}
 		return domMutAstInstrumenterList;

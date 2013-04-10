@@ -351,7 +351,7 @@ public abstract class DOMASTModifier implements NodeVisitor {
 							&& ((FunctionCall)node).getArguments().get(0) instanceof StringLiteral){
 						
 						String domNodeToLog=node.toSource();
-						String objectAndFunction=domNodeToLog;
+						String objectAndFunction="DIRECTACCESS";
 			    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
 			    		parent.addChildAfter(
 			    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),

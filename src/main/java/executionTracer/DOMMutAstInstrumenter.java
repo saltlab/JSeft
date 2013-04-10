@@ -98,6 +98,7 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
 				break;
 			
+			
 			default:
 				break;	
 			
