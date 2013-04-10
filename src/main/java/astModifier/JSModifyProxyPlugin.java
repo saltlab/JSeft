@@ -23,6 +23,7 @@ import org.w3c.dom.NodeList;
 import com.crawljax.util.Helper;
 
 import executionTracer.DOMExecutionTracer;
+import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 
@@ -34,9 +35,11 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	private JSASTModifier modifier;
 	private DOMASTModifier domModifier;
 	private DOMMuteASTModifier domMuteModifier;
+	private DOM_JS_ASTModifier dom_js_modifier;
 	private boolean jsModify=false;
 	private boolean domModify=false;
 	private boolean domMuteModify=false;
+	private boolean dom_js_modify=false;
 	private String outputfolder;
 
 
@@ -52,6 +55,19 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		modifier = modify;
 		jsModify=true;
 		domModify=false;
+		this.dom_js_modify=false;
+		this.domMuteModify=false;
+		
+	}
+	
+	public JSModifyProxyPlugin(DOM_JS_ASTModifier dom_js_modify) {
+		
+		excludeFilenamePatterns = new ArrayList<String>();
+		dom_js_modifier = dom_js_modify;
+		jsModify=false;
+		domModify=false;
+		this.domMuteModify=false;
+		this.dom_js_modify=true;
 		
 	}
 	
@@ -64,6 +80,7 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		this.domModify=true;
 		this.jsModify=false;
 		this.domMuteModify=false;
+		this.dom_js_modify=false;
 		
 	}
 	
@@ -74,6 +91,7 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		this.domModify=false;
 		this.jsModify=false;
 		this.domMuteModify=true;
+		this.dom_js_modify=false;
 		
 	}
 
@@ -251,6 +269,17 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 
 				domMuteModifier.finish(ast);
 			}
+			
+			else if(this.dom_js_modify){
+				dom_js_modifier.setScopeName(scopename);
+
+				dom_js_modifier.start();
+
+				/* recurse through AST */
+				ast.visit(dom_js_modifier);
+
+				dom_js_modifier.finish(ast);
+			}
 				
 			/* clean up */
 			Context.exit();
@@ -279,10 +308,16 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	 */
 	private Response createResponse(Response response, Request request) {
 		String type = response.getHeader("Content-Type");
-
+		
 		if (request.getURL().toString().contains("?thisisanexecutiontracingcall")) {
 			LOGGER.info("Execution trace request " + request.getURL().toString());
 			JSExecutionTracer.addPoint(new String(request.getContent()));
+			return response;
+		}
+		
+		if (request.getURL().toString().contains("?thisisajsdomexecutiontracingcall")) {
+			LOGGER.info("Execution trace request " + request.getURL().toString());
+			DOM_JS_ExecutionTracer.addPoint(new String(request.getContent()));
 			return response;
 		}
 		

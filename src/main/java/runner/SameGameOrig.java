@@ -34,6 +34,8 @@ import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
 import executionTracer.DOMMutAstInstrumenter;
 import executionTracer.DOMMuteExecutionTracer;
+import executionTracer.DOM_JS_AstInstrumenter;
+import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 public class SameGameOrig {
@@ -58,7 +60,7 @@ public class SameGameOrig {
 
 		String outputdir = "same-output";
 //		JsExecTraceAnalyser jsExecTraceAnalyser=new JsExecTraceAnalyser(outputdir);
-		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
+//		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -67,26 +69,26 @@ public class SameGameOrig {
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
 	
-//		AstInstrumenter a=new AstInstrumenter();
-		DOMMutAstInstrumenter a;
+		DOM_JS_AstInstrumenter a=new DOM_JS_AstInstrumenter();
+//		DOMMutAstInstrumenter a;
 //		DOMAstInstrumenter a=new DOMAstInstrumenter();
-		DomMuteHelper helper=new DomMuteHelper(outputdir);
-		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
-		String stateName="";
-		for(int i=0;i<2;i++){
-			a=dommutes.get(1);
-			stateName=a.getStateName();
+//		DomMuteHelper helper=new DomMuteHelper(outputdir);
+//		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
+//		String stateName="";
+//		for(int i=0;i<2;i++){
+//			a=dommutes.get(1);
+//			stateName=a.getStateName();
 			JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 			p.excludeDefaults();
 			web.addPlugin(p);
-		}
+//		}
 /*		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
 */		
 				
-		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domMuteExecutiontrace",stateName);
-//		DOMExecutionTracer tracer = new DOMExecutionTracer("domExecutiontrace");
+//		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domMuteExecutiontrace",stateName);
+		DOM_JS_ExecutionTracer tracer = new DOM_JS_ExecutionTracer("jsDomExecutiontrace",false);
 //		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);

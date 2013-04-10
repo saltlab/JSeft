@@ -8,12 +8,13 @@ import org.json.JSONException;
 import com.crawljax.core.CrawljaxException;
 
 public class DOMTrace {
-private ArrayList<ProgramPoint> programPoints;
+
+//	private ArrayList<ProgramPoint> programPoints;
 
 
 	
 	public DOMTrace() {
-		programPoints = new ArrayList<ProgramPoint>();
+//		programPoints = new ArrayList<ProgramPoint>();
 
 		
 	}
@@ -25,7 +26,7 @@ private ArrayList<ProgramPoint> programPoints;
 	 *            Name of the program point.
 	 * @return The ProgramPoint object.
 	 */
-	public ProgramPoint programPoint(String name) {
+/*	public ProgramPoint programPoint(String name) {
 
 
 	
@@ -35,7 +36,7 @@ private ArrayList<ProgramPoint> programPoints;
 
 		return p;
 	}
-
+*/
 	/**
 	 * Parse JSON object into a trace.
 	 * 

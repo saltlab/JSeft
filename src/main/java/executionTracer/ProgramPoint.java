@@ -16,6 +16,7 @@ public class ProgramPoint {
 
 	private String name;
 	private ArrayList<Variable> variables;
+	private ArrayList<DOMInput> domInputs;
 
 
 
@@ -28,8 +29,19 @@ public class ProgramPoint {
 	public ProgramPoint(String name) {
 		this.name = name;
 		variables = new ArrayList<Variable>();
+		domInputs=new ArrayList<DOMInput>();
 	
 
+	}
+	
+	private String getDomInputData(){
+		StringBuffer result = new StringBuffer();
+		for(DOMInput domInput:domInputs){
+			result.append("node::" + domInput.getNode() + "\n");
+			result.append("line::" + domInput.getLine() + "\n");
+			result.append("value::" + domInput.getValue() + "\n");
+		}
+		return result.toString();
 	}
 
 
@@ -57,6 +69,10 @@ public class ProgramPoint {
 			for (int i = 0; i < data.length(); i++) {
 				JSONArray item = data.getJSONArray(i);
 				time=item.get(3).toString();
+				
+				if(item.get(0).toString().equals("DOM")){
+					continue;
+				}
 				variableUsage=item.get(4).toString();
 				if (var.getName().equals(item.getString(0))) {
 							
@@ -73,6 +89,7 @@ public class ProgramPoint {
 			}
 		}
 
+		result.append(getDomInputData());
 		result.append("time::" + time + "\n");
 
 		return result.toString();
@@ -81,5 +98,8 @@ public class ProgramPoint {
 	public void variable(Variable variable){
 		variables.add(variable);
 		
+	}
+	public void domInput(DOMInput domInput){
+		domInputs.add(domInput);
 	}
 }

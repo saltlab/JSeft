@@ -16,7 +16,7 @@ import com.google.common.io.Resources;
 import astModifier.DOMASTModifier;
 
 public class DOMAstInstrumenter extends DOMASTModifier {
-	public static final String JSINSTRUMENTLOGNAME = "window.jsExecutionTrace";
+	public static final String JSINSTRUMENTLOGNAME = "window.domExecutionTrace";
 
 
 
