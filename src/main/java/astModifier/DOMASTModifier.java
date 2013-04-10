@@ -20,6 +20,7 @@ import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.NodeVisitor;
 import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.ReturnStatement;
+import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
 import org.slf4j.Logger;
@@ -340,7 +341,26 @@ public abstract class DOMASTModifier implements NodeVisitor {
 				
 			}
 		}
-		
+        
+        else if(node instanceof FunctionCall){
+			if( ((FunctionCall)node).getTarget() instanceof Name){
+			
+				if(((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("$")){
+				
+					if(((FunctionCall)node).getArguments().size()==1
+							&& ((FunctionCall)node).getArguments().get(0) instanceof StringLiteral){
+						
+						String domNodeToLog=node.toSource();
+						String objectAndFunction=domNodeToLog;
+			    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
+			    		parent.addChildAfter(
+			    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
+			    				getLineNode(node));
+						
+					}
+				}
+			}
+        }
 	
 
 
