@@ -57,13 +57,14 @@ public class ProgramPoint {
 
 	
 	
-	public String getData(JSONArray data) throws CrawljaxException, JSONException {
+	public String getData(JSONArray data, boolean shouldNextProgPointNameShown) throws CrawljaxException, JSONException {
 		StringBuffer result = new StringBuffer();
 		String time = "";
 		String variableUsage="";
 		boolean found = false;
 
-		result.append(name + "\n");
+		if(shouldNextProgPointNameShown)
+			result.append(name + "\n");
 		for (Variable var : variables) {
 			found=false;
 			for (int i = 0; i < data.length(); i++) {

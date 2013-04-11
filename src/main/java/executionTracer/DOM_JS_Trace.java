@@ -49,7 +49,9 @@ public class DOM_JS_Trace {
 	public String getTraceRecord(JSONArray jsonObject) throws JSONException, CrawljaxException {
 	
 		StringBuffer result = new StringBuffer();
+		boolean shouldNextProgPointNameShown=true;
 		for (int j = 0; j < jsonObject.length(); j++) {
+			
 			JSONArray value = jsonObject.getJSONArray(j);
 
 			String prefix = value.getString(1);
@@ -76,11 +78,27 @@ public class DOM_JS_Trace {
 				}
 			}	
 			
+			result.append(prog.getData(value.getJSONArray(2),shouldNextProgPointNameShown));
 			
 			
-			result.append(prog.getData(value.getJSONArray(2)));
+			if(j<jsonObject.length()-1){
+				String isThisDom=value.getJSONArray(2).getJSONArray(0).getString(0);
+				String isNextDom=jsonObject.getJSONArray(j+1).getJSONArray(2).getJSONArray(0).getString(0);
+				String nextProgPointName=jsonObject.getJSONArray(j+1).getString(0)+jsonObject.getJSONArray(j+1).getString(1);
+				if(isThisDom.equals("DOM") || isNextDom.equals("DOM")){
+					if(programPointName.equals(nextProgPointName) ){
+						shouldNextProgPointNameShown=false;
+						continue;
+					}
+				}
+				else {
+					shouldNextProgPointNameShown=true;
+					result.append("===========================================================================\n");
+				
+				}
+			}
 			
-			result.append("===========================================================================\n");
+	//		result.append("===========================================================================\n");
 				
 			
 			
@@ -114,7 +132,7 @@ public class DOM_JS_Trace {
 			ProgramPoint prog = programPoint(programPointName);
 			
 			
-			result.append(prog.getData(value.getJSONArray(2)));
+			result.append(prog.getData(value.getJSONArray(2),true));
 			if(j<jsonObject.length()-1){
 				if(!jsonObject.getJSONArray(j+1).getString(0).equals(value.getString(0)) ||
 						prefix.equals(ProgramPoint.EXITPOSTFIX) &&jsonObject.getJSONArray(j+1).getString(1).equals(ProgramPoint.ENTERPOSTFIX)){

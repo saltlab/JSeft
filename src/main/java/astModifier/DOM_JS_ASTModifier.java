@@ -22,6 +22,7 @@ import org.mozilla.javascript.ast.NodeVisitor;
 import org.mozilla.javascript.ast.ObjectProperty;
 import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.ReturnStatement;
+import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
 import org.slf4j.Logger;
@@ -67,6 +68,8 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 	 * Abstract constructor to initialize the mapper variable.
 	 */
 	protected DOM_JS_ASTModifier() {
+
+		/* add -<number of arguments> to also make sure number of arguments is the same */
 		nodesNotTolook.add("send(new Array(");
 		nodesNotTolook.add("new Array(");
 		nodesNotTolook.add("addVariable");
@@ -84,23 +87,25 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 		mapper.put("after", "parent().html()");
 		mapper.put("appendTo", "html()");
 		mapper.put("before","parent().html()");
-*/		mapper.put("detach", "html()");
+		mapper.put("detach", "html()");
 		mapper.put("remove", "html()");
 		mapper.put("empty", "html()");
-		mapper.put("height-1", "height()");
+*/		mapper.put("height-1", "height()");
 		mapper.put("width-1", "width()");
 		mapper.put("insertBefore", "prev().html()");
 		mapper.put("insertAfter", "next().html()");
 		mapper.put("offset-1", "offset()");
-/*		mapper.put("prepend", "html()");
+		mapper.put("prepend", "html()");
 		mapper.put("prependTo", "html()");
-*/		mapper.put("html-1", "html()");
+		mapper.put("html-1", "html()");
 		mapper.put("setAttribute-2", "getAttribute(%0)");
 		mapper.put("text-1", "text()");
-		mapper.put("getElementById", "getElementById(%0).length");
+		mapper.put("children", "children()");
+		mapper.put("parent", "parent()");
+/*		mapper.put("getElementById", "getElementById(%0).length");
 		mapper.put("getElementsByTagName", "getElementsByTagName(%0).length");
-		
-	//	mapper.put("className", "className");
+		mapper.put("className", "className");
+*/		
 		
 	}
 
@@ -289,123 +294,164 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 			/* the parent is something we can prepend to */
 			parent.addChildBefore(newNode, node);
 						
-		} 
+		}
 		
-        else if (node instanceof Name) {
-			
-			/* lets detect function calls like .addClass, .css, .attr etc */
-			if (node.getParent() instanceof PropertyGet
-			        && node.getParent().getParent() instanceof FunctionCall && !node.getParent().toSource().contains("function")) {
+	       else if (node instanceof Name) {
+				
+				/* lets detect function calls like .addClass, .css, .attr etc */
+				if (node.getParent() instanceof PropertyGet
+				        && node.getParent().getParent() instanceof FunctionCall && !node.getParent().toSource().contains("function")) {
 
-				List<AstNode> arguments =
-				        ((FunctionCall) node.getParent().getParent()).getArguments();
+					List<AstNode> arguments =
+					        ((FunctionCall) node.getParent().getParent()).getArguments();
 
-				String domNodeToLog;
+					String domNodeToLog;
 
-				if (mapper.get(node.toSource()) != null
-				        || mapper.get(node.toSource() + "-" + arguments.size()) != null) {
-					
-					/* this seems to be one! */
-					PropertyGet g = (PropertyGet) node.getParent();
-                    
-					String objectAndFunction = mapper.get(node.toSource());
-					if (objectAndFunction == null) {
-						objectAndFunction = mapper.get(node.toSource() + "-" + arguments.size());
-					}
-
-					if (node.toSource().equals("appendTo") || node.toSource().equals("prependTo") || node.toSource().equals("insertAfter") || node.toSource().equals("insertBefore")){
-						objectAndFunction="$"+"("+ arguments.get(0).toSource()+")"+"."+objectAndFunction;
-						domNodeToLog=arguments.get(0).toSource();
-					}
-					else if (node.toSource().equals("before") || node.toSource().equals("after")) {
-					    String leftMost=g.getLeft().toSource().replace(".before", "____").replace(".after", "____").split("____")[0];
-					 
-					    
-						objectAndFunction= leftMost + "." + objectAndFunction;
-						domNodeToLog=leftMost;
-					}
-			
-					else{
-						objectAndFunction = g.getLeft().toSource()+ "." + objectAndFunction;
-						domNodeToLog=g.getLeft().toSource();
-					
-					}
-					
-					
-					/* fill in parameters in the "getter" */
-						for (int i = 0; i < arguments.size(); i++) {
-							objectAndFunction =
-								objectAndFunction.replace("%" + i, arguments.get(i).toSource());
-						}
-					
-					objectAndFunction=objectAndFunction.replace(" ", "____");
-					AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
-					parent.addChildAfter(
-					 createPointNode(node.getEnclosingFunction(),domNodeToLog, objectAndFunction, node.getLineno() + 1),
-					 getLineNode(node));
-                    
-				}
-			
-				else
-					if(node.toSource().equals("css")) 
-						if(arguments.size()==1 && arguments.get(0).toSource().startsWith("{")) {
+					if (mapper.get(node.toSource()) != null
+					        || mapper.get(node.toSource() + "-" + arguments.size()) != null) {
 						
-							PropertyGet g = (PropertyGet) node.getParent();
-							String objectAndFunction="";
-								
-							objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
-							domNodeToLog=g.getLeft().toSource();
-							
-							String[] args=arguments.get(0).toSource().replace("{", "").replace("}","").split(",");
-							for (int i=0; i<args.length; i++) {
-						    	if (args[i].contains(":")){
-						    		if (!args[i].split(":")[0].contains("'") && !args[i].split(":")[0].contains("\"")) {
-						    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "____")+ "'" + ")";
-						    		}
-						    		else {
+						/* this seems to be one! */
+						PropertyGet g = (PropertyGet) node.getParent();
+	                    
+						String objectAndFunction = mapper.get(node.toSource());
+						if (objectAndFunction == null) {
+							objectAndFunction = mapper.get(node.toSource() + "-" + arguments.size());
+						}
 
-						    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "")+ ")";
-						    		}	
-						    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-						    		parent.addChildAfter(
-						    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
-						    				getLineNode(node));
+
+						if (node.toSource().equals("appendTo") || node.toSource().equals("prependTo") || node.toSource().equals("insertAfter") || node.toSource().equals("insertBefore")){
+							domNodeToLog="$" + "(" + arguments.get(0).toSource() + ")";
+							objectAndFunction="DIRECTACCESS";
+							
+						}
+	/*					else if (node.toSource().equals("before") || node.toSource().equals("after")) {
+						    String leftMost=g.getLeft().toSource().replace(".before", "____").replace(".after", "____").split("____")[0];
+						 
 						    
-									objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
-								
-						    	}
+							objectAndFunction= leftMost + "." + objectAndFunction;
+							domNodeToLog=leftMost;
+						}
+	*/					else if(node.toSource().equals("children") || node.toSource().equals("parent")){
+							domNodeToLog = g.getLeft().toSource()+ "." + objectAndFunction;
+							objectAndFunction="DIRECTACCESS";
+						}
+				
+						else{
+							objectAndFunction = g.getLeft().toSource()+ "." + objectAndFunction;
+							domNodeToLog=g.getLeft().toSource();
+						
+						}
+						
+						
+						/* fill in parameters in the "getter" */
+							for (int i = 0; i < arguments.size(); i++) {
+								objectAndFunction =
+									objectAndFunction.replace("%" + i, arguments.get(i).toSource());
 							}
-							
+						
+						objectAndFunction=objectAndFunction.replace(" ", "____");
+						AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
+						parent.addChildAfter(
+						 createPointNode(node.getEnclosingFunction(),domNodeToLog, objectAndFunction, node.getLineno() + 1),
+						 getLineNode(node));
+	                    
 					}
-						else
-							if (node.toSource().equals("attr")) {
-								if(arguments.size()==1 && arguments.get(0).toSource().startsWith("{")) {
+				
+					else
+						if(node.toSource().equals("css")) 
+							if(arguments.size()==1 && arguments.get(0).toSource().startsWith("{")) {
+							
+								PropertyGet g = (PropertyGet) node.getParent();
+								String objectAndFunction="";
 									
-									PropertyGet g = (PropertyGet) node.getParent();
-									String objectAndFunction="";
-										
-									objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
-									domNodeToLog=g.getLeft().toSource();
-									
-									String[] args=arguments.get(0).toSource().replace("{", "").replace("}","").split(",");
-									for (int i=0; i<args.length; i++) {
-								    	if (args[i].contains(":")){
+								objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+								domNodeToLog=g.getLeft().toSource();
+								
+								String[] args=arguments.get(0).toSource().replace("{", "").replace("}","").split(",");
+								for (int i=0; i<args.length; i++) {
+							    	if (args[i].contains(":")){
+							    		if (!args[i].split(":")[0].contains("'") && !args[i].split(":")[0].contains("\"")) {
+							    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "____")+ "'" + ")";
+							    		}
+							    		else {
 
-								   			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "") + ")";								    	
-								    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-								    		parent.addChildAfter(
-								    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
-								    				getLineNode(node));
-								    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+							    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "")+ ")";
+							    		}	
+							    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
+							    		parent.addChildAfter(
+							    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
+							    				getLineNode(node));
+							    
+										objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+									
+							    	}
+								}
+								
+						}
+							else
+								if (node.toSource().equals("attr")) {
+									if(arguments.size()==1 && arguments.get(0).toSource().startsWith("{")) {
 										
-								    	}
+										PropertyGet g = (PropertyGet) node.getParent();
+										String objectAndFunction="";
+											
+										objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+										domNodeToLog=g.getLeft().toSource();
+										
+										String[] args=arguments.get(0).toSource().replace("{", "").replace("}","").split(",");
+										for (int i=0; i<args.length; i++) {
+									    	if (args[i].contains(":")){
+
+									   			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "") + ")";								    	
+									    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
+									    		parent.addChildAfter(
+									    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
+									    				getLineNode(node));
+									    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+											
+									    	}
+										}
 									}
 								}
-							}
-				
+					
+				}
 			}
-		}
-
+	        
+	        else if(node instanceof FunctionCall){
+				if( ((FunctionCall)node).getTarget() instanceof Name){
+				
+					if(((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("$")
+							|| ((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("jQuery")){
+					
+						if(((FunctionCall)node).getArguments().size()==1
+								&& ((FunctionCall)node).getArguments().get(0) instanceof StringLiteral){
+							
+							String domNodeToLog=node.toSource();
+							String objectAndFunction="DIRECTACCESS";
+				    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
+				    		parent.addChildAfter(
+				    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
+				    				getLineNode(node));
+							
+						}
+					}
+					else if(((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("getElementById") ||
+							((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("getElementsByTagName")){
+						
+						String domNodeToLog="document" + "." + node.toSource();
+						String objectAndFunction="DIRECTACCESS";
+			    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
+			    		parent.addChildAfter(
+			    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
+			    				getLineNode(node));
+						
+					}
+				}
+	        }
+	        
+	        
+		
+   
 		
 	
 
