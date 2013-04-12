@@ -66,7 +66,7 @@ public class Trace {
 				prog.variable(Variable.parse(o));
 
 			}	
-			result.append(prog.getData(value.getJSONArray(2),true));
+			result.append(prog.getData(value.getJSONArray(2)));
 			
 			result.append("===========================================================================\n");
 				
@@ -102,7 +102,7 @@ public class Trace {
 			ProgramPoint prog = programPoint(programPointName);
 			
 			
-			result.append(prog.getData(value.getJSONArray(2),true));
+			result.append(prog.getData(value.getJSONArray(2)));
 			if(j<jsonObject.length()-1){
 				if(!jsonObject.getJSONArray(j+1).getString(0).equals(value.getString(0)) ||
 						prefix.equals(ProgramPoint.EXITPOSTFIX) &&jsonObject.getJSONArray(j+1).getString(1).equals(ProgramPoint.ENTERPOSTFIX)){

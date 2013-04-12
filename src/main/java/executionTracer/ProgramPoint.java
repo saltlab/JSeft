@@ -40,6 +40,7 @@ public class ProgramPoint {
 			result.append("node::" + domInput.getNode() + "\n");
 			result.append("line::" + domInput.getLine() + "\n");
 			result.append("value::" + domInput.getValue() + "\n");
+			result.append("time::" + domInput.getTime() + "\n");
 		}
 		return result.toString();
 	}
@@ -57,23 +58,24 @@ public class ProgramPoint {
 
 	
 	
-	public String getData(JSONArray data, boolean shouldNextProgPointNameShown) throws CrawljaxException, JSONException {
+	public String getData(JSONArray data) throws CrawljaxException, JSONException {
 		StringBuffer result = new StringBuffer();
 		String time = "";
 		String variableUsage="";
 		boolean found = false;
 
-		if(shouldNextProgPointNameShown)
-			result.append(name + "\n");
+
+		result.append(name + "\n");
 		for (Variable var : variables) {
 			found=false;
 			for (int i = 0; i < data.length(); i++) {
 				JSONArray item = data.getJSONArray(i);
-				time=item.get(3).toString();
 				
-				if(item.get(0).toString().equals("DOM")){
-					continue;
+	/*			if(item.get(0).toString().equals("DOM")){
+					time=item.get(4).toString();
+					break;
 				}
+	*/			time=item.get(3).toString();
 				variableUsage=item.get(4).toString();
 				if (var.getName().equals(item.getString(0))) {
 							
@@ -90,8 +92,12 @@ public class ProgramPoint {
 			}
 		}
 
-		result.append(getDomInputData());
-		result.append("time::" + time + "\n");
+		if(data.getJSONArray(0).get(0).toString().equals("DOM")){
+			result.append(getDomInputData());
+		}
+		else{
+			result.append("time::" + time + "\n");
+		}
 
 		return result.toString();
 	}

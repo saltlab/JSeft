@@ -115,7 +115,7 @@ public class DOMAstInstrumenter extends DOMASTModifier {
 					"send(new Array('" + getScopeName() + "." + funcName + "', '"
 						+ ProgramPoint.POINTPOSTFIX  + "', new Array(AddDomNodeProps("
 			            + domNode + ", "
-			            + "'" + domNode.replaceAll("\\\'", "\\\\\'") + "'" + ", " + objectAndFunction + "))));";
+			            + "'" + domNode.replaceAll("\\\'", "\\\\\'") + "'" + ", " + "'" + objectAndFunction + "'" + "))));";
 		}
 		else{
 			code = 

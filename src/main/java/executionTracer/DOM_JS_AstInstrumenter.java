@@ -314,13 +314,21 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 	protected AstNode createPointNode(FunctionNode func, String domNode, String objectAndFunction, int lineNo) {
 
 		String funcName=getFunctionName(func);
-		
-		String code = 
-				"send(new Array('" + getScopeName() + "." + funcName + "', '" + ProgramPoint.ENTERPOSTFIX
-				+ "', new Array(AddDomNodeProps("
-	            + domNode + ", "
-	            + "'" + objectAndFunction.replaceAll("\\\'", "\\\\\'") + "'" + ", " + objectAndFunction.replace("____", " ") + "))));";
-
+		String code =null;
+		if(objectAndFunction.equals("DIRECTACCESS")){
+			code = 
+					"send(new Array('" + getScopeName() + "." + funcName + "', '"
+						+ ProgramPoint.ENTERPOSTFIX  + "', new Array(AddDomNodeProps("
+			            + domNode + ", "
+			            + "'" + domNode.replaceAll("\\\'", "\\\\\'") + "'" + ", " + "'" + objectAndFunction + "'" + "))));";
+		}
+		else{
+			code = 
+				"send(new Array('" + getScopeName() + "." + funcName + "', '"
+					+ ProgramPoint.ENTERPOSTFIX  + "', new Array(AddDomNodeProps("
+		            + domNode + ", "
+		            + "'" + objectAndFunction.replaceAll("\\\'", "\\\\\'") + "'" + ", " + objectAndFunction.replace("____", " ") + "))));";
+		}
 
 	
 		return parse(code);
