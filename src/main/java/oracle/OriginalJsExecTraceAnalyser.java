@@ -10,8 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+
+import domMutation.Node;
 
 import executionTracer.JSExecutionTracer;
 
@@ -72,10 +76,16 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					String type="";
 					String value="";
 					String variableUsage="";
+					String nodeLine="";
+					String nodeValue="";
+					Node domNode=null;
 					Variable varibale;
+					AccessedDOMNode accessedDomNode=null;
 
 					ArrayList<Variable> variables=new ArrayList<Variable>();
+					
 					FunctionPoint functionPoint;
+					FunctionPoint domRelatedFunctionPoint;
 				
 					while (!(line = input.readLine()).equals
 							("===========================================================================")){
@@ -97,6 +107,19 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						else if(line.contains("variableUsage::")){
 							variableUsage=line.split("::")[1];
 						}
+						else if(line.contains("node::")){
+							String node=line.replace("node::", "");
+							ObjectMapper mapper = new ObjectMapper();  
+						    domNode = mapper.readValue(node, Node.class);  
+						    mapper.writeValueAsString(domNode);  
+						
+						}
+						else if(line.contains("line::")){
+							nodeLine=line.replace("line::", "");
+						}
+						else if(line.contains("value::")){
+							nodeValue=line.replace("value::", "");
+						}
 						
 						if(variableName!="" && value!="" && type!="" && variableUsage!=""){
 							varibale=new Variable(variableName, value, type, variableUsage);
@@ -108,12 +131,20 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							
 							
 						}
+						if(domNode!=null && nodeLine!="" && nodeValue!=""){
+							accessedDomNode=new AccessedDOMNode(domNode, nodeLine, nodeValue, time);
+							
+						}
 						
 					
 					}
 					
-					functionPoint=new FunctionPoint(pointName, variables, time);
-					funcNameToFuncPointMap.put(funcName, functionPoint);
+					if(accessedDomNode!=null){
+						addingDomRelatedFunctionPoint(accessedDomNode, funcName, pointName, time);
+					}
+					else{
+						addingNonDomRelatedFunctionPoint(variables, funcName, pointName, time);
+					}
 		//			List<FunctionPoint> functionPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
 		//			java.util.Collections.sort(functionPoints, bvc);
 
@@ -255,6 +286,46 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				return true;
 		}
 		return false;
+	}
+	
+	private void addingDomRelatedFunctionPoint(AccessedDOMNode accessedDomNode, String funcName, String pointName, long time){
+		List<FunctionPoint> currentFuncNameToFuncPointMap=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
+		if(currentFuncNameToFuncPointMap!=null){
+			java.util.Collections.sort(currentFuncNameToFuncPointMap, vc);
+			FunctionPoint lastPoint=currentFuncNameToFuncPointMap.get(currentFuncNameToFuncPointMap.size()-1);
+			if(lastPoint.getPointName().equals("enter")){
+				lastPoint.addAccessedDomNode(accessedDomNode);
+			}
+			else{
+				FunctionPoint functionPoint=new FunctionPoint(pointName, accessedDomNode, time);
+				funcNameToFuncPointMap.put(funcName, functionPoint);
+			}
+		}
+		else{
+			FunctionPoint functionPoint=new FunctionPoint(pointName, accessedDomNode, time);
+			funcNameToFuncPointMap.put(funcName, functionPoint);
+		}
+	}
+	
+	private void addingNonDomRelatedFunctionPoint(ArrayList<Variable> variables, String funcName, String pointName, long time){
+		List<FunctionPoint> currentFuncNameToFuncPointMap=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
+		if(currentFuncNameToFuncPointMap!=null){
+			java.util.Collections.sort(currentFuncNameToFuncPointMap, vc);
+			FunctionPoint lastPoint=currentFuncNameToFuncPointMap.get(currentFuncNameToFuncPointMap.size()-1);
+			if(lastPoint.getPointName().equals("enter")
+					&& lastPoint.getAccessedDomNodes().size()>0
+					&& lastPoint.getVariables().size()==0){
+				lastPoint.addVariable(variables);
+			}
+			else{
+				FunctionPoint functionPoint=new FunctionPoint(pointName, variables, time);
+				funcNameToFuncPointMap.put(funcName, functionPoint);
+			}
+		}
+		else{
+			FunctionPoint functionPoint=new FunctionPoint(pointName, variables, time);
+			funcNameToFuncPointMap.put(funcName, functionPoint);
+		}
 	}
 
 }
