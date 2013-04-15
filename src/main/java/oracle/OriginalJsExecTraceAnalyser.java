@@ -76,16 +76,17 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					String type="";
 					String value="";
 					String variableUsage="";
-					String nodeLine="";
+					String domHtml="";
+/*					String nodeLine="";
 					String nodeValue="";
 					Node domNode=null;
-					Variable varibale;
-					AccessedDOMNode accessedDomNode=null;
+*/					Variable varibale;
+//					AccessedDOMNode accessedDomNode=null;
 
 					ArrayList<Variable> variables=new ArrayList<Variable>();
 					
 					FunctionPoint functionPoint;
-					FunctionPoint domRelatedFunctionPoint;
+//					FunctionPoint domRelatedFunctionPoint;
 				
 					while (!(line = input.readLine()).equals
 							("===========================================================================")){
@@ -107,7 +108,10 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						else if(line.contains("variableUsage::")){
 							variableUsage=line.split("::")[1];
 						}
-						else if(line.contains("node::")){
+						else if(line.contains("dom::")){
+							domHtml=line.split("::")[1];
+						}
+/*						else if(line.contains("node::")){
 							String node=line.replace("node::", "");
 							ObjectMapper mapper = new ObjectMapper();  
 						    domNode = mapper.readValue(node, Node.class);  
@@ -121,6 +125,9 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							nodeValue=line.replace("value::", "");
 						}
 						
+*/						
+						
+						
 						if(variableName!="" && value!="" && type!="" && variableUsage!=""){
 							varibale=new Variable(variableName, value, type, variableUsage);
 							variables.add(varibale);
@@ -131,23 +138,29 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							
 							
 						}
-						if(domNode!=null && nodeLine!="" && nodeValue!=""){
+/*						if(domNode!=null && nodeLine!="" && nodeValue!=""){
 							accessedDomNode=new AccessedDOMNode(domNode, nodeLine, nodeValue, time);
 							
 						}
-						
+*/						
 					
 					}
 					
-					if(accessedDomNode!=null){
+/*					if(accessedDomNode!=null){
 						addingDomRelatedFunctionPoint(accessedDomNode, funcName, pointName, time);
 					}
 					else{
 						addingNonDomRelatedFunctionPoint(variables, funcName, pointName, time);
 					}
-		//			List<FunctionPoint> functionPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
-		//			java.util.Collections.sort(functionPoints, bvc);
+*/					
+					
+					
+//					List<FunctionPoint> functionPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
+//					java.util.Collections.sort(functionPoints, bvc);
 
+					
+				functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
+				funcNameToFuncPointMap.put(funcName, functionPoint);
 				}
 				input.close();
 			  }
@@ -288,7 +301,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 		return false;
 	}
 	
-	private void addingDomRelatedFunctionPoint(AccessedDOMNode accessedDomNode, String funcName, String pointName, long time){
+/*	private void addingDomRelatedFunctionPoint(AccessedDOMNode accessedDomNode, String funcName, String pointName, long time){
 		List<FunctionPoint> currentFuncNameToFuncPointMap=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
 		if(currentFuncNameToFuncPointMap!=null){
 			java.util.Collections.sort(currentFuncNameToFuncPointMap, vc);
@@ -327,5 +340,5 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			funcNameToFuncPointMap.put(funcName, functionPoint);
 		}
 	}
-
+*/
 }

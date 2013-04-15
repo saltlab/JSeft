@@ -56,15 +56,18 @@ public class DOM_JS_Trace {
 
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+ prefix;
+			String domHtml=value.getString(2);
 			
 			ProgramPoint prog = new ProgramPoint(programPointName);
+			DOMInput domInput=new DOMInput(domHtml);
+			prog.domInput(domInput);
 		
-			JSONArray jasonvalue = value.getJSONArray(2);
+			JSONArray jasonvalue = value.getJSONArray(3);
 			
 			
 			for (int i = 0; i < jasonvalue.length(); i++) {
 				JSONArray o = jasonvalue.getJSONArray(i);
-				if(o.get(0).toString().equals("DOM")){
+	/*			if(o.get(0).toString().equals("DOM")){
 					
 					String node=getDOMRelatedData(o.getJSONArray(1));
 					String line=o.get(2).toString(); 
@@ -74,32 +77,15 @@ public class DOM_JS_Trace {
 					prog.domInput(domInput);
 
 				}
-				else{
-					prog.variable(Variable.parse(o));
-				}
+	*/			
+				prog.variable(Variable.parse(o));
+				
+				
 			}	
 			
-			result.append(prog.getData(value.getJSONArray(2)));
 			
-			
-/*			if(j<jsonObject.length()-1){
-				String isThisDom=value.getJSONArray(2).getJSONArray(0).getString(0);
-				String isNextDom=jsonObject.getJSONArray(j+1).getJSONArray(2).getJSONArray(0).getString(0);
-				String nextProgPointName=jsonObject.getJSONArray(j+1).getString(0)+jsonObject.getJSONArray(j+1).getString(1);
-				if(isThisDom.equals("DOM") || isNextDom.equals("DOM")){
-					if(programPointName.equals(nextProgPointName) ){
-						shouldNextProgPointNameShown=false;
-						continue;
-					}
-				}
-				else {
-					shouldNextProgPointNameShown=true;
-					result.append("===========================================================================\n");
-				
-				}
-			}
-			
-*/			result.append("===========================================================================\n");
+			result.append(prog.getData(value.getJSONArray(3)));			
+			result.append("===========================================================================\n");
 				
 			
 			
@@ -147,6 +133,7 @@ public class DOM_JS_Trace {
 		return result.toString();
 	}
 
+	@Deprecated
 	public String getDOMRelatedData(JSONArray data) throws CrawljaxException, JSONException {
 		StringBuffer result = new StringBuffer();
 		

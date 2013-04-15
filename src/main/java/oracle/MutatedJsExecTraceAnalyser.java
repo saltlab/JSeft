@@ -64,6 +64,7 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					String type="";
 					String value="";
 					String variableUsage="";
+					String domHtml="";
 					Variable varibale;
 
 					ArrayList<Variable> variables=new ArrayList<Variable>();
@@ -89,6 +90,9 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						else if(line.contains("variableUsage::")){
 							variableUsage=line.split("::")[1];
 						}
+						else if(line.contains("dom::")){
+							domHtml=line.split("::")[1];
+						}
 						
 						if(variableName!="" && value!="" && type!="" && variableUsage!=""){
 							varibale=new Variable(variableName, value, type, variableUsage);
@@ -104,7 +108,7 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					
 					}
 					
-					functionPoint=new FunctionPoint(pointName, variables, time);
+					functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
 					funcNameToFuncPointMap.put(funcName, functionPoint);
 		//			List<FunctionPoint> functionPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
 		//			java.util.Collections.sort(functionPoints, bvc);

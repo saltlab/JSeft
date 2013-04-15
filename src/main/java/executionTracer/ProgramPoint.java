@@ -37,10 +37,7 @@ public class ProgramPoint {
 	private String getDomInputData(){
 		StringBuffer result = new StringBuffer();
 		for(DOMInput domInput:domInputs){
-			result.append("node::" + domInput.getNode() + "\n");
-			result.append("line::" + domInput.getLine() + "\n");
-			result.append("value::" + domInput.getValue() + "\n");
-			result.append("time::" + domInput.getTime() + "\n");
+			result.append("dom::" + domInput.getDomHtml() + "\n");
 		}
 		return result.toString();
 	}
@@ -66,16 +63,13 @@ public class ProgramPoint {
 
 
 		result.append(name + "\n");
+		result.append(getDomInputData() + "\n");
 		for (Variable var : variables) {
 			found=false;
 			for (int i = 0; i < data.length(); i++) {
 				JSONArray item = data.getJSONArray(i);
 				
-	/*			if(item.get(0).toString().equals("DOM")){
-					time=item.get(4).toString();
-					break;
-				}
-	*/			time=item.get(3).toString();
+				time=item.get(3).toString();
 				variableUsage=item.get(4).toString();
 				if (var.getName().equals(item.getString(0))) {
 							
@@ -92,13 +86,11 @@ public class ProgramPoint {
 			}
 		}
 
-		if(data.getJSONArray(0).get(0).toString().equals("DOM")){
+/*		if(data.getJSONArray(0).get(0).toString().equals("DOM")){
 			result.append(getDomInputData());
 		}
-		else{
-			result.append("time::" + time + "\n");
-		}
-
+*/		
+		result.append("time::" + time + "\n");
 		return result.toString();
 	}
 	

@@ -81,9 +81,12 @@ public class FunctionStateComparator {
 		if(funcPoint1.getPointName().equals(funcPoint2.getPointName())){
 			ArrayList<Variable> varList1=funcPoint1.getVariables();
 			ArrayList<Variable> varList2=funcPoint2.getVariables();
-			ArrayList<AccessedDOMNode> nodeList1=funcPoint1.getAccessedDomNodes();
+/*			ArrayList<AccessedDOMNode> nodeList1=funcPoint1.getAccessedDomNodes();
 			ArrayList<AccessedDOMNode> nodeList2=funcPoint2.getAccessedDomNodes();
-			if(varList1.equals(varList2) && nodeList1.equals(nodeList2))
+*/			
+			String domHtml1=funcPoint1.getDomHtml();
+			String domHtml2=funcPoint2.getDomHtml();
+			if(varList1.equals(varList2) && domHtml1.equals(domHtml2))
 				return true;
 		}
 		return false;
@@ -101,9 +104,12 @@ public class FunctionStateComparator {
 			if(entryPoint.getPointName().equals(funcPoint.getPointName())){
 				ArrayList<Variable> origVars=entryPoint.getVariables();
 				ArrayList<Variable> modifiedVars=funcPoint.getVariables();
-				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
+/*				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
 				ArrayList<AccessedDOMNode> modifiedNodes=funcPoint.getAccessedDomNodes();
-				if(origVars.equals(modifiedVars) && origNodes.equals(modifiedNodes)){
+*/				
+				String origDomHtml=entryPoint.getDomHtml();
+				String modifiedDomHtml=funcPoint.getDomHtml();
+				if(origVars.equals(modifiedVars) && origDomHtml.equals(modifiedDomHtml)){
 					origFuncEntry=entryPoint;
 					exitFuncPoints.addAll(funcEntryToMultiExit.get(entryPoint));
 					break;
@@ -128,9 +134,13 @@ public class FunctionStateComparator {
 			if(entryPoint.getPointName().equals(modifiedFuncPoint.getPointName())){
 				ArrayList<Variable> origVars=entryPoint.getVariables();
 				ArrayList<Variable> modifiedVars=modifiedFuncPoint.getVariables();
-				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
+/*				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
 				ArrayList<AccessedDOMNode> modifiedNodes=modifiedFuncPoint.getAccessedDomNodes();
-				if(origVars.equals(modifiedVars) && origNodes.equals(modifiedNodes)){
+*/				
+				
+				String origDomHtml=entryPoint.getDomHtml();
+				String modifiedDomHtml=modifiedFuncPoint.getDomHtml();
+				if(origVars.equals(modifiedVars) && origDomHtml.equals(modifiedDomHtml)){
 					
 					return entryPoint;
 					
@@ -153,7 +163,7 @@ public class FunctionStateComparator {
 				FunctionPoint entryPoint=iterator.next();
 				if(entryPoint.getPointName().equals(origFuncEntry.getPointName())){
 					if(entryPoint.getVariables().equals(origFuncEntry.getVariables())
-							&& entryPoint.getAccessedDomNodes().equals(origFuncEntry.getAccessedDomNodes())){
+							&& entryPoint.getDomHtml().equals(origFuncEntry.getDomHtml())){
 						return true;
 					}
 				}
