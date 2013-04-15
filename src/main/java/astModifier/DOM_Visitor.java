@@ -2,15 +2,12 @@ package astModifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
-import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.Block;
 import org.mozilla.javascript.ast.ExpressionStatement;
 import org.mozilla.javascript.ast.ForLoop;
@@ -23,18 +20,16 @@ import org.mozilla.javascript.ast.ObjectProperty;
 import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.ReturnStatement;
 import org.mozilla.javascript.ast.StringLiteral;
-import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.crawljax.core.CrawljaxController;
 
-import executionTracer.ProgramPoint;
 
-public abstract class DOM_JS_ASTModifier implements NodeVisitor {
-
+public class DOM_Visitor implements NodeVisitor {
 	
+	/* string[]--> [domNodeToLog,objectAndfunction]]*/
+	private List<String[]> domRelatedAtExitPoint=new ArrayList<String[]>();
 	private final Map<String, String> mapper = new HashMap<String, String>();
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(CrawljaxController.class.getName());
@@ -64,11 +59,15 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 	public String getScopeName() {
 		return scopeName;
 	}
+	
+	public List<String[]> getDomRelatedAtExitPoint(){
+		return domRelatedAtExitPoint;
+	}
 
 	/**
 	 * Abstract constructor to initialize the mapper variable.
 	 */
-	protected DOM_JS_ASTModifier() {
+	public DOM_Visitor() {
 
 		/* add -<number of arguments> to also make sure number of arguments is the same */
 		nodesNotTolook.add("send(new Array(");
@@ -150,30 +149,8 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 		}
 	}
 
-	/**
-	 * Creates a node that can be inserted at a certain point in function.
-	 * 
-	 * @param function
-	 *            The function that will enclose the node.
-	 * @param postfix
-	 *            The postfix function name (enter/exit).
-	 * @param lineNo
-	 *            Linenumber where the node will be inserted.
-	 * @return The new node.
-	 */
-	protected abstract AstNode createEnterNode(FunctionNode function, String postfix, int lineNo);
-	protected abstract AstNode createExitNode(FunctionNode function, ReturnStatement returnNode, String postfix, int lineNo);
-	/**
-	 * Creates a node that can be inserted before and after a DOM modification statement (such as
-	 * jQuery('#test').addClass('bla');).
-	 * 
-	 * @param shouldLog
-	 *            The variable that should be logged (for example jQuery('#test').attr('style'))
-	 * @param lineNo
-	 *            The line number where this will be inserted.
-	 * @return The new node.
-	 */
-	protected abstract AstNode createPointNode(FunctionNode function, String domNode, String shouldLog, int lineNo);
+
+	
 
 	/**
 	 * Create a new block node with two children.
@@ -242,65 +219,11 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 		
 		if(!shouldVisitNode(node))
 			return false;
-		FunctionNode func;
 
-		
-
-		if (node instanceof FunctionNode) {
-			func = (FunctionNode) node;
-
-			/* this is function enter */
-			AstNode newNode = createEnterNode(func, ProgramPoint.ENTERPOSTFIX, func.getLineno());
-
-			func.getBody().addChildToFront(newNode);
-
-			/* get last line of the function */
-			node = (AstNode) func.getBody().getLastChild();
-			/* if this is not a return statement, we need to add logging here also */
-			if (!(node instanceof ReturnStatement)) {
-				newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
-				/* add as last statement */
-				func.getBody().addChildToBack(newNode);
-				
-			}
-
-		} 
-		
-        else if (node instanceof SwitchCase) {
-            //Add block around all statements in the switch case
-            SwitchCase sc = (SwitchCase)node;
-            List<AstNode> statements = sc.getStatements();
-            List<AstNode> blockStatement = new ArrayList<AstNode>();
-            Block b = new Block();
-           
-            if (statements != null) {
-                Iterator<AstNode> it = statements.iterator();
-                while (it.hasNext()) {
-                    AstNode stmnt = it.next();
-                    b.addChild(stmnt);
-                }
-               
-                blockStatement.add(b);
-                sc.setStatements(blockStatement);
-            }
-        }
-		else if (node instanceof ReturnStatement) {
-			
-			func = node.getEnclosingFunction();
-
-			AstNode newNode = createExitNode(func, (ReturnStatement)node, ProgramPoint.EXITPOSTFIX, node.getLineno());
-
-			AstNode parent = makeSureBlockExistsAround(node);
-
-			/* the parent is something we can prepend to */
-			parent.addChildBefore(newNode, node);
-						
-		}
-		
-	       else if (node instanceof Name) {
+		if (node instanceof Name) {
 				
 			
-				if (node.getParent() instanceof PropertyGet
+			if (node.getParent() instanceof PropertyGet
 				        && node.getParent().getParent() instanceof FunctionCall && !node.getParent().toSource().contains("function")) {
 
 					List<AstNode> arguments =
@@ -344,10 +267,10 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 							}
 						
 						objectAndFunction=objectAndFunction.replace(" ", "____");
-						AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
-						parent.addChildAfter(
-						 createPointNode(node.getEnclosingFunction(),domNodeToLog, objectAndFunction, node.getLineno() + 1),
-						 getLineNode(node));
+						String[] domStuff=new String[2];
+						domStuff[0]=domNodeToLog;
+						domStuff[1]=objectAndFunction;
+						domRelatedAtExitPoint.add(domStuff);
 	                    
 					}
 				
@@ -372,9 +295,11 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 							    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "")+ ")";
 							    		}	
 							    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-							    		parent.addChildAfter(
-							    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
-							    				getLineNode(node));
+										String[] domStuff=new String[2];
+										domStuff[0]=domNodeToLog;
+										domStuff[1]=objectAndFunction;
+										domRelatedAtExitPoint.add(domStuff);
+							    	
 							    
 										objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
 									
@@ -398,9 +323,11 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 
 									   			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "") + ")";								    	
 									    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-									    		parent.addChildAfter(
-									    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
-									    				getLineNode(node));
+												String[] domStuff=new String[2];
+												domStuff[0]=domNodeToLog;
+												domStuff[1]=objectAndFunction;
+												domRelatedAtExitPoint.add(domStuff);
+							
 									    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
 											
 									    	}
@@ -423,9 +350,11 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 							String domNodeToLog=node.toSource();
 							String objectAndFunction="DIRECTACCESS";
 				    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-				    		parent.addChildAfter(
-				    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
-				    				getLineNode(node));
+							String[] domStuff=new String[2];
+							domStuff[0]=domNodeToLog;
+							domStuff[1]=objectAndFunction;
+							domRelatedAtExitPoint.add(domStuff);
+				    	
 							
 						}
 					}
@@ -435,9 +364,11 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 						String domNodeToLog="document" + "." + node.toSource();
 						String objectAndFunction="DIRECTACCESS";
 			    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-			    		parent.addChildAfter(
-			    				createPointNode(node.getEnclosingFunction(), domNodeToLog, objectAndFunction, node.getLineno() + 1),
-			    				getLineNode(node));
+						String[] domStuff=new String[2];
+						domStuff[0]=domNodeToLog;
+						domStuff[1]=objectAndFunction;
+						domRelatedAtExitPoint.add(domStuff);
+			    	
 						
 					}
 				}
@@ -461,18 +392,8 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 		}
 		return node;
 	}
-	/**
-	 * This method is called when the complete AST has been traversed.
-	 * 
-	 * @param node
-	 *            The AST root node.
-	 */
-	public abstract void finish(AstRoot node);
 
-	/**
-	 * This method is called before the AST is going to be traversed.
-	 */
-	public abstract void start();
+
 	
 	private boolean shouldVisitNode(AstNode astnode){
 		if (nodesNotTolook.size()==0)
@@ -498,5 +419,5 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 	}
 	
 
-				
+
 }

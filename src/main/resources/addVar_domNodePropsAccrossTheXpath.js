@@ -108,18 +108,23 @@ function AddDomNodeProps(element,value,name){
 	var datas = new Array();
 	
 	for(i=0;i<$(element).length;i++){
-		path=getElementXPath($(element).get(i));
-	
+	//	path=getElementXPath($(element).get(i));
+        nodes=getAllAttrs(element);
+        nodeAttrs="";
+        for(var i=0;i<nodes.length;i++){
+        	nodeAttrs+=","+nodes[i];
+        }
 	datas.push({
 		id:$($(element).get(i)).prop('id'), 
 		className: $($(element).get(i)).prop('className'),
 		tagName: $($(element).get(i)).prop('tagName'),
-		selector: $(element).selector,
-		xpath: path
+		attributes:nodeAttrs
+//		selector: $(element).selector,
+//		xpath: path
 		});
 	}
 	
-	return new Array("DOM",datas, value, name, time);
+	return new Array("DOM", datas, value, name);
 
 }
 

@@ -25,6 +25,7 @@ import com.google.common.io.Resources;
 
 import executionTracer.AstInstrumenter.variableUsageType;
 import astModifier.DOM_JS_ASTModifier;
+import astModifier.DOM_Visitor;
 
 
 public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
@@ -79,8 +80,13 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 	
 	@Override
 	protected AstNode createExitNode(FunctionNode function, ReturnStatement returnNode,String postfix, int lineNo){
+		DOM_Visitor domVis=new DOM_Visitor();
+		function.visit(domVis);
+		ArrayList<String[]> domRelated=(ArrayList<String[]>) domVis.getDomRelatedAtExitPoint();
+		
 		String name;
 		String code="";
+		String htmlCode="";
 		String vars = "";
 		Set<String> variable=new HashSet<String>();
 		TreeSet<String> returnValues=new TreeSet<String>();
@@ -114,8 +120,33 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 				
 				
 				code =
-			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix
-			                + "', new Array(";
+			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix + "'";
+				if(domRelated.size()>0){
+					htmlCode= ", new Array(";
+				
+					for(String[] str:domRelated){
+				            
+						String domNode=str[0];
+						String objectAndFunction=str[1];
+						if(objectAndFunction.equals("DIRECTACCESS")){
+							htmlCode+= "AddDomNodeProps("
+									+ domNode + ", "
+									+ "'" + domNode.replaceAll("\\\'", "\\\\\'") + "'" + ", " + "'" + objectAndFunction + "'" + "),";
+						}
+						
+						else{
+							htmlCode+= "AddDomNodeProps("
+									+ domNode + ", "
+									+ "'" + objectAndFunction.replaceAll("\\\'", "\\\\\'") + "'" + ", " + objectAndFunction.replace("____", " ") + "),";
+						}
+					}	
+				}
+				
+				if(htmlCode.length()>0){
+					htmlCode = htmlCode.substring(0, vars.length() - 1);
+					code+=htmlCode;
+				}
+				code+= "', new Array(";
 	
 				Iterator<String> iter=variables.iterator();
 				while(iter.hasNext()){
@@ -178,7 +209,7 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 			/* post to the proxy server */
 			code =
 			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix
-			                + "', new Array(stripScripts(document.getElementsByTagName(\"body\")[0].innerHTML))" + "', new Array(";
+			                + "', new Array(stripScripts(document.getElementsByTagName(\"body\")[0].innerHTML))" + ", new Array(";
 
 			String vars = "";
 			Iterator<String> iter=variables.iterator();
