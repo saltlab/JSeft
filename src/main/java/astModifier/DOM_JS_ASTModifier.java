@@ -296,9 +296,9 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 						
 		}
 		
-	       else if (node instanceof Name) {
+/*	       else if (node instanceof Name) {
 				
-				/* lets detect function calls like .addClass, .css, .attr etc */
+			
 				if (node.getParent() instanceof PropertyGet
 				        && node.getParent().getParent() instanceof FunctionCall && !node.getParent().toSource().contains("function")) {
 
@@ -309,8 +309,7 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 
 					if (mapper.get(node.toSource()) != null
 					        || mapper.get(node.toSource() + "-" + arguments.size()) != null) {
-						
-						/* this seems to be one! */
+					
 						PropertyGet g = (PropertyGet) node.getParent();
 	                    
 						String objectAndFunction = mapper.get(node.toSource());
@@ -324,14 +323,8 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 							objectAndFunction="DIRECTACCESS";
 							
 						}
-	/*					else if (node.toSource().equals("before") || node.toSource().equals("after")) {
-						    String leftMost=g.getLeft().toSource().replace(".before", "____").replace(".after", "____").split("____")[0];
-						 
-						    
-							objectAndFunction= leftMost + "." + objectAndFunction;
-							domNodeToLog=leftMost;
-						}
-	*/					else if(node.toSource().equals("children") || node.toSource().equals("parent")){
+
+						else if(node.toSource().equals("children") || node.toSource().equals("parent")){
 							domNodeToLog = g.getLeft().toSource()+ "." + objectAndFunction;
 							objectAndFunction="DIRECTACCESS";
 						}
@@ -343,7 +336,7 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 						}
 						
 						
-						/* fill in parameters in the "getter" */
+					
 							for (int i = 0; i < arguments.size(); i++) {
 								objectAndFunction =
 									objectAndFunction.replace("%" + i, arguments.get(i).toSource());
@@ -450,7 +443,7 @@ public abstract class DOM_JS_ASTModifier implements NodeVisitor {
 	        }
 	        
 	        
-		
+*/		
    
 		
 	

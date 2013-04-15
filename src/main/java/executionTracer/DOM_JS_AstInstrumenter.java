@@ -178,7 +178,7 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 			/* post to the proxy server */
 			code =
 			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix
-			                + "', new Array(";
+			                + "', new Array(stripScripts(document.getElementsByTagName(\"body\")[0].innerHTML))" + "', new Array(";
 
 			String vars = "";
 			Iterator<String> iter=variables.iterator();
@@ -192,7 +192,7 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 			if (vars.length() > 0) {
 				/* remove last comma */
 				vars = vars.substring(0, vars.length() - 1);
-				code += vars + ")));";
+				code += vars + "))));";
 			} else {
 				/* no variables to instrument here, so just return an empty node */
 				code = "/* empty */";

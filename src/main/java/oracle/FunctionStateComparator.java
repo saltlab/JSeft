@@ -81,7 +81,9 @@ public class FunctionStateComparator {
 		if(funcPoint1.getPointName().equals(funcPoint2.getPointName())){
 			ArrayList<Variable> varList1=funcPoint1.getVariables();
 			ArrayList<Variable> varList2=funcPoint2.getVariables();
-			if(varList1.equals(varList2))
+			ArrayList<AccessedDOMNode> nodeList1=funcPoint1.getAccessedDomNodes();
+			ArrayList<AccessedDOMNode> nodeList2=funcPoint2.getAccessedDomNodes();
+			if(varList1.equals(varList2) && nodeList1.equals(nodeList2))
 				return true;
 		}
 		return false;
@@ -99,7 +101,9 @@ public class FunctionStateComparator {
 			if(entryPoint.getPointName().equals(funcPoint.getPointName())){
 				ArrayList<Variable> origVars=entryPoint.getVariables();
 				ArrayList<Variable> modifiedVars=funcPoint.getVariables();
-				if(origVars.equals(modifiedVars)){
+				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
+				ArrayList<AccessedDOMNode> modifiedNodes=funcPoint.getAccessedDomNodes();
+				if(origVars.equals(modifiedVars) && origNodes.equals(modifiedNodes)){
 					origFuncEntry=entryPoint;
 					exitFuncPoints.addAll(funcEntryToMultiExit.get(entryPoint));
 					break;
@@ -124,7 +128,9 @@ public class FunctionStateComparator {
 			if(entryPoint.getPointName().equals(modifiedFuncPoint.getPointName())){
 				ArrayList<Variable> origVars=entryPoint.getVariables();
 				ArrayList<Variable> modifiedVars=modifiedFuncPoint.getVariables();
-				if(origVars.equals(modifiedVars)){
+				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
+				ArrayList<AccessedDOMNode> modifiedNodes=modifiedFuncPoint.getAccessedDomNodes();
+				if(origVars.equals(modifiedVars) && origNodes.equals(modifiedNodes)){
 					
 					return entryPoint;
 					
@@ -146,7 +152,8 @@ public class FunctionStateComparator {
 			while(iterator.hasNext()){
 				FunctionPoint entryPoint=iterator.next();
 				if(entryPoint.getPointName().equals(origFuncEntry.getPointName())){
-					if(entryPoint.getVariables().equals(origFuncEntry.getVariables())){
+					if(entryPoint.getVariables().equals(origFuncEntry.getVariables())
+							&& entryPoint.getAccessedDomNodes().equals(origFuncEntry.getAccessedDomNodes())){
 						return true;
 					}
 				}

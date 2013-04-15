@@ -3,6 +3,7 @@ package oracle;
 import domMutation.Node;
 import domMutation.NodeProperty;
 
+@Deprecated
 public class AccessedDOMNode extends NodeProperty {
 
 	private long time;
