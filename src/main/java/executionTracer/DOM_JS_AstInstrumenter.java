@@ -122,7 +122,7 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 				code =
 			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix + "'";
 				if(domRelated.size()>0){
-					htmlCode= ", new Array(";
+					htmlCode= ", new Array('DOM', ";
 				
 					for(String[] str:domRelated){
 				            
@@ -143,10 +143,11 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 				}
 				
 				if(htmlCode.length()>0){
-					htmlCode = htmlCode.substring(0, vars.length() - 1);
-					code+=htmlCode;
+					htmlCode = htmlCode.substring(0, htmlCode.length() - 1);
+					code+=htmlCode + ")";
+					
 				}
-				code+= "', new Array(";
+				code+= ", new Array(";
 	
 				Iterator<String> iter=variables.iterator();
 				while(iter.hasNext()){
@@ -223,7 +224,7 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 			if (vars.length() > 0) {
 				/* remove last comma */
 				vars = vars.substring(0, vars.length() - 1);
-				code += vars + "))));";
+				code += vars + ")));";
 			} else {
 				/* no variables to instrument here, so just return an empty node */
 				code = "/* empty */";

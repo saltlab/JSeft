@@ -17,7 +17,7 @@ public class ProgramPoint {
 	private String name;
 	private ArrayList<Variable> variables;
 	private ArrayList<DOMInput> domInputs;
-
+	private ArrayList<DOMOutPut> domOutPuts;
 
 
 	/**
@@ -30,6 +30,7 @@ public class ProgramPoint {
 		this.name = name;
 		variables = new ArrayList<Variable>();
 		domInputs=new ArrayList<DOMInput>();
+		domOutPuts=new ArrayList<DOMOutPut>();
 	
 
 	}
@@ -43,7 +44,15 @@ public class ProgramPoint {
 	}
 
 
-
+	public String getDomOutPutData(){
+		StringBuffer result = new StringBuffer();
+		for(DOMOutPut domOutput:domOutPuts){
+			result.append("node::" + domOutput.getNode() + "\n");
+			result.append("line::" + domOutput.getLine() + "\n");
+			result.append("value::" + domOutput.getValue() + "\n");
+		}
+		return result.toString();
+	}
 
 
 	/**
@@ -61,9 +70,10 @@ public class ProgramPoint {
 		String variableUsage="";
 		boolean found = false;
 
-
+		
 		result.append(name + "\n");
-		result.append(getDomInputData() + "\n");
+		if(name.contains(ProgramPoint.ENTERPOSTFIX))
+			result.append(getDomInputData());
 		for (Variable var : variables) {
 			found=false;
 			for (int i = 0; i < data.length(); i++) {
@@ -100,5 +110,9 @@ public class ProgramPoint {
 	}
 	public void domInput(DOMInput domInput){
 		domInputs.add(domInput);
+	}
+	
+	public void domOutPut(DOMOutPut domOutput){
+		domOutPuts.add(domOutput);
 	}
 }

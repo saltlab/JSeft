@@ -48,7 +48,7 @@ public class DOM_JS_Trace {
 	 */
 	public String getTraceRecord(JSONArray jsonObject) throws JSONException, CrawljaxException {
 	
-		StringBuffer result = new StringBuffer();
+		String result="";
 	
 		for (int j = 0; j < jsonObject.length(); j++) {
 			
@@ -56,42 +56,21 @@ public class DOM_JS_Trace {
 
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+ prefix;
-			String domHtml=value.getString(2);
-			
 			ProgramPoint prog = new ProgramPoint(programPointName);
-			DOMInput domInput=new DOMInput(domHtml);
-			prog.domInput(domInput);
-		
-			JSONArray jasonvalue = value.getJSONArray(3);
-			
-			
-			for (int i = 0; i < jasonvalue.length(); i++) {
-				JSONArray o = jasonvalue.getJSONArray(i);
-	/*			if(o.get(0).toString().equals("DOM")){
-					
-					String node=getDOMRelatedData(o.getJSONArray(1));
-					String line=o.get(2).toString(); 
-					String val= o.get(3).toString();
-					String time= o.get(4).toString();
-					DOMInput domInput=new DOMInput(node, line, val, time);
-					prog.domInput(domInput);
+			if(prefix.equals(ProgramPoint.EXITPOSTFIX)){
+				result=getTraceRecordForExitPoint(value, prog);
 
-				}
-	*/			
-				prog.variable(Variable.parse(o));
 				
+			}
+			else{
+				result=getTraceRecordforEntryPoint(value, prog);
+			}
 				
-			}	
-			
-			
-			result.append(prog.getData(value.getJSONArray(3)));			
-			result.append("===========================================================================\n");
-				
-			
+					
 			
 		}
 
-		return result.toString();
+		return result;
 	}
 
 
@@ -157,6 +136,78 @@ public class DOM_JS_Trace {
 		}
 		
 	
+
+		return result.toString();
+	}
+	
+	
+	private String getTraceRecordForExitPoint(JSONArray value, ProgramPoint prog) throws JSONException{
+		StringBuffer result = new StringBuffer();
+		int indexForAddVariablePart;
+	
+		JSONArray domjasonvalue = value.getJSONArray(2);
+		if(domjasonvalue.get(0).toString().equals("DOM")){
+			for (int i = 1; i < domjasonvalue.length(); i++) {
+				JSONArray o = domjasonvalue.getJSONArray(i);
+				String node=o.get(0).toString();
+				String line=o.get(1).toString(); 
+				String val=o.get(2).toString();
+				DOMOutPut domOutput=new DOMOutPut(node, line, val);
+				prog.domOutPut(domOutput);
+
+			}
+			indexForAddVariablePart=3;
+		}
+		
+		else{
+			indexForAddVariablePart=2;
+		}
+		
+		JSONArray varjasonvalue = value.getJSONArray(indexForAddVariablePart);
+		for (int i = 0; i < varjasonvalue.length(); i++) {
+			JSONArray o = varjasonvalue.getJSONArray(i);			
+			prog.variable(Variable.parse(o));
+			
+			
+		}	
+		
+		result.append(prog.getData(value.getJSONArray(indexForAddVariablePart)));
+		result.append(prog.getDomOutPutData());
+		result.append("===========================================================================\n");
+			
+
+		return result.toString();
+
+	}
+	
+	private String getTraceRecordforEntryPoint(JSONArray value, ProgramPoint prog) throws JSONException{
+		StringBuffer result = new StringBuffer();
+		String domHtml=value.getString(2);
+		DOMInput domInput=new DOMInput(domHtml);
+		prog.domInput(domInput);
+		JSONArray jasonvalue = value.getJSONArray(3);
+
+		for (int i = 0; i < jasonvalue.length(); i++) {
+			JSONArray o = jasonvalue.getJSONArray(i);
+/*			if(o.get(0).toString().equals("DOM")){
+				
+				String node=getDOMRelatedData(o.getJSONArray(1));
+				String line=o.get(2).toString(); 
+				String val= o.get(3).toString();
+				String time= o.get(4).toString();
+				DOMInput domInput=new DOMInput(node, line, val, time);
+				prog.domInput(domInput);
+
+			}
+*/			
+			prog.variable(Variable.parse(o));
+			
+			
+		}	
+		
+		
+		result.append(prog.getData(value.getJSONArray(3)));			
+		result.append("===========================================================================\n");
 
 		return result.toString();
 	}

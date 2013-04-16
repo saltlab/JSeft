@@ -124,7 +124,7 @@ function AddDomNodeProps(element,value,name){
 		});
 	}
 	
-	return new Array("DOM", datas, value, name);
+	return new Array(datas, value, name);
 
 }
 
