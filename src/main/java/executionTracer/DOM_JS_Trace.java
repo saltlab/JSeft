@@ -58,12 +58,12 @@ public class DOM_JS_Trace {
 			String programPointName = value.getString(0)+ prefix;
 			ProgramPoint prog = new ProgramPoint(programPointName);
 			if(prefix.equals(ProgramPoint.EXITPOSTFIX)){
-				result=getTraceRecordForExitPoint(value, prog);
+				result+=getTraceRecordForExitPoint(value, prog);
 
 				
 			}
 			else{
-				result=getTraceRecordforEntryPoint(value, prog);
+				result+=getTraceRecordforEntryPoint(value, prog);
 			}
 				
 					
@@ -149,12 +149,19 @@ public class DOM_JS_Trace {
 		if(domjasonvalue.get(0).toString().equals("DOM")){
 			for (int i = 1; i < domjasonvalue.length(); i++) {
 				JSONArray o = domjasonvalue.getJSONArray(i);
-				String node=o.get(0).toString();
-				String line=o.get(1).toString(); 
-				String val=o.get(2).toString();
-				DOMOutPut domOutput=new DOMOutPut(node, line, val);
-				prog.domOutPut(domOutput);
-
+				if(o.get(0) instanceof JSONArray){
+					JSONArray nodeArray=o.getJSONArray(0);
+					for(int j=0;j<nodeArray.length();j++){
+				
+						String node=nodeArray.get(j).toString();
+				//		String line=o.get(1).toString(); 
+				//		String val=o.get(2).toString();
+						String line="";
+						String val="";
+						DOMOutPut domOutput=new DOMOutPut(node, line, val);
+						prog.domOutPut(domOutput);
+					}
+				}
 			}
 			indexForAddVariablePart=3;
 		}

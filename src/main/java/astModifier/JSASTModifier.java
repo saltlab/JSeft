@@ -9,9 +9,11 @@ import java.util.Map;
 
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
+import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.Block;
+import org.mozilla.javascript.ast.ExpressionStatement;
 import org.mozilla.javascript.ast.ForLoop;
 import org.mozilla.javascript.ast.FunctionCall;
 import org.mozilla.javascript.ast.FunctionNode;
@@ -19,7 +21,9 @@ import org.mozilla.javascript.ast.IfStatement;
 import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.NodeVisitor;
 import org.mozilla.javascript.ast.ObjectProperty;
+import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.ReturnStatement;
+import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
 import org.slf4j.Logger;
@@ -32,6 +36,7 @@ import executionTracer.ProgramPoint;
 public abstract class JSASTModifier implements NodeVisitor  {
 
 
+	protected int numberOfDomRelatedNodes=0;
 	private final Map<String, String> mapper = new HashMap<String, String>();
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(CrawljaxController.class.getName());
@@ -69,6 +74,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		nodesNotTolook.add("send(new Array(");
 		nodesNotTolook.add("new Array(");
 		nodesNotTolook.add("addVariable");
+		nodesNotTolook.add("stripScripts");
 
 		/* add -<number of arguments> to also make sure number of arguments is the same */
 		mapper.put("addClass", "attr('class')");
@@ -168,6 +174,9 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	 */
 	protected abstract AstNode createPointNode(FunctionNode function, String domNode, String shouldLog, int lineNo);
 
+	protected abstract AstNode createNodeToLogDomNodes(String domNode, String shouldLog);
+	
+	protected abstract AstNode createInstrumentationArrayLocalVariable();
 	/**
 	 * Create a new block node with two children.
 	 * 
@@ -243,8 +252,10 @@ public abstract class JSASTModifier implements NodeVisitor  {
 			func = (FunctionNode) node;
 
 			/* this is function enter */
+			AstNode instumentationArrayNode=createInstrumentationArrayLocalVariable();
 			AstNode newNode = createEnterNode(func, ProgramPoint.ENTERPOSTFIX, func.getLineno());
 
+			func.getBody().addChildToFront(instumentationArrayNode);
 			func.getBody().addChildToFront(newNode);
 
 			/* get last line of the function */
@@ -309,7 +320,165 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				
 			}
 */			
-		} 
+			
+		}
+		else if (node instanceof Name) {
+				
+				
+				if (node.getParent() instanceof PropertyGet
+					        && node.getParent().getParent() instanceof FunctionCall && !node.getParent().toSource().contains("function")) {
+
+						List<AstNode> arguments =
+						        ((FunctionCall) node.getParent().getParent()).getArguments();
+
+						String domNodeToLog;
+
+						if (mapper.get(node.toSource()) != null
+						        || mapper.get(node.toSource() + "-" + arguments.size()) != null) {
+						
+							PropertyGet g = (PropertyGet) node.getParent();
+		                    
+							String objectAndFunction = mapper.get(node.toSource());
+							if (objectAndFunction == null) {
+								objectAndFunction = mapper.get(node.toSource() + "-" + arguments.size());
+							}
+
+
+							if (node.toSource().equals("appendTo") || node.toSource().equals("prependTo") || node.toSource().equals("insertAfter") || node.toSource().equals("insertBefore")){
+								domNodeToLog="$" + "(" + arguments.get(0).toSource() + ")";
+								objectAndFunction="DIRECTACCESS";
+								
+							}
+
+							else if(node.toSource().equals("children") || node.toSource().equals("parent")){
+								domNodeToLog = g.getLeft().toSource()+ "." + objectAndFunction;
+								objectAndFunction="DIRECTACCESS";
+							}
+					
+							else{
+								objectAndFunction = g.getLeft().toSource()+ "." + objectAndFunction;
+								domNodeToLog=g.getLeft().toSource();
+							
+							}
+							
+							
+						
+								for (int i = 0; i < arguments.size(); i++) {
+									objectAndFunction =
+										objectAndFunction.replace("%" + i, arguments.get(i).toSource());
+								}
+							
+							objectAndFunction=objectAndFunction.replace(" ", "____");
+							AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
+							parent.addChildAfter(
+							 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+							 getLineNode(node));
+							numberOfDomRelatedNodes++;
+		                    
+						}
+					
+						else
+							if(node.toSource().equals("css")) 
+								if(arguments.size()==1 && arguments.get(0).toSource().startsWith("{")) {
+								
+									PropertyGet g = (PropertyGet) node.getParent();
+									String objectAndFunction="";
+										
+									objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+									domNodeToLog=g.getLeft().toSource();
+									
+									String[] args=arguments.get(0).toSource().replace("{", "").replace("}","").split(",");
+									for (int i=0; i<args.length; i++) {
+								    	if (args[i].contains(":")){
+								    		if (!args[i].split(":")[0].contains("'") && !args[i].split(":")[0].contains("\"")) {
+								    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "____")+ "'" + ")";
+								    		}
+								    		else {
+
+								    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "")+ ")";
+								    		}	
+								    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
+												
+											parent.addChildAfter(
+											 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+											 getLineNode(node));
+											numberOfDomRelatedNodes++;
+								    
+											objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+										
+								    	}
+									}
+									
+							}
+								else
+									if (node.toSource().equals("attr")) {
+										if(arguments.size()==1 && arguments.get(0).toSource().startsWith("{")) {
+											
+											PropertyGet g = (PropertyGet) node.getParent();
+											String objectAndFunction="";
+												
+											objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+											domNodeToLog=g.getLeft().toSource();
+											
+											String[] args=arguments.get(0).toSource().replace("{", "").replace("}","").split(",");
+											for (int i=0; i<args.length; i++) {
+										    	if (args[i].contains(":")){
+
+										   			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "") + ")";								    	
+										    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
+															
+													parent.addChildAfter(
+													 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+													 getLineNode(node));
+													numberOfDomRelatedNodes++;
+													
+										    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
+												
+										    	}
+											}
+										}
+									}
+						
+					}
+				}
+		        
+		        else if(node instanceof FunctionCall){
+					if( ((FunctionCall)node).getTarget() instanceof Name){
+					
+						if(((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("$")
+								|| ((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("jQuery")){
+						
+							if(((FunctionCall)node).getArguments().size()==1
+									&& ((FunctionCall)node).getArguments().get(0) instanceof StringLiteral){
+								
+								String domNodeToLog=node.toSource();
+								String objectAndFunction="DIRECTACCESS";
+								AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
+								parent.addChildAfter(
+								 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+								 getLineNode(node));
+								numberOfDomRelatedNodes++;
+					    	
+								
+							}
+						}
+						else if(((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("getElementById") ||
+								((Name)((FunctionCall)node).getTarget()).getIdentifier().equals("getElementsByTagName")){
+							
+							String domNodeToLog="document" + "." + node.toSource();
+							String objectAndFunction="DIRECTACCESS";
+							AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
+							parent.addChildAfter(
+							 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+							 getLineNode(node));
+							numberOfDomRelatedNodes++;
+				    	
+							
+						}
+					}
+		        }
+		        
+		
 
 		
 	
@@ -319,14 +488,14 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		return true;
 	}
 
-/*	private AstNode getLineNode(AstNode node) {
+	private AstNode getLineNode(AstNode node) {
 		while ((!(node instanceof ExpressionStatement) && !(node instanceof Assignment))
 		        || node.getParent() instanceof ReturnStatement) {
 			node = node.getParent();
 		}
 		return node;
 	}
-*/
+
 	/**
 	 * This method is called when the complete AST has been traversed.
 	 * 

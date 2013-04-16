@@ -26,6 +26,7 @@ public class VisitObjectTypeVars implements NodeVisitor{
 		this.varUsage=varUsage;
 		this.scope=scope;
 		excludedList.add("send(new Array");
+		excludedList.add("var instrumentationArray");
 		
 	}
 	

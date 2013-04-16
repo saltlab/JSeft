@@ -48,9 +48,9 @@ public class ProgramPoint {
 		StringBuffer result = new StringBuffer();
 		for(DOMOutPut domOutput:domOutPuts){
 			result.append("node::" + domOutput.getNode() + "\n");
-			result.append("line::" + domOutput.getLine() + "\n");
+/*			result.append("line::" + domOutput.getLine() + "\n");
 			result.append("value::" + domOutput.getValue() + "\n");
-		}
+*/		}
 		return result.toString();
 	}
 

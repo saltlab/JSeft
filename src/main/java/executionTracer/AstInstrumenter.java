@@ -385,6 +385,18 @@ public class AstInstrumenter extends JSASTModifier{
 		
 		
 	}
+
+	@Override
+	protected AstNode createNodeToLogDomNodes(String domNode, String shouldLog) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected AstNode createInstrumentationArrayLocalVariable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 	
 

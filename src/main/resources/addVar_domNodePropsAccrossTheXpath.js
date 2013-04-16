@@ -102,29 +102,34 @@ var getElementTreeXPath = function(element) {
 
 }
 
-function AddDomNodeProps(element,value,name){
+function AddDomNodeProps(elementArray){
 	var date = new Date();
 	time=date.getTime();
 	var datas = new Array();
 	
-	for(i=0;i<$(element).length;i++){
-	//	path=getElementXPath($(element).get(i));
-        nodes=getAllAttrs(element);
-        nodeAttrs="";
-        for(var i=0;i<nodes.length;i++){
-        	nodeAttrs+=","+nodes[i];
-        }
-	datas.push({
-		id:$($(element).get(i)).prop('id'), 
-		className: $($(element).get(i)).prop('className'),
-		tagName: $($(element).get(i)).prop('tagName'),
-		attributes:nodeAttrs
-//		selector: $(element).selector,
-//		xpath: path
-		});
+	while(elementArray.length>0){
+		element=elementArray.pop();
+		
+		for(i=0;i<$(element).length;i++){
+			path=getElementXPath($(element).get(i));
+	        nodes=getAllAttrs($(element).get(i));
+	        nodeAttrs="";
+	        for(j=0;j<nodes.length;j++){
+	        	nodeAttrs+=","+nodes[j];
+	        }
+	        datas.push({
+	        	id:$($(element).get(i)).prop('id'), 
+	        	className: $($(element).get(i)).prop('className'),
+	        	tagName: $($(element).get(i)).prop('tagName'),
+	        	attributes:nodeAttrs,
+	        	selector: $(element).selector,
+	        	xpath: path
+	        });
+		}
 	}
 	
-	return new Array(datas, value, name);
+	
+	return new Array(datas);
 
 }
 
@@ -138,5 +143,14 @@ function stripScripts(html) {
     	scripts[i].parentNode.removeChild(scripts[i]);
     }
 
-    return div.innerHTML.replace(/(\r\n|\n|\r)/gm,"");
- };
+    return div.innerHTML.replace(/(\r\n|\n|\r|\t)/gm,"");
+ }
+
+function pushIfItDoesNotExist(domNode,instrumentationArray){
+	found=jQuery.inArray(domNode,instrumentationArray)
+	if(found==-1){
+		instrumentationArray.push(domNode);
+	}
+}
+
+;

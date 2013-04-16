@@ -26,9 +26,10 @@ import com.google.common.io.Resources;
 import executionTracer.AstInstrumenter.variableUsageType;
 import astModifier.DOM_JS_ASTModifier;
 import astModifier.DOM_Visitor;
+import astModifier.JSASTModifier;
 
 
-public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
+public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	
 	public static final String JSINSTRUMENTLOGNAME = "window.domjsExecutionTrace";
 
@@ -80,10 +81,10 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 	
 	@Override
 	protected AstNode createExitNode(FunctionNode function, ReturnStatement returnNode,String postfix, int lineNo){
-		DOM_Visitor domVis=new DOM_Visitor();
+/*		DOM_Visitor domVis=new DOM_Visitor();
 		function.visit(domVis);
 		ArrayList<String[]> domRelated=(ArrayList<String[]>) domVis.getDomRelatedAtExitPoint();
-		
+*/		
 		String name;
 		String code="";
 		String htmlCode="";
@@ -121,13 +122,12 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 				
 				code =
 			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix + "'";
-				if(domRelated.size()>0){
-					htmlCode= ", new Array('DOM', ";
+				if(numberOfDomRelatedNodes>0){
+					htmlCode= ", new Array('DOM', AddDomNodeProps(instrumentationArray))";
 				
-					for(String[] str:domRelated){
+/*					for(int i=0;i<numberOfDomRelatedNodes;i++){
 				            
-						String domNode=str[0];
-						String objectAndFunction=str[1];
+						
 						if(objectAndFunction.equals("DIRECTACCESS")){
 							htmlCode+= "AddDomNodeProps("
 									+ domNode + ", "
@@ -147,6 +147,15 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 					code+=htmlCode + ")";
 					
 				}
+*/				
+				
+				}
+				if(htmlCode.length()>0){
+				
+					code+=htmlCode;
+						
+				}
+				
 				code+= ", new Array(";
 	
 				Iterator<String> iter=variables.iterator();
@@ -418,6 +427,19 @@ public class DOM_JS_AstInstrumenter extends DOM_JS_ASTModifier{
 		return objectVars;
 		
 		
+	}
+
+	@Override
+	protected AstNode createNodeToLogDomNodes(String domNode, String shouldLog) {
+		String code="pushIfItDoesNotExist" + "(" + domNode + "," + "instrumentationArray"+ ")" +";"; 
+		return parse(code);
+	}
+
+	@Override
+	protected AstNode createInstrumentationArrayLocalVariable() {
+		
+		String code="var instrumentationArray=new Array();";
+		return parse(code);
 	}
 		
 	
