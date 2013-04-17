@@ -151,6 +151,9 @@ function pushIfItDoesNotExist(domNode,instrumentationArray){
 	if(found==-1){
 		instrumentationArray.push(domNode);
 	}
+	else{
+		instrumentationArray[found]=domNode;
+	}
 }
 
 ;

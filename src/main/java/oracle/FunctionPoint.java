@@ -1,6 +1,7 @@
 package oracle;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import domMutation.NodeProperty;
 
@@ -9,7 +10,7 @@ public class FunctionPoint {
 	private String pointName;
 	private ArrayList<Variable> variables;
 	private String domHtml;
-//	accessedDomNodes=new ArrayList<AccessedDOMNode>();
+	ArrayList<AccessedDOMNode> accessedDomNodes=new ArrayList<AccessedDOMNode>();
 	private long time;
 	
 	public FunctionPoint(String pointName, ArrayList<Variable> variables, String domHtml, long time){
@@ -27,9 +28,9 @@ public class FunctionPoint {
 		accessedDomNodes=new ArrayList<AccessedDOMNode>();
 		accessedDomNodes.add(accessDomNode);
 	}
-	public void addAccessedDomNode(AccessedDOMNode domNode){
+*/	public void addAccessedDomNodes(ArrayList<AccessedDOMNode> domNodes){
 	
-		accessedDomNodes.add(domNode);
+		accessedDomNodes.addAll(domNodes);
 	}
 	
 	public void addVariable(ArrayList<Variable> varList){
@@ -39,7 +40,7 @@ public class FunctionPoint {
 	public ArrayList<AccessedDOMNode> getAccessedDomNodes(){
 		return accessedDomNodes;
 	}
-*/	
+	
 	public String getPointName(){
 		return pointName;
 	}
@@ -60,7 +61,7 @@ public class FunctionPoint {
 			if(this.getPointName().equals(functionPoint.getPointName())
 					&& this.getTime()==functionPoint.getTime()
 					&& this.getVariables().equals(functionPoint.getVariables())
-//					&& this.getAccessedDomNodes().equals(functionPoint.getAccessedDomNodes())
+					&& this.getAccessedDomNodes().equals(functionPoint.getAccessedDomNodes())
 					&& this.domHtml.equals(functionPoint.getDomHtml())){
 				return true;
 				

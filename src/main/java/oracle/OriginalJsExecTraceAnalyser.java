@@ -79,11 +79,12 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					String domHtml="";
 /*					String nodeLine="";
 					String nodeValue="";
-					Node domNode=null;
-*/					Variable varibale;
+*/					
+					Variable varibale;
 //					AccessedDOMNode accessedDomNode=null;
 
 					ArrayList<Variable> variables=new ArrayList<Variable>();
+					ArrayList<AccessedDOMNode> domNodes=new ArrayList<AccessedDOMNode>();
 					
 					FunctionPoint functionPoint;
 //					FunctionPoint domRelatedFunctionPoint;
@@ -111,14 +112,15 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						else if(line.contains("dom::")){
 							domHtml=line.split("::")[1];
 						}
-/*						else if(line.contains("node::")){
-							String node=line.replace("node::", "");
+						else if(line.contains("node::")){
+							String node=line.split("::")[1];
 							ObjectMapper mapper = new ObjectMapper();  
-						    domNode = mapper.readValue(node, Node.class);  
-						    mapper.writeValueAsString(domNode);  
+						    AccessedDOMNode domNode = mapper.readValue(node, AccessedDOMNode.class);  
+						    mapper.writeValueAsString(domNode);
+						    domNodes.add(domNode);
 						
 						}
-						else if(line.contains("line::")){
+/*						else if(line.contains("line::")){
 							nodeLine=line.replace("line::", "");
 						}
 						else if(line.contains("value::")){
@@ -138,8 +140,8 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							
 							
 						}
-/*						if(domNode!=null && nodeLine!="" && nodeValue!=""){
-							accessedDomNode=new AccessedDOMNode(domNode, nodeLine, nodeValue, time);
+/*						if(domNode!=null){
+							accessedDomNode=new AccessedDOMNode(domNode);
 							
 						}
 */						
@@ -160,6 +162,9 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 
 					
 				functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
+				if(domNodes.size()>0){
+					functionPoint.addAccessedDomNodes(domNodes);
+				}
 				funcNameToFuncPointMap.put(funcName, functionPoint);
 				}
 				input.close();
