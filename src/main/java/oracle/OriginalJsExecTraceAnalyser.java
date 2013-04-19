@@ -117,6 +117,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							ObjectMapper mapper = new ObjectMapper();  
 						    AccessedDOMNode domNode = mapper.readValue(node, AccessedDOMNode.class);  
 						    mapper.writeValueAsString(domNode);
+						    domNode.makeAllAttributes();
 						    domNodes.add(domNode);
 						
 						}

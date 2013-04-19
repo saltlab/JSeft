@@ -1,13 +1,39 @@
 package oracle;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import domMutation.Node;
-import domMutation.NodeProperty;
+
+
 
 
 public class AccessedDOMNode extends Node {
 
 	public String attributes;
-
+	private Set<Attribute> allAttributes=new HashSet<Attribute>();
+	
+	
+	public void makeAllAttributes(){
+		String attrName="class";
+		String attrValue=this.className;
+		allAttributes.add(new Attribute("class", this.className));
+		allAttributes.add(new Attribute("id",this.id));
+		allAttributes.add(new Attribute("tagName",this.tagName));
+	
+		
+		String[] attrs=attributes.split(",");
+		for(int i=0;i<attrs.length;i++){
+			attrName=attrs[i].split("::")[0];
+			attrValue=attrs[i].split("::")[1];
+			Attribute attr=new Attribute(attrName, attrValue);
+			allAttributes.add(attr);
+		}
+		
+	}
+	
+	
+	
 	
 	@Override
 	public boolean equals(Object obj){

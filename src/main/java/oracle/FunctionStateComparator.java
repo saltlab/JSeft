@@ -81,13 +81,21 @@ public class FunctionStateComparator {
 		if(funcPoint1.getPointName().equals(funcPoint2.getPointName())){
 			ArrayList<Variable> varList1=funcPoint1.getVariables();
 			ArrayList<Variable> varList2=funcPoint2.getVariables();
-/*			ArrayList<AccessedDOMNode> nodeList1=funcPoint1.getAccessedDomNodes();
-			ArrayList<AccessedDOMNode> nodeList2=funcPoint2.getAccessedDomNodes();
-*/			
-			String domHtml1=funcPoint1.getDomHtml();
-			String domHtml2=funcPoint2.getDomHtml();
-			if(varList1.equals(varList2) && domHtml1.equals(domHtml2))
-				return true;
+			
+			if(funcPoint1.getPointName().toLowerCase().equals("entry")){
+				String domHtml1=funcPoint1.getDomHtml();
+				String domHtml2=funcPoint2.getDomHtml();
+				if(varList1.equals(varList2) && domHtml1.equals(domHtml2))
+					return true;
+			}
+			
+			else if(funcPoint1.getPointName().toLowerCase().equals("exit")){
+				ArrayList<AccessedDOMNode> accessedNodes1=funcPoint1.getAccessedDomNodes();
+				ArrayList<AccessedDOMNode> accessedNodes2=funcPoint2.getAccessedDomNodes();
+				if(varList1.equals(varList2) && accessedNodes1.equals(accessedNodes2)){
+					return true;
+				}
+			}
 		}
 		return false;
 	}

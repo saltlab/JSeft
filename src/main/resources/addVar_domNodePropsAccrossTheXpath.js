@@ -90,13 +90,13 @@ var getElementTreeXPath = function(element) {
 
         var tagName = element.nodeName.toLowerCase();
         var pathIndex = (index ? "[" + (index+1) + "]" : "");
-        var nodes=getAllAttrs(element);
+ /*     var nodes=getAllAttrs(element);
         var nodeAttrs="";
         for(var i=0;i<nodes.length;i++){
         	nodeAttrs+=","+nodes[i];
         }
-        
-        paths.splice(0, 0, tagName + pathIndex+nodeAttrs);
+ */       
+        paths.splice(0, 0, tagName + pathIndex);//+nodeAttrs);
     }
     return paths.length ? "/" + paths.join("/") : null;
 
@@ -115,8 +115,9 @@ function AddDomNodeProps(elementArray){
 	        nodes=getAllAttrs($(element).get(i));
 	        nodeAttrs="";
 	        for(j=0;j<nodes.length;j++){
-	        	nodeAttrs+=","+nodes[j];
+	        	nodeAttrs+=nodes[j] + ",";
 	        }
+	        nodeAttrs=nodeAttrs.slice(0,-1);//trim the last comma
 	        datas.push({
 	        	id:$($(element).get(i)).prop('id'), 
 	        	className: $($(element).get(i)).prop('className'),

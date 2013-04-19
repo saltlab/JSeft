@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -65,10 +67,17 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					String value="";
 					String variableUsage="";
 					String domHtml="";
+/*					String nodeLine="";
+					String nodeValue="";
+*/					
 					Variable varibale;
+//					AccessedDOMNode accessedDomNode=null;
 
 					ArrayList<Variable> variables=new ArrayList<Variable>();
+					ArrayList<AccessedDOMNode> domNodes=new ArrayList<AccessedDOMNode>();
+					
 					FunctionPoint functionPoint;
+//					FunctionPoint domRelatedFunctionPoint;
 				
 					while (!(line = input.readLine()).equals
 							("===========================================================================")){
@@ -93,6 +102,24 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						else if(line.contains("dom::")){
 							domHtml=line.split("::")[1];
 						}
+						else if(line.contains("node::")){
+							String node=line.split("::")[1];
+							ObjectMapper mapper = new ObjectMapper();  
+						    AccessedDOMNode domNode = mapper.readValue(node, AccessedDOMNode.class);  
+						    mapper.writeValueAsString(domNode);
+						    domNode.makeAllAttributes();
+						    domNodes.add(domNode);
+						
+						}
+/*						else if(line.contains("line::")){
+							nodeLine=line.replace("line::", "");
+						}
+						else if(line.contains("value::")){
+							nodeValue=line.replace("value::", "");
+						}
+						
+*/						
+						
 						
 						if(variableName!="" && value!="" && type!="" && variableUsage!=""){
 							varibale=new Variable(variableName, value, type, variableUsage);
@@ -104,15 +131,32 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							
 							
 						}
-						
+/*						if(domNode!=null){
+							accessedDomNode=new AccessedDOMNode(domNode);
+							
+						}
+*/						
 					
 					}
 					
-					functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
-					funcNameToFuncPointMap.put(funcName, functionPoint);
-		//			List<FunctionPoint> functionPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
-		//			java.util.Collections.sort(functionPoints, bvc);
+/*					if(accessedDomNode!=null){
+						addingDomRelatedFunctionPoint(accessedDomNode, funcName, pointName, time);
+					}
+					else{
+						addingNonDomRelatedFunctionPoint(variables, funcName, pointName, time);
+					}
+*/					
+					
+					
+//					List<FunctionPoint> functionPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
+//					java.util.Collections.sort(functionPoints, bvc);
 
+					
+				functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
+				if(domNodes.size()>0){
+					functionPoint.addAccessedDomNodes(domNodes);
+				}
+				funcNameToFuncPointMap.put(funcName, functionPoint);
 				}
 				input.close();
 			  }
@@ -137,6 +181,7 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				}
 			}
 	*/	}
+			
 		catch (IOException e) {
 			e.printStackTrace();
 		}
