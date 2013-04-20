@@ -14,6 +14,14 @@ public class AccessedDOMNode extends Node {
 	private Set<Attribute> allAttributes=new HashSet<Attribute>();
 	
 	
+	public void addAttribute(Attribute attr){
+
+		allAttributes.add(attr);
+	}
+	
+	public Set<Attribute> getAllAttibutes(){
+		return allAttributes;
+	}
 	public void makeAllAttributes(){
 		String attrName="class";
 		String attrValue=this.className;

@@ -9,12 +9,12 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 public class FunctionStateComparator {
-
-	
+	/* (funcName->(entrypoint->oracle)) */
+	private ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,Oracle>> oracleMultimap=ArrayListMultimap.create();	
 //	private Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer;
 	/* (funcName->(entrypoint->exitpoint)) */
-	private ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,FunctionPoint>> oracleMultimap=ArrayListMultimap.create();	
-/*	public FunctionStateComparator(Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer){
+/*	private ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,FunctionPoint>> oracleMultimap=ArrayListMultimap.create();	
+	public FunctionStateComparator(Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer){
 		this.funcNameToFuncStateMap_modifiedVer=funcNameToFuncStateMap_modifiedVer;
 		
 	}
@@ -44,9 +44,17 @@ public class FunctionStateComparator {
 				boolean same=false;
 				for(int j=0;j<origFuncExits.size();j++){
 					FunctionPoint origFuncExit=origFuncExits.get(j);
-					same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
+					Oracle oracle=addDiffPartsToTheOracleFuncExits(modifiedFuncExit, origFuncExit);
+					if(oracle.getVariables().size()>0 || oracle.getAccessedDomNodes().size()>0){
+						
+					}
+					
+					
+					
+		/*			same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
 					if (same)
 						break;
+		*/			
 		/*			if(!same){
 						
 						ArrayListMultimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
@@ -77,6 +85,88 @@ public class FunctionStateComparator {
 		
 	}
 	
+	private Oracle addDiffPartsToTheOracleFuncExits(FunctionPoint modifiedFuncExit, FunctionPoint origFuncExit) {
+		
+		Oracle oracle=new Oracle();
+		if(modifiedFuncExit.getPointName().equals(origFuncExit.getPointName())){
+			ArrayList<Variable> origvarList=origFuncExit.getVariables();
+			ArrayList<Variable> modifvarList=modifiedFuncExit.getVariables();
+			for(int i=0;i<origvarList.size();i++){
+				boolean sameVariable=false;;
+				for(int j=0;j<modifvarList.size();j++){
+					if(origvarList.get(i).getValue().equals(modifvarList.get(j).getValue()) 
+							&& origvarList.get(i).equals(modifvarList.get(j).getType())){
+						sameVariable=true;
+						break;
+					}
+				}
+				if(!sameVariable){
+					oracle.addVariable(origvarList.get(i));
+				}
+				
+			}
+			
+			ArrayList<AccessedDOMNode> origAccessedDomNodeList=origFuncExit.getAccessedDomNodes();
+			ArrayList<AccessedDOMNode> modifAccessedDomNodeList=modifiedFuncExit.getAccessedDomNodes();
+			for(AccessedDOMNode origAccessedDomNode:origAccessedDomNodeList){
+				boolean sameXpath=false;
+				AccessedDOMNode sameModifAccessedDomNode=null;
+				for(AccessedDOMNode modifAccessedDomNode:modifAccessedDomNodeList){
+					if(origAccessedDomNode.xpath.equals(modifAccessedDomNode.xpath)){
+						sameXpath=true;
+						sameModifAccessedDomNode=modifAccessedDomNode;
+						break;
+					}
+					
+				}
+				AccessedDOMNode oracleAccessedDomNode=new AccessedDOMNode();
+				if(sameXpath){
+					Set<Attribute> modifAttrs=sameModifAccessedDomNode.getAllAttibutes();
+					Set<Attribute> origAttrs=origAccessedDomNode.getAllAttibutes();
+					Iterator<Attribute> iter=origAttrs.iterator();
+					
+					while(iter.hasNext()){
+						Attribute origAttr=iter.next();
+						Iterator<Attribute> modifIter=modifAttrs.iterator();
+						boolean sameAttr=false;
+					
+						while(modifIter.hasNext()){
+							Attribute modifAttr=modifIter.next();
+							if(origAttr.getAttrName().equals(modifAttr.getAttrName()) &&
+									origAttr.getAttrValue().equals(modifAttr.getAttrValue())){
+								sameAttr=true;
+								break;
+							}
+							
+						}
+						
+						if(!sameAttr){
+							oracleAccessedDomNode.xpath=origAccessedDomNode.xpath;
+							oracleAccessedDomNode.addAttribute(origAttr);
+						}
+					}
+				}
+				
+				else{
+					
+					oracleAccessedDomNode.xpath=origAccessedDomNode.xpath;
+				}
+				
+				//meaning that this accessedDomNode has something to be included in our assertions
+				if(!oracleAccessedDomNode.xpath.equals("")){
+					oracle.addAccessedDomNode(oracleAccessedDomNode);
+				}
+			}
+		
+		
+		
+		
+		}
+		
+		return oracle;
+		
+	}
+
 	private boolean functionPointsSimilar(FunctionPoint funcPoint1, FunctionPoint funcPoint2){
 		if(funcPoint1.getPointName().equals(funcPoint2.getPointName())){
 			ArrayList<Variable> varList1=funcPoint1.getVariables();
@@ -162,10 +252,10 @@ public class FunctionStateComparator {
 	
 	private boolean isEntryPointRepeatedInOracleSet(String funcName, FunctionPoint origFuncEntry){
 		
-		List<ArrayListMultimap<FunctionPoint, FunctionPoint>> entryExitList=oracleMultimap.get(funcName);
-		for(ArrayListMultimap<FunctionPoint, FunctionPoint> entryExit:entryExitList){
+		List<ArrayListMultimap<FunctionPoint, Oracle>> entryOracleList=oracleMultimap.get(funcName);
+		for(ArrayListMultimap<FunctionPoint, Oracle> entryOracle:entryOracleList){
 			
-			Set<FunctionPoint> key=entryExit.keySet();
+			Set<FunctionPoint> key=entryOracle.keySet();
 			Iterator<FunctionPoint> iterator=key.iterator();
 			while(iterator.hasNext()){
 				FunctionPoint entryPoint=iterator.next();
