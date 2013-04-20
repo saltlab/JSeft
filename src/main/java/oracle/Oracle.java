@@ -8,6 +8,7 @@ public class Oracle {
 	
 	private Set<Variable> variables;
 	private Set<AccessedDOMNode> accessedDomNodes;
+	private FunctionPoint origVersionExitFuncPoint;
 	
 	public Oracle(){
 		variables=new HashSet<Variable>();
@@ -36,6 +37,21 @@ public class Oracle {
 	
 	public Set<AccessedDOMNode> getAccessedDomNodes(){
 		return accessedDomNodes;
+	}
+	
+	public void setOrigVersionExitFuncPoint(FunctionPoint origexit){
+		origVersionExitFuncPoint=origexit;
+		
+	}
+	
+	public FunctionPoint getOrigVersionExitFuncPoint(){
+		return origVersionExitFuncPoint;
+	}
+	public void addVariableSet(Set<Variable> varSet){
+		variables.addAll(varSet);
+	}
+	public void addAccessedDomNodeSet(Set<AccessedDOMNode> accessedDomNodeSet){
+		accessedDomNodes.addAll(accessedDomNodeSet);
 	}
 	
 

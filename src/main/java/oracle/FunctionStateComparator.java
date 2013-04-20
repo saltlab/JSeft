@@ -33,8 +33,7 @@ public class FunctionStateComparator {
 			List<FunctionState> funcStates=(List<FunctionState>) MutatedJsExecTraceAnalyser.funcNameToFuncStateMap_modifiedVer.get(funcName);
 			Multimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit=
 					OriginalJsExecTraceAnalyser.funcEntryPointToExitPointMap.get(funcName);
-			
-		
+				
 			for(int i=0;i<funcStates.size();i++){
 				FunctionState modifiedFuncState=funcStates.get(i);
 				FunctionPoint modifiedFuncEntry=modifiedFuncState.getFunctionEntry();
@@ -43,30 +42,25 @@ public class FunctionStateComparator {
 				ArrayList<FunctionPoint> origFuncExits=getFunctinExitsMatchedWithEntryPoint(funcEntryToMultiExit, modifiedFuncEntry, origFuncEntry);
 				boolean same=false;
 				for(int j=0;j<origFuncExits.size();j++){
-					FunctionPoint origFuncExit=origFuncExits.get(j);
-					Oracle oracle=addDiffPartsToTheOracleFuncExits(modifiedFuncExit, origFuncExit);
-					if(oracle.getVariables().size()>0 || oracle.getAccessedDomNodes().size()>0){
-						
-					}
 					
-					
-					
-		/*			same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
+					FunctionPoint origFuncExit=origFuncExits.get(j);	
+					same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
 					if (same)
-						break;
-		*/			
-		/*			if(!same){
-						
-						ArrayListMultimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
-						funcPointMltimap.put(origFuncEntry, origFuncExit);
-						oracleMultimap.put(funcName, funcPointMltimap);
-						break;
-					}
-		*/			
+						break;					
 				}
 
-				boolean isFuncEntryRepeatedInOracle=isEntryPointRepeatedInOracleSet(funcName,origFuncEntry);
-				if(!same && !isFuncEntryRepeatedInOracle){
+				if(!same){
+					
+					for(int j=0;j<origFuncExits.size();j++){
+						FunctionPoint origFuncExit=origFuncExits.get(j);
+						Oracle newOracle=addDiffPartsToTheOracleFuncExits(modifiedFuncExit, origFuncExit);
+						updateExistingnOracleSet(funcName, origFuncEntry, newOracle);
+					}
+					
+				}
+				
+				
+/*				if(!same && !isFuncEntryRepeatedInOracle){
 
 					ArrayListMultimap<FunctionPoint,FunctionPoint> funcPointMltimap=ArrayListMultimap.create();
 					for(int j=0;j<origFuncExits.size();j++){
@@ -77,8 +71,7 @@ public class FunctionStateComparator {
 					}
 					oracleMultimap.put(funcName, funcPointMltimap);
 				}
-				
-				
+*/								
 			}
 			
 		}
@@ -102,6 +95,7 @@ public class FunctionStateComparator {
 				}
 				if(!sameVariable){
 					oracle.addVariable(origvarList.get(i));
+					oracle.setOrigVersionExitFuncPoint(origFuncExit);
 				}
 				
 			}
@@ -155,11 +149,9 @@ public class FunctionStateComparator {
 				//meaning that this accessedDomNode has something to be included in our assertions
 				if(!oracleAccessedDomNode.xpath.equals("")){
 					oracle.addAccessedDomNode(oracleAccessedDomNode);
+					oracle.setOrigVersionExitFuncPoint(origFuncExit);	
 				}
 			}
-		
-		
-		
 		
 		}
 		
@@ -250,7 +242,7 @@ public class FunctionStateComparator {
 		
 	}
 	
-	private boolean isEntryPointRepeatedInOracleSet(String funcName, FunctionPoint origFuncEntry){
+	private void updateExistingnOracleSet(String funcName, FunctionPoint origFuncEntry, Oracle newOracle){
 		
 		List<ArrayListMultimap<FunctionPoint, Oracle>> entryOracleList=oracleMultimap.get(funcName);
 		for(ArrayListMultimap<FunctionPoint, Oracle> entryOracle:entryOracleList){
@@ -262,13 +254,35 @@ public class FunctionStateComparator {
 				if(entryPoint.getPointName().equals(origFuncEntry.getPointName())){
 					if(entryPoint.getVariables().equals(origFuncEntry.getVariables())
 							&& entryPoint.getDomHtml().equals(origFuncEntry.getDomHtml())){
-						return true;
+						List<Oracle> oracleList=entryOracle.get(entryPoint);
+						for(Oracle oracle:oracleList){
+							FunctionPoint origFuncExitPoint=oracle.getOrigVersionExitFuncPoint();
+							FunctionPoint newOracleFuncExitPoint=newOracle.getOrigVersionExitFuncPoint();
+							if(origFuncExitPoint.getVariables().equals(newOracleFuncExitPoint.getVariables())
+									&& origFuncExitPoint.getDomHtml().equals(newOracleFuncExitPoint.getDomHtml())){
+								
+								oracle.addVariableSet(newOracle.getVariables());
+								oracle.addAccessedDomNodeSet(newOracle.getAccessedDomNodes());
+								return;
+							}
+						}
 					}
 				}
 			}
+			
+			/* at this point we know that this function entry has not been existed in the current oracle map,
+			 * otherwise it should have been returned before */
+			ArrayListMultimap<FunctionPoint,Oracle> funcPointMltimap=ArrayListMultimap.create();
+			funcPointMltimap.put(origFuncEntry, newOracle);
+			oracleMultimap.put(funcName, funcPointMltimap);
+			
+			
 		}
 		
-		return false;
+
+		
 	}
+	
+	
 	
 }
