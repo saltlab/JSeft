@@ -95,7 +95,9 @@ public class QunitAssertion {
 	
 	private String getSelectElementByXpathCode(String xpath){
 		String code="";
-		code= "evaluated=document.evaluate" + "(" + xpath + ", " + 
+		/* div added because of <div id="qunit-fixture"></div> */
+		String xpathToEvaluate="/div" + xpath;
+		code= "evaluated=document.evaluate" + "(" + xpathToEvaluate + ", " + 
 		"document" + ", " + "null" +", " +"XPathResult.ANY_TYPE" + ", " + "null" + ")" + ";" + "\n";
 		code+= "node = $(evaluated.iterateNext());";
 		return code;
