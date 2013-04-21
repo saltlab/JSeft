@@ -2,10 +2,13 @@ package qunitGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import executionTracer.AstInstrumenter.variableUsageType;
 
+import oracle.AccessedDOMNode;
 import oracle.FunctionPoint;
+import oracle.Oracle;
 import oracle.Variable;
 import qunitGenerator.QunitAssertion.AssertionType;
 
@@ -14,12 +17,15 @@ public class QunitTestCase {
 	private String testCaseCode="";
 	private String testCaseName="";
 	private String functionName="";
-//	private FunctionPoint functionEntry;
-//	private List<FunctionPoint> functionExits;
+	private FunctionPoint functionEntryPoint;
 	private List<QunitAssertion> qunitAssertions=new ArrayList<QunitAssertion>();
-	
-	public QunitTestCase(FunctionPoint functionEntry, List<FunctionPoint> functionExits, String funcName){
-		if(!functionName.contains("anonymous")){
+	List<Oracle> oracles=new ArrayList<Oracle>();
+	public QunitTestCase(List<Oracle> oracleList, FunctionPoint functionEntry, String funcName){
+		
+		if(!functionName.contains("anonymous") && oracleList.size()==1){
+			
+			oracles=oracleList;
+			functionEntryPoint=functionEntry;
 			String[] funcAndScope=funcName.split(".");
 			functionName=funcAndScope[funcAndScope.length-1];
 			testCaseName="\"" + "Testing " + this.functionName  + "\"";
@@ -48,10 +54,12 @@ public class QunitTestCase {
 			testCaseCode += "\n";
 			
 			
-			for(FunctionPoint funcExit:functionExits){
+			
+			for(Oracle oracle:oracleList){
 				
 				
-				ArrayList<Variable> exitVars=funcExit.getVariables();
+				Set<Variable> exitVars=oracle.getVariables();
+				Set<AccessedDOMNode> domNodes=oracle.getAccessedDomNodes();
 				for(Variable exitVar:exitVars){
 					String varUsage=exitVar.getVariableUsage();
 					
@@ -101,13 +109,39 @@ public class QunitTestCase {
 					}
 				}
 				
+				for(AccessedDOMNode domNode:domNodes){
+					QunitAssertion qunitAssertionForDomChecking=new QunitAssertion();
+					qunitAssertionForDomChecking.makeQunitAssertionForDomNode(domNode);
+					qunitAssertions.add(qunitAssertionForDomChecking);
+				}
+				
+				
+				
 			}
 			
+			int numberofExpectedAssertions=0;
 			for(QunitAssertion qunitAssertion:qunitAssertions){
 				String assertionCode=qunitAssertion.getAssertionCodeForVariable();
 				testCaseCode+=assertionCode;
 				testCaseCode+="\n";
+				numberofExpectedAssertions+=qunitAssertion.getTotalNumberOfAssertions();
+				
 			}
+			
+			
+			String testCodeSetup="test"+"(" + testCaseName + "," + numberofExpectedAssertions + ","
+					+ "function()" +"{" +"\n";
+			if(!functionEntry.getDomHtml().equals("")){
+				String domHtml=functionEntry.getDomHtml();
+				if(domHtml.startsWith("[") && domHtml.endsWith("]")){
+					domHtml=domHtml.substring(1, domHtml.length()-1);
+				}
+				String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n";
+				qunitFixture+="$fixture.append"+ "(" + "<div>" + domHtml +"</div>" + ")"+ ";" + "\n";
+				testCodeSetup+=qunitFixture;
+			}
+			testCaseCode=testCodeSetup.concat(testCaseCode);
+			testCaseCode+= "});";
 		}
 		
 	}
@@ -128,5 +162,12 @@ public class QunitTestCase {
 		return qunitAssertions;
 	}
 	
+	public List<Oracle> getOracles(){
+		return oracles;
+	}
+	
+	public FunctionPoint getFunctionEntryPoint(){
+		return functionEntryPoint;
+	}
 
 }

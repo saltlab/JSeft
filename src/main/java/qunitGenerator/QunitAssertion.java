@@ -1,5 +1,6 @@
 package qunitGenerator;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -13,11 +14,19 @@ import oracle.Variable;
 public class QunitAssertion {
 	
 	public static enum AssertionType {ok, equal, deepEqual};
-	String assertionCodeForVariable="";
-	String assertioncodeForDom="";
+	private String assertionCodeForVariable="";
+	private String assertioncodeForDom="";
+	private ArrayList<String> assertionCodes=new ArrayList<String>();
 
 	public QunitAssertion(){
 		
+	}
+	
+	public ArrayList<String> getAssertionCodes(){
+		return assertionCodes;
+	}
+	public int getTotalNumberOfAssertions(){
+		return assertionCodes.size();
 	}
 	
 	public void makeQunitAssertionForVariable(String actual, String expected, AssertionType assertionType){
@@ -26,12 +35,15 @@ public class QunitAssertion {
 		if(assertionType.name().equals(AssertionType.ok)){
 			
 			assertionCode=assertionType.toString() + "(" + actual +" == " + expected + ", " + "" +")" + ";";
+			
 		}
 		else{
 			
 			assertionCode=assertionType.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+			
 		}
 		assertionCodeForVariable=assertionCode;
+		assertionCodes.add(assertionCode);
 	
 		
 		
@@ -58,6 +70,7 @@ public class QunitAssertion {
 					String expected=attrValue;
 					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
 					assertionCode+="\n";
+					assertionCodes.add(assertionCode);
 				}
 				
 				else{
@@ -65,10 +78,12 @@ public class QunitAssertion {
 					String expected=attrValue;
 					assertionCode=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
 					assertionCode+="\n";
+					assertionCodes.add(assertionCode);
 				}
 			}
 				
 			assertioncodeForDom=assertionCode;
+			
 		
 			
 			
