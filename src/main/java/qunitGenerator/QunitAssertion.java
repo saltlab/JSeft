@@ -1,5 +1,10 @@
 package qunitGenerator;
 
+import java.util.Iterator;
+import java.util.Set;
+
+import oracle.AccessedDOMNode;
+import oracle.Attribute;
 import oracle.FunctionPoint;
 import oracle.Variable;
 
@@ -8,24 +13,16 @@ import oracle.Variable;
 public class QunitAssertion {
 	
 	public static enum AssertionType {ok, equal, deepEqual};
-	private AssertionType assertionType;
-	private String assertionMsg="";
-	private String expected="";
-	private String actual=""; 
-	private String assertionCode="";
+	String assertionCodeForVariable="";
+	String assertioncodeForDom="";
 
-	private Variable expectedVar;
-	private FunctionPoint entryPoint;
-	private FunctionPoint exitPoint;
+	public QunitAssertion(){
+		
+	}
 	
-	public QunitAssertion(String actual, String expected, AssertionType assertionType, Variable expectedVar, FunctionPoint entryPoint,
-		FunctionPoint exitPoint){
-		this.expected=expected;
-		this.actual=actual;
-		this.assertionType=assertionType;
-		this.expectedVar=expectedVar;
-		this.entryPoint=entryPoint;
-		this.exitPoint=exitPoint;
+	public void makeQunitAssertionForVariable(String actual, String expected, AssertionType assertionType){
+
+		String assertionCode="";
 		if(assertionType.name().equals(AssertionType.ok)){
 			
 			assertionCode=assertionType.toString() + "(" + actual +" == " + expected + ", " + "" +")" + ";";
@@ -34,41 +31,67 @@ public class QunitAssertion {
 			
 			assertionCode=assertionType.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
 		}
+		assertionCodeForVariable=assertionCode;
+	
+		
+		
 	}
+	
+	public void makeQunitAssertionForDomNode(AccessedDOMNode expectedAccessedDomNode){
+
+			
+			String xpath=expectedAccessedDomNode.xpath;
+			Set<Attribute> attrs=expectedAccessedDomNode.getAllAttibutes();
+			String code=getSelectElementByXpathCode(xpath);
+		
+				
+			String assertionCode=code+"\n";
+			assertionCode+=AssertionType.ok.toString() + "(" +"node.length>0" + ", " + "" +")" + ";" + "\n";
+			Iterator<Attribute> iter=attrs.iterator();
+			while(iter.hasNext()){
+				Attribute attr=iter.next();
+				String attrName=attr.getAttrName();
+				String attrValue=attr.getAttrValue();
+				if(attrName.equals("tagName")){
+					
+					String actual="node.prop" + "(" +"'" + attrName + "'" + ")";
+					String expected=attrValue;
+					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+					assertionCode+="\n";
+				}
+				
+				else{
+					String actual="node.attr" + "(" +"'" + attrName + "'" + ")";
+					String expected=attrValue;
+					assertionCode=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+					assertionCode+="\n";
+				}
+			}
+				
+			assertioncodeForDom=assertionCode;
+		
+			
+			
+		}
+
 
 	
-	public AssertionType getAssertionType(){
-		return assertionType;
+
+	
+	private String getSelectElementByXpathCode(String xpath){
+		String code="";
+		code= "evaluated=document.evaluate" + "(" + xpath + ", " + 
+		"document" + ", " + "null" +", " +"XPathResult.ANY_TYPE" + ", " + "null" + ")" + ";" + "\n";
+		code+= "node = $(evaluated.iterateNext());";
+		return code;
 	}
 	
-	public String getAssertionMsg(){
-		return assertionMsg;
+	public String getAssertionCodeForVariable(){
+		return assertionCodeForVariable;
 	}
 	
-	public String getExpected(){
-		return expected;
-	}
-	
-	public Variable getExpectedVar(){
-		return expectedVar;
-	}
-	
-	public FunctionPoint getEntryPoint(){
-		return entryPoint;
-	}
-	
-	public FunctionPoint getExitPoint(){
-		return exitPoint;
-	}
-	
-	public String getActual(){
-		return actual;
-	}
-	
-	
-	
-	public String getAssertionCode(){
-		return assertionCode;
+	public String getAssertionCodeForDom(){
+		return assertioncodeForDom;
 	}
 }
 
