@@ -29,48 +29,64 @@ public class DomStateComparator {
 			String clickedOn=clickedOn_state_xpath.split("_")[0];
 			List<DomAttribute> mutDomAttrs=Dom_Mut_Analyser.stateXpathToNodeAttrsMap_MutVer.get(clickedOn_state_xpath);
 			List<DomAttribute> origDomAttrs=Dom_Orig_Analyser.stateXpathToNodeAttrsMap.get(clickedOn_state_xpath);
-			for(int i=0;i<mutDomAttrs.size();i++){
-				boolean matched=false;
-				DomAttribute mutDomAttr=mutDomAttrs.get(i);
-				for(int j=0;j<origDomAttrs.size();j++){
-					if(mutDomAttr.equals(origDomAttrs.get(j))){
-						matched=true;
-						break;
-					}
-					
-				}
-				if(!matched){
-					
-					 addElementToDomOracleMultimap(element, origDomAttrs, clickedOn);
+			if(origDomAttrs!=null){
+				for(int i=0;i<origDomAttrs.size();i++){
+					boolean matched=false;
+					DomAttribute origDomAttr=mutDomAttrs.get(i);
 				
-				}
-			}	
-		
+					for(int j=0;j<mutDomAttrs.size();j++){
+						if(origDomAttr.equals(mutDomAttrs.get(j))){
+							matched=true;
+							break;
+						}
+						
+					}
+				
+					if(!matched){
+					
+						addElementToDomOracleMultimap(element, origDomAttr, clickedOn);
+				
+					}
+				}	
+			}
+			else{
+				
+				ArrayListMultimap<String, DomAttribute> newElem=ArrayListMultimap.create();
+				newElem.put(element, null);	
+				domOracleMultimap.put(clickedOn, newElem);
+				
+			}
 		}
 		
 		
 	}
 	
-	private void addElementToDomOracleMultimap(String element, List<DomAttribute> origDomAttrs, String clickedOn){
+	private void addElementToDomOracleMultimap(String element, DomAttribute origDomAttr, String clickedOn){
 		List<ArrayListMultimap<String, DomAttribute>> elemList=domOracleMultimap.get(clickedOn);
-		for(ArrayListMultimap<String, DomAttribute> elem:elemList){
-			
-			if(elem.get(element)!=null){
-				for(DomAttribute origDomAttr:origDomAttrs){
+		if(elemList!=null){
+			for(ArrayListMultimap<String, DomAttribute> elem:elemList){
+				
+				if(elem.get(element)!=null){
+					
 					elem.put(element, origDomAttr);
+					
 				}
-			}
-			
-			else{
 				
-				ArrayListMultimap<String, DomAttribute> newElem=ArrayListMultimap.create();
-				for(DomAttribute origDomAttr:origDomAttrs){
-					newElem.put(element, origDomAttr);
+				else{
+					
+					ArrayListMultimap<String, DomAttribute> newElem=ArrayListMultimap.create();
+					newElem.put(element, origDomAttr);	
+					domOracleMultimap.put(clickedOn, newElem);
+					
 				}
-				domOracleMultimap.put(clickedOn, newElem);
-				
 			}
 		}
+		else{
+			ArrayListMultimap<String, DomAttribute> newElem=ArrayListMultimap.create();
+			newElem.put(element, origDomAttr);	
+			domOracleMultimap.put(clickedOn, newElem);
+		}
+		
 	}
 	
 }
