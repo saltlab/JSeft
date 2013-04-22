@@ -68,7 +68,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		
 		try {
 			
-			code=Resources.toString(DOMAstInstrumenter.class.getResource("/addVar_domNodePropsAccrossTheXpath.js"), Charsets.UTF_8);
+			code=Resources.toString(DOM_JS_AstInstrumenter.class.getResource("/addVar_domNodePropsAccrossTheXpath.js"), Charsets.UTF_8);
 		} catch (IOException e) {
 	
 			e.printStackTrace();

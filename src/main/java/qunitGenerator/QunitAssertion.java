@@ -32,14 +32,15 @@ public class QunitAssertion {
 	public void makeQunitAssertionForVariable(String actual, String expected, AssertionType assertionType){
 
 		String assertionCode="";
+		String msg="\"" + expected + " is expected but " + actual + " is returned" + "\"";
 		if(assertionType.name().equals(AssertionType.ok)){
 			
-			assertionCode=assertionType.toString() + "(" + actual +" == " + expected + ", " + "" +")" + ";";
+			assertionCode=assertionType.toString() + "(" + actual +" == " + expected + ", " + msg +")" + ";";
 			
 		}
 		else{
 			
-			assertionCode=assertionType.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+			assertionCode=assertionType.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
 			
 		}
 		assertionCodeForVariable=assertionCode;
@@ -58,7 +59,9 @@ public class QunitAssertion {
 		
 				
 			String assertionCode=code+"\n";
-			assertionCode+=AssertionType.ok.toString() + "(" +"node.length>0" + ", " + "" +")" + ";" + "\n";
+
+			String msg="\"" + "node.length is " + "\"" + "+" + "node.length";
+			assertionCode+=AssertionType.ok.toString() + "(" +"node.length>0" + ", " + msg +")" + ";" + "\n";
 			Iterator<Attribute> iter=attrs.iterator();
 			while(iter.hasNext()){
 				Attribute attr=iter.next();
@@ -68,7 +71,8 @@ public class QunitAssertion {
 					
 					String actual="node.prop" + "(" +"'" + attrName + "'" + ")";
 					String expected=attrValue;
-					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+					msg="\"" + expected + "is expected but " + actual + " is returned" + "\"";
+					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
 					assertionCode+="\n";
 					assertionCodes.add(assertionCode);
 				}
@@ -76,7 +80,8 @@ public class QunitAssertion {
 				else{
 					String actual="node.attr" + "(" +"'" + attrName + "'" + ")";
 					String expected=attrValue;
-					assertionCode=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + "" +")" + ";";
+					msg="\"" + expected + " is expected but "+ actual + " is returned" + "\"";
+					assertionCode=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
 					assertionCode+="\n";
 					assertionCodes.add(assertionCode);
 				}
