@@ -1,5 +1,6 @@
 package qunitGenerator;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,8 +12,10 @@ import org.mozilla.javascript.ast.AstNode;
 import oracle.FunctionPoint;
 import oracle.Oracle;
 
+import com.crawljax.util.Helper;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.io.Files;
 import com.google.common.io.Resources;
 
 import executionTracer.DOMAstInstrumenter;
@@ -20,10 +23,11 @@ import executionTracer.DOMAstInstrumenter;
 public class QunitTestSuite {
 	
 	private List<QunitTestCase> qunitTestCases=new ArrayList<QunitTestCase>();
-	private String testSuiteCode=getRequiredJsScripts() + "\n\n";
+	private String testSuiteCode="";
 
 	/*oracle: (funcName->(entrypoint->oracle))*/
 	public QunitTestSuite(ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,Oracle>> oracleMultimap){
+		testSuiteCode=getRequiredJsScripts() + "\n\n";
 		Set<String> keys=oracleMultimap.keySet();
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
@@ -69,5 +73,16 @@ public class QunitTestSuite {
 	/*	File js = new File(this.getClass().getResource("/addVar.js").getFile());
 		code = Helper.getContent(js);
 	*/	return code;
+	}
+	
+	public void writeQunitTestSuiteToFile(String outputFolder, String testName) throws IOException{
+		Helper.directoryCheck(outputFolder);
+		File file = new File(outputFolder + testName + ".js");
+		try {
+		 Files.write( testSuiteCode, file, Charsets.UTF_8 );
+		} catch( IOException e ) {
+		 
+			e.printStackTrace();
+		}
 	}
 }
