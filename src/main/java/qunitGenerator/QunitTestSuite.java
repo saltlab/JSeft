@@ -24,9 +24,12 @@ public class QunitTestSuite {
 	
 	private List<QunitTestCase> qunitTestCases=new ArrayList<QunitTestCase>();
 	private String testSuiteCode="";
-
+	private String outputFolder;
+	private String testName="tests.js";
+	
 	/*oracle: (funcName->(entrypoint->oracle))*/
-	public QunitTestSuite(ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,Oracle>> oracleMultimap){
+	public QunitTestSuite(ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,Oracle>> oracleMultimap, String outputFolder){
+		this.outputFolder=outputFolder;
 		testSuiteCode=getRequiredJsScripts() + "\n\n";
 		Set<String> keys=oracleMultimap.keySet();
 		Iterator<String> iter=keys.iterator();
@@ -75,14 +78,19 @@ public class QunitTestSuite {
 	*/	return code;
 	}
 	
-	public void writeQunitTestSuiteToFile(String outputFolder, String testName) throws IOException{
+	public void writeQunitTestSuiteToFile() throws IOException{
 		Helper.directoryCheck(outputFolder);
-		File file = new File(outputFolder + testName + ".js");
+		String outputfolder=getOutputFolder();
+		File file = new File(outputfolder + testName);
 		try {
 		 Files.write( testSuiteCode, file, Charsets.UTF_8 );
 		} catch( IOException e ) {
 		 
 			e.printStackTrace();
 		}
+	}
+	
+	private String getOutputFolder() {
+		return Helper.addFolderSlashIfNeeded(outputFolder);
 	}
 }
