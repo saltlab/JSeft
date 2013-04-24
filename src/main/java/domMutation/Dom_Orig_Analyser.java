@@ -72,7 +72,7 @@ public class Dom_Orig_Analyser extends Dom_OrigMut_Analyser {
 
 						if(inputline.contains("xpath::")){
 							xpath=inputline.split("::")[1];
-							clickedOn_state_xpath=clickedOn + "_" + stateName + "_" + xpath;
+							clickedOn_state_xpath=clickedOn + "::" + stateName + "::" + xpath;
 							boolean repeatedAttr=isAttributeRepeated(clickedOn_state_xpath, attr);
 							if(!repeatedAttr)
 								stateXpathToNodeAttrsMap.put(clickedOn_state_xpath, attr);

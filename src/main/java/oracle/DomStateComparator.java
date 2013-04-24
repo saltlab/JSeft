@@ -19,7 +19,9 @@ import domMutation.Dom_Orig_Analyser;
 
 public class DomStateComparator {
 
-	/* (clickedOn->(elementXpath->attibutes)) */
+	/**
+	 *  (clickedOn::state->(elementXpath->attibutes))
+	 */
 	private ArrayListMultimap<String, ArrayListMultimap<String, DomAttribute>> domOracleMultimap=ArrayListMultimap.create();
 	private String outputFolder;
 	private String fileName="domOracle.txt";
@@ -37,8 +39,10 @@ public class DomStateComparator {
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
 			String clickedOn_state_xpath=iter.next();
-			String element=clickedOn_state_xpath.split("_")[2];
-			String clickedOn=clickedOn_state_xpath.split("_")[0];
+			String element=clickedOn_state_xpath.split("::")[2];
+			String state=clickedOn_state_xpath.split("::")[1];
+			String clickedOn=clickedOn_state_xpath.split("::")[0];
+			String clickedOn_state=clickedOn + "::" + state;
 			List<DomAttribute> mutDomAttrs=Dom_Mut_Analyser.stateXpathToNodeAttrsMap_MutVer.get(clickedOn_state_xpath);
 			List<DomAttribute> origDomAttrs=Dom_Orig_Analyser.stateXpathToNodeAttrsMap.get(clickedOn_state_xpath);
 			if(origDomAttrs!=null){
@@ -56,7 +60,7 @@ public class DomStateComparator {
 				
 					if(!matched){
 					
-						addElementToDomOracleMultimap(element, origDomAttr, clickedOn);
+						addElementToDomOracleMultimap(element, origDomAttr, clickedOn_state);
 				
 					}
 				}	
@@ -66,7 +70,7 @@ public class DomStateComparator {
 				ArrayListMultimap<String, DomAttribute> newElem=ArrayListMultimap.create();
 				DomAttribute elemNotExit=new DomAttribute("ElementNotExist", "ElementNotExist");
 				newElem.put(element, elemNotExit);	
-				domOracleMultimap.put(clickedOn, newElem);
+				domOracleMultimap.put(clickedOn_state, newElem);
 				
 			}
 		}
@@ -76,8 +80,8 @@ public class DomStateComparator {
 		
 	}
 	
-	private void addElementToDomOracleMultimap(String element, DomAttribute origDomAttr, String clickedOn){
-		List<ArrayListMultimap<String, DomAttribute>> elemList=domOracleMultimap.get(clickedOn);
+	private void addElementToDomOracleMultimap(String element, DomAttribute origDomAttr, String clickedOn_state){
+		List<ArrayListMultimap<String, DomAttribute>> elemList=domOracleMultimap.get(clickedOn_state);
 		if(elemList!=null){
 			for(ArrayListMultimap<String, DomAttribute> elem:elemList){
 				
@@ -91,7 +95,7 @@ public class DomStateComparator {
 					
 					ArrayListMultimap<String, DomAttribute> newElem=ArrayListMultimap.create();
 					newElem.put(element, origDomAttr);	
-					domOracleMultimap.put(clickedOn, newElem);
+					domOracleMultimap.put(clickedOn_state, newElem);
 					
 				}
 			}
@@ -99,7 +103,7 @@ public class DomStateComparator {
 		else{
 			ArrayListMultimap<String, DomAttribute> newElem=ArrayListMultimap.create();
 			newElem.put(element, origDomAttr);	
-			domOracleMultimap.put(clickedOn, newElem);
+			domOracleMultimap.put(clickedOn_state, newElem);
 		}
 		
 	}
@@ -109,9 +113,9 @@ public class DomStateComparator {
 		Set<String> keys=domOracleMultimap.keySet();
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
-			String clickedOn=iter.next();
-			result.append("clickedOn::" + clickedOn + "\n");
-			List<ArrayListMultimap<String, DomAttribute>> elements=domOracleMultimap.get(clickedOn);
+			String clickedOn_state=iter.next();
+			result.append("clickedOn_state::" + clickedOn_state + "\n");
+			List<ArrayListMultimap<String, DomAttribute>> elements=domOracleMultimap.get(clickedOn_state);
 			for(ArrayListMultimap<String, DomAttribute> elementMap:elements){
 				Set<String> keySet=elementMap.keySet();
 				Iterator<String> it=keySet.iterator();
@@ -164,7 +168,7 @@ public class DomStateComparator {
 			String line="";
 			while ((line = input.readLine()) != null){
 				
-				String clickedOn=line.split("::")[1];
+				String clickedOn_state=line.replace("clickedOn_state::","");
 				String elementXpath="";
 				ArrayListMultimap<String, DomAttribute> elemXpathAttr=ArrayListMultimap.create();
 				
@@ -183,7 +187,7 @@ public class DomStateComparator {
 					}
 				}
 				
-				domOracle.put(clickedOn,elemXpathAttr);
+				domOracle.put(clickedOn_state,elemXpathAttr);
 				
 			}
 			input.close();
