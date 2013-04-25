@@ -1,9 +1,12 @@
 package oracle;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import sun.invoke.util.VerifyAccess;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -87,7 +90,8 @@ public class FunctionStateComparator {
 			for(int i=0;i<origvarList.size();i++){
 				boolean sameVariable=false;;
 				for(int j=0;j<modifvarList.size();j++){
-					if(origvarList.get(i).getValue().equals(modifvarList.get(j).getValue()) 
+					if(origvarList.get(i).getVariableName().equals(modifvarList.get(j).getVariableName())
+							&& origvarList.get(i).getValue().equals(modifvarList.get(j).getValue()) 
 							&& origvarList.get(i).equals(modifvarList.get(j).getType())){
 						sameVariable=true;
 						break;
@@ -167,14 +171,17 @@ public class FunctionStateComparator {
 			if(funcPoint1.getPointName().toLowerCase().equals("entry")){
 				String domHtml1=funcPoint1.getDomHtml();
 				String domHtml2=funcPoint2.getDomHtml();
-				if(varList1.equals(varList2) && domHtml1.equals(domHtml2))
+				
+				
+				if(variableListsSimilar(varList1, varList2) && domHtml1.equals(domHtml2))
 					return true;
 			}
 			
 			else if(funcPoint1.getPointName().toLowerCase().equals("exit")){
 				ArrayList<AccessedDOMNode> accessedNodes1=funcPoint1.getAccessedDomNodes();
 				ArrayList<AccessedDOMNode> accessedNodes2=funcPoint2.getAccessedDomNodes();
-				if(varList1.equals(varList2) && accessedNodes1.equals(accessedNodes2)){
+			
+				if(variableListsSimilar(varList1, varList2) && accessedDomNodeListsSimilar(accessedNodes1, accessedNodes2)){
 					return true;
 				}
 			}
@@ -197,9 +204,10 @@ public class FunctionStateComparator {
 /*				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
 				ArrayList<AccessedDOMNode> modifiedNodes=funcPoint.getAccessedDomNodes();
 */				
+				
 				String origDomHtml=entryPoint.getDomHtml();
 				String modifiedDomHtml=funcPoint.getDomHtml();
-				if(origVars.equals(modifiedVars) && origDomHtml.equals(modifiedDomHtml)){
+				if(variableListsSimilar(origVars,modifiedVars) && origDomHtml.equals(modifiedDomHtml)){
 					origFuncEntry=entryPoint;
 					exitFuncPoints.addAll(funcEntryToMultiExit.get(entryPoint));
 					break;
@@ -230,7 +238,7 @@ public class FunctionStateComparator {
 				
 				String origDomHtml=entryPoint.getDomHtml();
 				String modifiedDomHtml=modifiedFuncPoint.getDomHtml();
-				if(origVars.equals(modifiedVars) && origDomHtml.equals(modifiedDomHtml)){
+				if(variableListsSimilar(origVars, modifiedVars) && origDomHtml.equals(modifiedDomHtml)){
 					
 					return entryPoint;
 					
@@ -252,13 +260,14 @@ public class FunctionStateComparator {
 			while(iterator.hasNext()){
 				FunctionPoint entryPoint=iterator.next();
 				if(entryPoint.getPointName().equals(origFuncEntry.getPointName())){
-					if(entryPoint.getVariables().equals(origFuncEntry.getVariables())
+					if(variableListsSimilar(entryPoint.getVariables(), origFuncEntry.getVariables())
 							&& entryPoint.getDomHtml().equals(origFuncEntry.getDomHtml())){
 						List<Oracle> oracleList=entryOracle.get(entryPoint);
 						for(Oracle oracle:oracleList){
 							FunctionPoint origFuncExitPoint=oracle.getOrigVersionExitFuncPoint();
 							FunctionPoint newOracleFuncExitPoint=newOracle.getOrigVersionExitFuncPoint();
-							if(origFuncExitPoint.getVariables().equals(newOracleFuncExitPoint.getVariables())
+							
+							if(variableListsSimilar(origFuncExitPoint.getVariables(), newOracleFuncExitPoint.getVariables())
 									&& origFuncExitPoint.getDomHtml().equals(newOracleFuncExitPoint.getDomHtml())){
 								
 								oracle.addVariableSet(newOracle.getVariables());
@@ -283,6 +292,25 @@ public class FunctionStateComparator {
 		
 	}
 	
+	private boolean variableListsSimilar(ArrayList<Variable> varList1, ArrayList<Variable> varList2){
+		
+		Set<Variable> varSet1 = new HashSet<Variable>(varList1);
+		Set<Variable> varSet2 = new HashSet<Variable>(varList2);
+		if(varSet1.equals(varSet2))
+			return true;
+		return false;
+		
+	}
+	
+	private boolean accessedDomNodeListsSimilar(ArrayList<AccessedDOMNode> accessedDomList1, ArrayList<AccessedDOMNode> accessedDomList2){
+		
+		Set<AccessedDOMNode> accessedDomSet1 = new HashSet<AccessedDOMNode>(accessedDomList1);
+		Set<AccessedDOMNode> accessedDomSet2 = new HashSet<AccessedDOMNode>(accessedDomList2);
+		if(accessedDomSet1.equals(accessedDomSet2))
+			return true;
+		return false;
+		
+	}
 	
 	
 }
