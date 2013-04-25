@@ -88,9 +88,9 @@ public class JSExecutionTracer
 	
 		String filename;
 		if(execTraceForMutatedVer)
-			filename = getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
+			filename = getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
 		else
-			filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
+			filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
 		
 		filename += session.getCurrentState().getName();
 		

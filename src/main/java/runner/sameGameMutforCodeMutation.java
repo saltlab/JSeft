@@ -29,6 +29,8 @@ import com.crawljax.plugins.proxy.WebScarabWrapper;
 import com.crawljax.util.Helper;
 
 import executionTracer.AstInstrumenter;
+import executionTracer.DOM_JS_AstInstrumenter;
+import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 public class sameGameMutforCodeMutation {
@@ -73,7 +75,7 @@ public class sameGameMutforCodeMutation {
 	public static void varMutStarter(String outputdir, String htmlAdd){
 		
 		ProxyConfiguration prox = new ProxyConfiguration();
-		AstInstrumenter astInstrumenter=new AstInstrumenter();
+		DOM_JS_AstInstrumenter astInstrumenter=new DOM_JS_AstInstrumenter();
 		JSModifyProxyPluginforCodeMutation proxyPlugin = new JSModifyProxyPluginforCodeMutation(outputdir,astInstrumenter);
 		
 		for(int i=0;i<5;i++){
@@ -103,7 +105,7 @@ public class sameGameMutforCodeMutation {
 
 				
 			
-				JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace",true);
+				DOM_JS_ExecutionTracer tracer = new DOM_JS_ExecutionTracer("jsMutExecutionTrace",true);
 				tracer.setOutputFolder(outputdir);
 				config.addPlugin(tracer);
 				config.addPlugin(web);

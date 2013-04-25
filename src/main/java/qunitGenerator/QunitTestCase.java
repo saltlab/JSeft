@@ -27,40 +27,9 @@ public class QunitTestCase {
 	List<Oracle> oracles=new ArrayList<Oracle>();
 	public QunitTestCase(List<Oracle> oracleList, FunctionPoint functionEntry, String funcName){
 		
+		
 		if(!functionName.contains("anonymous") && oracleList.size()>0){// && oracleList.size()==1){
-			
-			oracles=oracleList;
-			functionEntryPoint=functionEntry;
-			String[] funcAndScope=funcName.split(".");
-			functionName=funcAndScope[funcAndScope.length-1];
-			testCaseName="\"" + "Testing " + this.functionName  + "\"";
-			
-			ArrayList<Variable> entryVars=functionEntry.getVariables();
-			for(Variable entryVar:entryVars){
-				if(entryVar.getVariableUsage().equals(variableUsageType.global.toString())){
-					testCaseCode+=entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n";
-				}
-			}
-			testCaseCode+="var result= ";
-			
-			
-			testCaseCode+="function" + "(";
-			for(Variable entryVar:entryVars){
-				String varUsage=entryVar.getVariableUsage();
-				if(varUsage.equals(variableUsageType.inputParam.toString())){
-					String varName=entryVar.getVariableName();
-					testCaseCode+=varName + ", ";
-				}
-			}
-			if(testCaseCode.endsWith(", ")){
-				testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
-			}
-			testCaseCode+=")" + ";";
-			testCaseCode += "\n";
-			
-			
-			
-	//		for(Oracle oracle:oracleList){
+		
 			Set<Variable> exitVars;
 			Set<AccessedDOMNode> domNodes;
 			if(oracles.size()==1){
@@ -71,88 +40,124 @@ public class QunitTestCase {
 				exitVars=getCommonVariablesAmongOracleList();
 				domNodes=getCommonAccessedDomAmongOracleList();
 			}
-			for(Variable exitVar:exitVars){
-				String varUsage=exitVar.getVariableUsage();
+			
+			if((exitVars!=null && exitVars.size()!=0) || (domNodes!=null && domNodes.size()!=0)){
+				oracles=oracleList;
+				functionEntryPoint=functionEntry;
+				String[] funcAndScope=funcName.split(".");
+				functionName=funcAndScope[funcAndScope.length-1];
+				testCaseName="\"" + "Testing " + this.functionName  + "\"";
 				
-					
-				if(varUsage.equals(variableUsageType.returnVal.toString())){
-					if(exitVar.getValue().equals("[]")){
-						QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-						qunitAssertionForValueChecking.makeQunitAssertionForVariable("result.length","0", AssertionType.ok);
-						qunitAssertions.add(qunitAssertionForValueChecking);
+				ArrayList<Variable> entryVars=functionEntry.getVariables();
+				for(Variable entryVar:entryVars){
+					if(entryVar.getVariableUsage().equals(variableUsageType.global.toString())){
+						testCaseCode+=entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n";
 					}
-					else{
-						QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-						qunitAssertionForValueChecking.makeQunitAssertionForVariable("result",exitVar.getValue(), AssertionType.deepEqual);
-						qunitAssertions.add(qunitAssertionForValueChecking);
-					}
-						
-					String actualType="getType(result)" + " == " + exitVar.getType(); 
-					QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion();
-					qunitAssertionForTypeChecking.makeQunitAssertionForVariable(actualType,exitVar.getType(), AssertionType.ok);
-					qunitAssertions.add(qunitAssertionForTypeChecking);
 				}
-				else{
+				testCaseCode+="var result= ";
+				
+				
+				testCaseCode+="function" + "(";
+				for(Variable entryVar:entryVars){
+					String varUsage=entryVar.getVariableUsage();
+					if(varUsage.equals(variableUsageType.inputParam.toString())){
+						String varName=entryVar.getVariableName();
+						testCaseCode+=varName + ", ";
+					}
+				}
+				if(testCaseCode.endsWith(", ")){
+					testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
+				}
+				testCaseCode+=")" + ";";
+				testCaseCode += "\n";
+				
+				
+				
+		//		for(Oracle oracle:oracleList){
+	
+				for(Variable exitVar:exitVars){
+					String varUsage=exitVar.getVariableUsage();
+					
 						
-						
-					if(varUsage.equals(variableUsageType.global.toString())){
-							
-						String actual=exitVar.getVariableName();
+					if(varUsage.equals(variableUsageType.returnVal.toString())){
 						if(exitVar.getValue().equals("[]")){
-							actual+= ".length";
 							QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-							qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual,"0", AssertionType.ok);
+							qunitAssertionForValueChecking.makeQunitAssertionForVariable("result.length","0", AssertionType.ok);
 							qunitAssertions.add(qunitAssertionForValueChecking);
 						}
 						else{
-								
 							QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-							qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual,exitVar.getValue(), AssertionType.deepEqual);
+							qunitAssertionForValueChecking.makeQunitAssertionForVariable("result",exitVar.getValue(), AssertionType.deepEqual);
 							qunitAssertions.add(qunitAssertionForValueChecking);
 						}
 							
-						String actualType="getType"+ "(" + actual + ")" + " == " + exitVar.getType(); 
+						String actualType="getType(result)" + " == " + exitVar.getType(); 
 						QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion();
 						qunitAssertionForTypeChecking.makeQunitAssertionForVariable(actualType,exitVar.getType(), AssertionType.ok);
 						qunitAssertions.add(qunitAssertionForTypeChecking);
 					}
-						
+					else{
+							
+							
+						if(varUsage.equals(variableUsageType.global.toString())){
+								
+							String actual=exitVar.getVariableName();
+							if(exitVar.getValue().equals("[]")){
+								actual+= ".length";
+								QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
+								qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual,"0", AssertionType.ok);
+								qunitAssertions.add(qunitAssertionForValueChecking);
+							}
+							else{
+									
+								QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
+								qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual,exitVar.getValue(), AssertionType.deepEqual);
+								qunitAssertions.add(qunitAssertionForValueChecking);
+							}
+								
+							String actualType="getType"+ "(" + actual + ")" + " == " + exitVar.getType(); 
+							QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion();
+							qunitAssertionForTypeChecking.makeQunitAssertionForVariable(actualType,exitVar.getType(), AssertionType.ok);
+							qunitAssertions.add(qunitAssertionForTypeChecking);
+						}
+							
+					}
 				}
-			}
-				
-			for(AccessedDOMNode domNode:domNodes){
-				QunitAssertion qunitAssertionForDomChecking=new QunitAssertion();
-				qunitAssertionForDomChecking.makeQunitAssertionForDomNode(domNode);
-				qunitAssertions.add(qunitAssertionForDomChecking);
-			}
-				
-				
-				
-	//		}
-			
-			int numberofExpectedAssertions=0;
-			for(QunitAssertion qunitAssertion:qunitAssertions){
-				String assertionCode=qunitAssertion.getAssertionCodeForVariable();
-				testCaseCode+=assertionCode;
-				testCaseCode+="\n";
-				numberofExpectedAssertions+=qunitAssertion.getTotalNumberOfAssertions();
-				
-			}
-			
-			
-			String testCodeSetup="test"+"(" + testCaseName + "," + numberofExpectedAssertions + ","
-					+ "function()" +"{" +"\n";
-			if(!functionEntry.getDomHtml().equals("")){
-				String domHtml=functionEntry.getDomHtml();
-				if(domHtml.startsWith("[") && domHtml.endsWith("]")){
-					domHtml=domHtml.substring(1, domHtml.length()-1);
+					
+				for(AccessedDOMNode domNode:domNodes){
+					QunitAssertion qunitAssertionForDomChecking=new QunitAssertion();
+					qunitAssertionForDomChecking.makeQunitAssertionForDomNode(domNode);
+					qunitAssertions.add(qunitAssertionForDomChecking);
 				}
-				String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n";
-				qunitFixture+="$fixture.append"+ "(" + "<div>" + domHtml +"</div>" + ")"+ ";" + "\n";
-				testCodeSetup+=qunitFixture;
+					
+					
+					
+		//		}
+				
+				int numberofExpectedAssertions=0;
+				for(QunitAssertion qunitAssertion:qunitAssertions){
+					String assertionCode=qunitAssertion.getAssertionCodeForVariable();
+					testCaseCode+=assertionCode;
+					testCaseCode+="\n";
+					numberofExpectedAssertions+=qunitAssertion.getTotalNumberOfAssertions();
+					
+				}
+				
+				
+				String testCodeSetup="test"+"(" + testCaseName + "," + numberofExpectedAssertions + ","
+						+ "function()" +"{" +"\n";
+				if(!functionEntry.getDomHtml().equals("")){
+					String domHtml=functionEntry.getDomHtml();
+					if(domHtml.startsWith("[") && domHtml.endsWith("]")){
+						domHtml=domHtml.substring(1, domHtml.length()-1);
+					}
+					String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n";
+					qunitFixture+="$fixture.append"+ "(" + "<div>" + domHtml +"</div>" + ")"+ ";" + "\n";
+					testCodeSetup+=qunitFixture;
+				}
+				testCaseCode=testCodeSetup.concat(testCaseCode);
+				testCaseCode+= "});";
 			}
-			testCaseCode=testCodeSetup.concat(testCaseCode);
-			testCaseCode+= "});";
 		}
 		
 	}
@@ -182,7 +187,7 @@ public class QunitTestCase {
 	}
 	
 	private Set<Variable> getCommonVariablesAmongOracleList(){
-		Set<Set<Variable>> allSets=new HashSet<Set<Variable>>();
+		
 		Set<Variable> commonVars=oracles.get(0).getVariables();
 	
 		for(int i=1;i<oracles.size();i++){
@@ -195,7 +200,7 @@ public class QunitTestCase {
 	}
 	
 	private Set<AccessedDOMNode> getCommonAccessedDomAmongOracleList(){
-		Set<Set<AccessedDOMNode>> allSets=new HashSet<Set<AccessedDOMNode>>();
+	
 		Set<AccessedDOMNode> commonAccessedDom=oracles.get(0).getAccessedDomNodes();
 	
 		for(int i=1;i<oracles.size();i++){

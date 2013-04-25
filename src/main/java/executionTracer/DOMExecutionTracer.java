@@ -77,7 +77,7 @@ public class DOMExecutionTracer implements PreStateCrawlingPlugin, OnNewStatePlu
 	public void preStateCrawling(CrawlSession session, List<CandidateElement> candidateElements) {
 	
 	
-		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domexecutiontrace-";
+		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename + "-";
 		
 		filename += session.getCurrentState().getName();
 		

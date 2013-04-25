@@ -16,6 +16,7 @@ import org.w3c.dom.NodeList;
 
 import com.crawljax.util.Helper;
 
+import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 import mutandis.analyser.JSCyclCompxCalc;
@@ -228,6 +229,12 @@ public class JSModifyProxyPluginforCodeMutation extends mutandis.astModifier.JSM
 			
 			LOGGER.info("Execution trace request " + request.getURL().toString());
 			JSFuncExecutionTracer.addPoint(new String(request.getContent()));
+			return response;
+		}
+		
+		if (request.getURL().toString().contains("?thisisajsdomexecutiontracingcall")) {
+			LOGGER.info("Execution trace request " + request.getURL().toString());
+			DOM_JS_ExecutionTracer.addPoint(new String(request.getContent()));
 			return response;
 		}
 

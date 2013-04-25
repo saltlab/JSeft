@@ -147,7 +147,7 @@ public class DOMMuteExecutionTracer implements OnFireEventSuccessPlugin, /*OnNew
 			try {
 				ArrayList<Element> elemList=new ArrayList<Element>();
 				StringBuffer result=new StringBuffer();
-				String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "domMuteExecutiontrace-";	
+				String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";	
 				filename += session.getCurrentState().getName();	
 				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 				Date date = new Date();

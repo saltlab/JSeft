@@ -88,7 +88,7 @@ public class SameGameOrig {
 */		
 				
 //		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domMuteExecutiontrace",stateName);
-		DOM_JS_ExecutionTracer tracer = new DOM_JS_ExecutionTracer("jsDomExecutiontrace",false);
+		DOM_JS_ExecutionTracer tracer = new DOM_JS_ExecutionTracer("jsExecutiontrace",false);
 //		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
