@@ -26,6 +26,10 @@ public class FunctionStateComparator {
 		return funcNameToFuncStateMap_modifiedVer;
 	}
 */	
+	
+	public ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,Oracle>> getOracleMultimap(){
+		return oracleMultimap;
+	}
 	public void analysingOutputDiffs(){
 		
 		Set<String> keys=MutatedJsExecTraceAnalyser.funcNameToFuncStateMap_modifiedVer.keySet();
@@ -41,22 +45,28 @@ public class FunctionStateComparator {
 				FunctionState modifiedFuncState=funcStates.get(i);
 				FunctionPoint modifiedFuncEntry=modifiedFuncState.getFunctionEntry();
 				FunctionPoint modifiedFuncExit=modifiedFuncState.getFunctionExit();
-				FunctionPoint origFuncEntry = null;
-				ArrayList<FunctionPoint> origFuncExits=getFunctinExitsMatchedWithEntryPoint(funcEntryToMultiExit, modifiedFuncEntry, origFuncEntry);
-				boolean same=false;
-				for(int j=0;j<origFuncExits.size();j++){
+				FunctionPoint origFuncEntry=null;
+				ArrayList<FunctionPoint> origFuncExits=getFunctinExitsMatchedWithEntryPoint(funcEntryToMultiExit, modifiedFuncEntry);
+				// the last element in origFuncExists is the origFuncEntry
+				int origFuncExitsSize=origFuncExits.size()-1;
+				if(origFuncExits.size()>0)
+					origFuncEntry=origFuncExits.get(origFuncExitsSize);
+				boolean same=true;
+				// Note: the last element in origFuncExists is the origFuncEntry
+				for(int j=0;j<origFuncExitsSize;j++){
 					
 					FunctionPoint origFuncExit=origFuncExits.get(j);	
 					same=functionPointsSimilar(modifiedFuncExit, origFuncExit);
-					if (same)
+					if (!same)
 						break;					
 				}
 
 				if(!same){
 					
-					for(int j=0;j<origFuncExits.size();j++){
+					for(int j=0;j<origFuncExitsSize;j++){
 						FunctionPoint origFuncExit=origFuncExits.get(j);
 						Oracle newOracle=addDiffPartsToTheOracleFuncExits(modifiedFuncExit, origFuncExit);
+						
 						updateExistingnOracleSet(funcName, origFuncEntry, newOracle);
 					}
 					
@@ -173,7 +183,7 @@ public class FunctionStateComparator {
 				String domHtml2=funcPoint2.getDomHtml();
 				
 				
-				if(variableListsSimilar(varList1, varList2) && domHtml1.equals(domHtml2))
+				if(variableListsSimilar(varList1, varList2)) //&& domHtml1.equals(domHtml2))
 					return true;
 			}
 			
@@ -189,8 +199,9 @@ public class FunctionStateComparator {
 		return false;
 	}
 	
-	private ArrayList<FunctionPoint> getFunctinExitsMatchedWithEntryPoint(Multimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit, FunctionPoint funcPoint, FunctionPoint origFuncEntry){
+	private ArrayList<FunctionPoint> getFunctinExitsMatchedWithEntryPoint(Multimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit, FunctionPoint funcPoint){
 		
+		FunctionPoint origFuncEntry = null;
 		ArrayList<FunctionPoint> exitFuncPoints=new ArrayList<FunctionPoint>();
 		Set<FunctionPoint> keys=funcEntryToMultiExit.keySet();
 		Iterator<FunctionPoint> iter=keys.iterator();
@@ -198,8 +209,9 @@ public class FunctionStateComparator {
 		while(iter.hasNext()){
 			
 			FunctionPoint entryPoint=iter.next();
+			ArrayList<Variable> origVars=entryPoint.getVariables();
 			if(entryPoint.getPointName().equals(funcPoint.getPointName())){
-				ArrayList<Variable> origVars=entryPoint.getVariables();
+				
 				ArrayList<Variable> modifiedVars=funcPoint.getVariables();
 /*				ArrayList<AccessedDOMNode> origNodes=entryPoint.getAccessedDomNodes();
 				ArrayList<AccessedDOMNode> modifiedNodes=funcPoint.getAccessedDomNodes();
@@ -207,7 +219,7 @@ public class FunctionStateComparator {
 				
 				String origDomHtml=entryPoint.getDomHtml();
 				String modifiedDomHtml=funcPoint.getDomHtml();
-				if(variableListsSimilar(origVars,modifiedVars) && origDomHtml.equals(modifiedDomHtml)){
+				if(variableListsSimilar(origVars,modifiedVars) ){//&& origDomHtml.equals(modifiedDomHtml)){
 					origFuncEntry=entryPoint;
 					exitFuncPoints.addAll(funcEntryToMultiExit.get(entryPoint));
 					break;
@@ -215,7 +227,10 @@ public class FunctionStateComparator {
 			}
 		}
 		
-		return exitFuncPoints;
+		if(origFuncEntry!=null)
+			exitFuncPoints.add(origFuncEntry);
+		// the last element in exitFuncPoints is the origFuncEntry
+		return (exitFuncPoints);
 		
 	}
 	
@@ -252,6 +267,8 @@ public class FunctionStateComparator {
 	
 	private void updateExistingnOracleSet(String funcName, FunctionPoint origFuncEntry, Oracle newOracle){
 		
+		if(newOracle.getAccessedDomNodes().size()==0 && newOracle.getVariables().size()==0)
+			return;
 		List<ArrayListMultimap<FunctionPoint, Oracle>> entryOracleList=oracleMultimap.get(funcName);
 		for(ArrayListMultimap<FunctionPoint, Oracle> entryOracle:entryOracleList){
 			
@@ -279,14 +296,16 @@ public class FunctionStateComparator {
 				}
 			}
 			
-			/* at this point we know that this function entry has not been existed in the current oracle map,
-			 * otherwise it should have been returned before */
-			ArrayListMultimap<FunctionPoint,Oracle> funcPointMltimap=ArrayListMultimap.create();
-			funcPointMltimap.put(origFuncEntry, newOracle);
-			oracleMultimap.put(funcName, funcPointMltimap);
+
 			
 			
 		}
+		
+		/* at this point we know that this function entry has not been existed in the current oracle map,
+		 * otherwise it should have been returned before */
+		ArrayListMultimap<FunctionPoint,Oracle> funcPointMltimap=ArrayListMultimap.create();
+		funcPointMltimap.put(origFuncEntry, newOracle);
+		oracleMultimap.put(funcName, funcPointMltimap);
 		
 
 		

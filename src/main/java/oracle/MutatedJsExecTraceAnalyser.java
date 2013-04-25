@@ -14,6 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
 public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
@@ -21,8 +22,9 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	
 	public static Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer=ArrayListMultimap.create();
 
-	private Multimap<String, FunctionPoint> funcNameToFuncPointMap=ArrayListMultimap.create();
+	private Multimap<String, FunctionPoint> funcNameToFuncPointMap;
 	public MutatedJsExecTraceAnalyser(String outputFolder) {
+		
 		super(outputFolder);
 		
 	}
@@ -32,7 +34,7 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 		ArrayList<String> result = new ArrayList<String>();
 
 		/* find all trace files in the trace directory */
-		File dir = new File(outputFolder +  JSExecutionTracer.MUTATEDEXECUTIONTRACEDIRECTORY);
+		File dir = new File(outputFolder +  DOM_JS_ExecutionTracer.MUTATEDEXECUTIONTRACEDIRECTORY);
 
 		String[] files = dir.list();
 		if (files == null) {
@@ -40,7 +42,7 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 		}
 		for (String file : files) {
 			if (file.endsWith(".txt")) {
-				result.add(outputFolder + JSExecutionTracer.MUTATEDEXECUTIONTRACEDIRECTORY + file);
+				result.add(outputFolder + DOM_JS_ExecutionTracer.MUTATEDEXECUTIONTRACEDIRECTORY + file);
 			}
 		}
 
@@ -50,6 +52,8 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	@Override
 	protected void startAnalysingJsExecTraceFiles(){
 		try{
+			funcNameToFuncStateMap_modifiedVer=ArrayListMultimap.create();
+			funcNameToFuncPointMap=ArrayListMultimap.create();
 			List<String>filenameAndPathList=getTraceFilenameAndPath();
 			for (String filenameAndPath:filenameAndPathList){
 				BufferedReader input =
@@ -100,10 +104,10 @@ public class MutatedJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							variableUsage=line.split("::")[1];
 						}
 						else if(line.contains("dom::")){
-							domHtml=line.split("::")[1];
+							domHtml=line.split("dom::")[1];
 						}
 						else if(line.contains("node::")){
-							String node=line.split("::")[1];
+							String node=line.split("node::")[1];
 							ObjectMapper mapper = new ObjectMapper();  
 						    AccessedDOMNode domNode = mapper.readValue(node, AccessedDOMNode.class);  
 						    mapper.writeValueAsString(domNode);

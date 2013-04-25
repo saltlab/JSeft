@@ -1,5 +1,7 @@
 package oracle;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class Variable {
 	
 	private String variableName;
@@ -47,6 +49,14 @@ public class Variable {
 				return true;
 		}
 		return false;
+		
+	}
+	
+	@Override
+	public int hashCode(){
+		return  new HashCodeBuilder(17, 31).
+	            append(this.toString()).
+	            toHashCode();
 		
 	}
 	

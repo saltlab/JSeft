@@ -3,6 +3,8 @@ package oracle;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import domMutation.Node;
 
 
@@ -33,7 +35,10 @@ public class AccessedDOMNode extends Node {
 		String[] attrs=attributes.split(",");
 		for(int i=0;i<attrs.length;i++){
 			attrName=attrs[i].split("::")[0];
-			attrValue=attrs[i].split("::")[1];
+			if(attrs[i].split("::").length==1)
+				attrValue="null";
+			else
+				attrValue=attrs[i].split("::")[1];
 			Attribute attr=new Attribute(attrName, attrValue);
 			allAttributes.add(attr);
 		}
@@ -53,6 +58,20 @@ public class AccessedDOMNode extends Node {
 			}
 		}
 		return false;
+		
+	}
+	
+	
+	@Override 
+	public String toString(){
+		return this.attributes.toString() + this.className.toString()
+				+ this.id.toString() + this.tagName.toString();
+	}
+	@Override
+	public int hashCode(){
+		return  new HashCodeBuilder(19, 37).
+	            append(this.toString()).
+	            toHashCode();
 		
 	}
 }
