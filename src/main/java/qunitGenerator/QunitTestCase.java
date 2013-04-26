@@ -49,10 +49,11 @@ public class QunitTestCase {
 				testCaseName="\"" + "Testing " + this.functionName  + "\"";
 				
 				ArrayList<Variable> entryVars=functionEntry.getVariables();
+				testCaseCode+="\t";
 				for(Variable entryVar:entryVars){
 					if(entryVar.getVariableUsage().equals(variableUsageType.global.toString()) ||
 							entryVar.getVariableUsage().equals(variableUsageType.inputParam.toString())){
-						testCaseCode+=entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n";
+						testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
 					}
 				}
 				testCaseCode+="var result= ";
@@ -70,7 +71,7 @@ public class QunitTestCase {
 					testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
 				}
 				testCaseCode+=")" + ";";
-				testCaseCode += "\n";
+				testCaseCode += "\n" + "\t";
 				
 				
 				
@@ -139,20 +140,20 @@ public class QunitTestCase {
 				for(QunitAssertion qunitAssertion:qunitAssertions){
 					String assertionCode=qunitAssertion.getAssertionCodeForVariable();
 					testCaseCode+=assertionCode;
-					testCaseCode+="\n";
+					testCaseCode+="\n" + "\t";
 					numberofExpectedAssertions+=qunitAssertion.getTotalNumberOfAssertions();
 					
 				}
 				
 				
 				String testCodeSetup="test"+"(" + testCaseName + "," + numberofExpectedAssertions + ","
-						+ "function()" +"{" +"\n";
+						+ "function()" +"{" +"\n" + "\t";
 				if(!functionEntry.getDomHtml().equals("")){
 					String domHtml=functionEntry.getDomHtml();
 					if(domHtml.startsWith("[\"") && domHtml.endsWith("\"]")){
 						domHtml=domHtml.substring(2, domHtml.length()-2);
 					}
-					String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n";
+					String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
 					qunitFixture+="$fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
 					testCodeSetup+=qunitFixture;
 				}
