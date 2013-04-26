@@ -92,9 +92,9 @@ public class QunitTestCase {
 							qunitAssertions.add(qunitAssertionForValueChecking);
 						}
 							
-						String actualType="getType(result)" + " == " + exitVar.getType(); 
+						String actualType="getType(result)" + " == " + "'" + exitVar.getType() + "'"; 
 						QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion();
-						qunitAssertionForTypeChecking.makeQunitAssertionForVariable(actualType,exitVar.getType(), AssertionType.ok);
+						qunitAssertionForTypeChecking.makeQunitAssertionForVariable(actualType, exitVar.getType(), AssertionType.ok);
 						qunitAssertions.add(qunitAssertionForTypeChecking);
 					}
 					else{
@@ -116,7 +116,7 @@ public class QunitTestCase {
 								qunitAssertions.add(qunitAssertionForValueChecking);
 							}
 								
-							String actualType="getType"+ "(" + actual + ")" + " == " + exitVar.getType(); 
+							String actualType="getType"+ "(" + actual + ")" + " == " + "'" + exitVar.getType() + "'"; 
 							QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion();
 							qunitAssertionForTypeChecking.makeQunitAssertionForVariable(actualType,exitVar.getType(), AssertionType.ok);
 							qunitAssertions.add(qunitAssertionForTypeChecking);
@@ -149,11 +149,11 @@ public class QunitTestCase {
 						+ "function()" +"{" +"\n";
 				if(!functionEntry.getDomHtml().equals("")){
 					String domHtml=functionEntry.getDomHtml();
-					if(domHtml.startsWith("[") && domHtml.endsWith("]")){
-						domHtml=domHtml.substring(1, domHtml.length()-1);
+					if(domHtml.startsWith("[\"") && domHtml.endsWith("\"]")){
+						domHtml=domHtml.substring(2, domHtml.length()-2);
 					}
 					String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n";
-					qunitFixture+="$fixture.append"+ "(" + "<div>" + domHtml +"</div>" + ")"+ ";" + "\n";
+					qunitFixture+="$fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
 					testCodeSetup+=qunitFixture;
 				}
 				testCaseCode=testCodeSetup.concat(testCaseCode);

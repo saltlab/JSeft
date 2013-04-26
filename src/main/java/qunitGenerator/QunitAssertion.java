@@ -33,9 +33,9 @@ public class QunitAssertion {
 
 		String assertionCode="";
 		String msg="\"" + expected + " is expected but " + actual + " is returned" + "\"";
-		if(assertionType.name().equals(AssertionType.ok)){
+		if(assertionType.name().equals(AssertionType.ok.toString())){
 			
-			assertionCode=assertionType.toString() + "(" + actual +" == " + expected + ", " + msg +")" + ";";
+			assertionCode=assertionType.toString() + "(" + actual + ", " + msg +")" + ";";
 			
 		}
 		else{

@@ -137,7 +137,7 @@ public class Variable {
         
 		for (int i = 0; i < array.length(); i++) {
 			if (i != 0) {
-				result += " ";
+				result += ", ";
 			}
 			result += getValue(array.get(i), type);
 		}
@@ -158,7 +158,7 @@ public class Variable {
         
 		for (int i = 0; i < array.length; i++) {
 			if (i != 0) {
-				result += " ";
+				result += ", ";
 			}
 			result += getValue(array[i], type);
 		}
