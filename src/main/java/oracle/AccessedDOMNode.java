@@ -12,7 +12,7 @@ import domMutation.Node;
 
 public class AccessedDOMNode extends Node {
 
-	public String attributes;
+	public String attributes="";
 	private Set<Attribute> allAttributes=new HashSet<Attribute>();
 	
 	

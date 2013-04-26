@@ -22,9 +22,10 @@ import executionTracer.JSExecutionTracer;
 
 public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	
-	private Multimap<String, FunctionState> funcNameToFuncStateMap;
+	public static Multimap<String, FunctionState> funcNameToFuncStateMap;
 
 	private Multimap<String, FunctionPoint> funcNameToFuncPointMap;
+	public static ArrayList<String> functionListOfOriginalVersion=new ArrayList<String>();
 	public static HashMap<String, ArrayListMultimap<FunctionPoint,FunctionPoint>> funcEntryPointToExitPointMap=new HashMap<String, ArrayListMultimap<FunctionPoint,FunctionPoint>>();
 	
 	public OriginalJsExecTraceAnalyser(String outputFolder){
@@ -309,6 +310,15 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				return true;
 		}
 		return false;
+	}
+	
+	public static void makeFunctionListOfOriginalVersion(){
+		Set<String> keys=funcNameToFuncStateMap.keySet();
+		Iterator<String> iter=keys.iterator();
+		while(iter.hasNext()){
+			functionListOfOriginalVersion.add(iter.next());
+		}
+	
 	}
 	
 /*	private void addingDomRelatedFunctionPoint(AccessedDOMNode accessedDomNode, String funcName, String pointName, long time){

@@ -14,6 +14,8 @@ import com.google.common.collect.Multimap;
 public class FunctionStateComparator {
 	/* (funcName->(entrypoint->oracle)) */
 	private ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,Oracle>> oracleMultimap=ArrayListMultimap.create();	
+	private ArrayList<String> functionListOfOracles=new ArrayList<String>();
+	
 //	private Multimap<String, FunctionState> funcNameToFuncStateMap_modifiedVer;
 	/* (funcName->(entrypoint->exitpoint)) */
 /*	private ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,FunctionPoint>> oracleMultimap=ArrayListMultimap.create();	
@@ -45,6 +47,7 @@ public class FunctionStateComparator {
 				FunctionState modifiedFuncState=funcStates.get(i);
 				FunctionPoint modifiedFuncEntry=modifiedFuncState.getFunctionEntry();
 				FunctionPoint modifiedFuncExit=modifiedFuncState.getFunctionExit();
+				
 				FunctionPoint origFuncEntry=null;
 				ArrayList<FunctionPoint> origFuncExits=getFunctinExitsMatchedWithEntryPoint(funcEntryToMultiExit, modifiedFuncEntry);
 				// the last element in origFuncExists is the origFuncEntry
@@ -89,11 +92,20 @@ public class FunctionStateComparator {
 			
 		}
 		
+		addFuncsInOrigNotInOracle();
+		
 	}
 	
 	private Oracle addDiffPartsToTheOracleFuncExits(FunctionPoint modifiedFuncExit, FunctionPoint origFuncExit) {
 		
 		Oracle oracle=new Oracle();
+		if(modifiedFuncExit==null){
+			oracle.addVariableList(origFuncExit.getVariables());
+			oracle.addAccessedDomNodeList(origFuncExit.getAccessedDomNodes());
+			oracle.setOrigVersionExitFuncPoint(origFuncExit);
+			return oracle;
+		}
+		
 		if(modifiedFuncExit.getPointName().equals(origFuncExit.getPointName())){
 			ArrayList<Variable> origvarList=origFuncExit.getVariables();
 			ArrayList<Variable> modifvarList=modifiedFuncExit.getVariables();
@@ -174,6 +186,9 @@ public class FunctionStateComparator {
 	}
 
 	private boolean functionPointsSimilar(FunctionPoint funcPoint1, FunctionPoint funcPoint2){
+		// meaning that there is a function entry with no function exit in the modified version
+		if(funcPoint1==null)
+			return false;
 		if(funcPoint1.getPointName().equals(funcPoint2.getPointName())){
 			ArrayList<Variable> varList1=funcPoint1.getVariables();
 			ArrayList<Variable> varList2=funcPoint2.getVariables();
@@ -306,6 +321,7 @@ public class FunctionStateComparator {
 		ArrayListMultimap<FunctionPoint,Oracle> funcPointMltimap=ArrayListMultimap.create();
 		funcPointMltimap.put(origFuncEntry, newOracle);
 		oracleMultimap.put(funcName, funcPointMltimap);
+		this.functionListOfOracles.add(funcName);
 		
 
 		
@@ -330,6 +346,43 @@ public class FunctionStateComparator {
 		return false;
 		
 	}
+	
+	private void addFuncsInOrigNotInOracle(){
+		OriginalJsExecTraceAnalyser.makeFunctionListOfOriginalVersion();
+		for(String origfuncName:OriginalJsExecTraceAnalyser.functionListOfOriginalVersion){
+			boolean found=false;
+			for(String oracleFuncName:this.functionListOfOracles){
+				if(oracleFuncName.equals(origfuncName)){
+					found=true;
+					break;
+					
+				}	
+			}
+			
+			if(!found){
+				ArrayListMultimap<FunctionPoint, FunctionPoint> funcEntryToMultiExit=OriginalJsExecTraceAnalyser.funcEntryPointToExitPointMap.get(origfuncName);
+				Set<FunctionPoint> keys=funcEntryToMultiExit.keySet();
+				Iterator<FunctionPoint> iter=keys.iterator();
+				while(iter.hasNext()){
+					FunctionPoint entryPoint=iter.next();
+					List<FunctionPoint> funcExits=funcEntryToMultiExit.get(entryPoint);
+					for(FunctionPoint funcExit:funcExits){
+						Oracle newOracle=new Oracle();
+						newOracle.addVariableList(funcExit.getVariables());
+						newOracle.addAccessedDomNodeList(funcExit.getAccessedDomNodes());
+						newOracle.setOrigVersionExitFuncPoint(funcExit);
+						ArrayListMultimap<FunctionPoint,Oracle> multiMap=ArrayListMultimap.create();
+						multiMap.put(entryPoint, newOracle);
+						oracleMultimap.put(origfuncName, multiMap);
+					}
+					
+				}
+			}
+		}
+	}
+	
+	
+
 	
 	
 }
