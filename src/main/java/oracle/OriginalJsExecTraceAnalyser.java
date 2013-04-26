@@ -225,7 +225,9 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						
 					}
 					funcState=new FunctionState(entry, exit);
-					funcNameToFuncStateMap.put(funcName, funcState);
+					List<FunctionState> fStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
+					if(!fStates.contains(funcState))
+						funcNameToFuncStateMap.put(funcName, funcState);
 				}
 			}
 		}

@@ -11,6 +11,7 @@ import oracle.JsExecTraceAnalyser;
 import oracle.MutatedJsExecTraceAnalyser;
 import oracle.Oracle;
 import oracle.OriginalJsExecTraceAnalyser;
+import qunitGenerator.QunitTestSuite;
 
 
 import astModifier.JSModifyProxyPlugin;
@@ -59,8 +60,9 @@ public class SameGameOrig {
 	 * 
 	 * @param args
 	 *            Arguments.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 
 		String outputdir = "same-output";
@@ -70,7 +72,8 @@ public class SameGameOrig {
 		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
 		funcStateComparator.analysingOutputDiffs();
 		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
-		
+		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
+		testSuite.writeQunitTestSuiteToFile();
 		int test=0;
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 //		CrawljaxConfiguration config = getCrawljaxConfiguration();

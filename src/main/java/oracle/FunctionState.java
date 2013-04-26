@@ -1,5 +1,7 @@
 package oracle;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class FunctionState {
 
 	private FunctionPoint functionEntry;
@@ -21,11 +23,20 @@ public class FunctionState {
 	public boolean equals(Object funcState){
 		if(funcState instanceof FunctionState){
 			FunctionState functionState=(FunctionState) funcState;
-			if(this.getFunctionEntry().equals(functionState.getFunctionEntry())
-					&& this.getFunctionExit().equals(functionState.getFunctionExit())){
+			if(this.getFunctionEntry().getStringForm().equals(functionState.getFunctionEntry().getStringForm())
+					&& this.getFunctionExit().getStringForm().equals(functionState.getFunctionExit().getStringForm())){
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return  new HashCodeBuilder(23, 41).
+	            append(this.getFunctionEntry().getStringForm() +
+						this.getFunctionExit().getStringForm()).
+	            toHashCode();
+		
 	}
 }

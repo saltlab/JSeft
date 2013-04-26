@@ -27,7 +27,7 @@ public class QunitTestCase {
 	List<Oracle> oracles=new ArrayList<Oracle>();
 	public QunitTestCase(List<Oracle> oracleList, FunctionPoint functionEntry, String funcName){
 		
-		
+		oracles=oracleList;
 		if(!functionName.contains("anonymous") && oracleList.size()>0){// && oracleList.size()==1){
 		
 			Set<Variable> exitVars;
@@ -44,13 +44,14 @@ public class QunitTestCase {
 			if((exitVars!=null && exitVars.size()!=0) || (domNodes!=null && domNodes.size()!=0)){
 				oracles=oracleList;
 				functionEntryPoint=functionEntry;
-				String[] funcAndScope=funcName.split(".");
+				String[] funcAndScope=funcName.split("\\.");
 				functionName=funcAndScope[funcAndScope.length-1];
 				testCaseName="\"" + "Testing " + this.functionName  + "\"";
 				
 				ArrayList<Variable> entryVars=functionEntry.getVariables();
 				for(Variable entryVar:entryVars){
-					if(entryVar.getVariableUsage().equals(variableUsageType.global.toString())){
+					if(entryVar.getVariableUsage().equals(variableUsageType.global.toString()) ||
+							entryVar.getVariableUsage().equals(variableUsageType.inputParam.toString())){
 						testCaseCode+=entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n";
 					}
 				}

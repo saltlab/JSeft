@@ -3,6 +3,8 @@ package oracle;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import domMutation.NodeProperty;
 
 public class FunctionPoint {
@@ -68,6 +70,25 @@ public class FunctionPoint {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return  new HashCodeBuilder(7, 11).
+	            append(this.getPointName().toString()
+						+ Long.toString(this.getTime())
+						+ this.getVariables().toString()
+						+ this.getAccessedDomNodes().toString()
+						+ this.domHtml.toString()).
+	            toHashCode();
+		
+	}
+	
+	public String getStringForm(){
+		return this.getPointName().toString()
+		+ this.getVariables().toString()
+		+ this.getAccessedDomNodes().toString()
+		+ this.domHtml.toString();
 	}
 	
 }

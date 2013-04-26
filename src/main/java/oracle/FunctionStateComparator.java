@@ -198,7 +198,7 @@ public class FunctionStateComparator {
 				String domHtml2=funcPoint2.getDomHtml();
 				
 				
-				if(variableListsSimilar(varList1, varList2)) //&& domHtml1.equals(domHtml2))
+				if(variableListsSimilar(varList1, varList2) && domHtml1.equals(domHtml2))
 					return true;
 			}
 			
@@ -234,7 +234,7 @@ public class FunctionStateComparator {
 				
 				String origDomHtml=entryPoint.getDomHtml();
 				String modifiedDomHtml=funcPoint.getDomHtml();
-				if(variableListsSimilar(origVars,modifiedVars) ){//&& origDomHtml.equals(modifiedDomHtml)){
+				if(variableListsSimilar(origVars,modifiedVars)  && origDomHtml.equals(modifiedDomHtml)){
 					origFuncEntry=entryPoint;
 					exitFuncPoints.addAll(funcEntryToMultiExit.get(entryPoint));
 					break;
@@ -282,6 +282,7 @@ public class FunctionStateComparator {
 	
 	private void updateExistingnOracleSet(String funcName, FunctionPoint origFuncEntry, Oracle newOracle){
 		
+		boolean origFuncEntryExistInOracle=false;
 		if(newOracle.getAccessedDomNodes().size()==0 && newOracle.getVariables().size()==0)
 			return;
 		List<ArrayListMultimap<FunctionPoint, Oracle>> entryOracleList=oracleMultimap.get(funcName);
@@ -289,11 +290,15 @@ public class FunctionStateComparator {
 			
 			Set<FunctionPoint> key=entryOracle.keySet();
 			Iterator<FunctionPoint> iterator=key.iterator();
+			origFuncEntryExistInOracle=false;
 			while(iterator.hasNext()){
 				FunctionPoint entryPoint=iterator.next();
 				if(entryPoint.getPointName().equals(origFuncEntry.getPointName())){
 					if(variableListsSimilar(entryPoint.getVariables(), origFuncEntry.getVariables())
 							&& entryPoint.getDomHtml().equals(origFuncEntry.getDomHtml())){
+						
+						origFuncEntryExistInOracle=true;
+						
 						List<Oracle> oracleList=entryOracle.get(entryPoint);
 						for(Oracle oracle:oracleList){
 							FunctionPoint origFuncExitPoint=oracle.getOrigVersionExitFuncPoint();
@@ -318,10 +323,24 @@ public class FunctionStateComparator {
 		
 		/* at this point we know that this function entry has not been existed in the current oracle map,
 		 * otherwise it should have been returned before */
-		ArrayListMultimap<FunctionPoint,Oracle> funcPointMltimap=ArrayListMultimap.create();
-		funcPointMltimap.put(origFuncEntry, newOracle);
-		oracleMultimap.put(funcName, funcPointMltimap);
-		this.functionListOfOracles.add(funcName);
+		
+		origFuncEntryExistInOracle=false;
+		List<ArrayListMultimap<FunctionPoint, Oracle>> oracleList=oracleMultimap.get(funcName);
+		for(ArrayListMultimap<FunctionPoint, Oracle> oracleMap:oracleList){
+			if(oracleMap.get(origFuncEntry)!=null){
+				oracleMap.get(origFuncEntry).add(newOracle);
+				origFuncEntryExistInOracle=true;
+				break;
+			}
+		}
+		
+		if(!origFuncEntryExistInOracle){
+			ArrayListMultimap<FunctionPoint,Oracle> funcPointMltimap=ArrayListMultimap.create();
+			funcPointMltimap.put(origFuncEntry, newOracle);
+			oracleMultimap.put(funcName, funcPointMltimap);
+		}
+		if(!functionListOfOracles.contains(funcName))
+			this.functionListOfOracles.add(funcName);
 		
 
 		
@@ -366,15 +385,16 @@ public class FunctionStateComparator {
 				while(iter.hasNext()){
 					FunctionPoint entryPoint=iter.next();
 					List<FunctionPoint> funcExits=funcEntryToMultiExit.get(entryPoint);
+					ArrayListMultimap<FunctionPoint,Oracle> multiMap=ArrayListMultimap.create();
 					for(FunctionPoint funcExit:funcExits){
 						Oracle newOracle=new Oracle();
 						newOracle.addVariableList(funcExit.getVariables());
 						newOracle.addAccessedDomNodeList(funcExit.getAccessedDomNodes());
 						newOracle.setOrigVersionExitFuncPoint(funcExit);
-						ArrayListMultimap<FunctionPoint,Oracle> multiMap=ArrayListMultimap.create();
 						multiMap.put(entryPoint, newOracle);
-						oracleMultimap.put(origfuncName, multiMap);
+						
 					}
+					oracleMultimap.put(origfuncName, multiMap);
 					
 				}
 			}
