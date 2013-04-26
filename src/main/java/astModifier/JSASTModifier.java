@@ -255,6 +255,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 			AstNode instumentationArrayNode=createInstrumentationArrayLocalVariable();
 			AstNode newNode = createEnterNode(func, ProgramPoint.ENTERPOSTFIX, func.getLineno());
 
+		
 			func.getBody().addChildToFront(instumentationArrayNode);
 			func.getBody().addChildToFront(newNode);
 

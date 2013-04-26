@@ -32,17 +32,18 @@ public class QunitTestCase {
 		
 			Set<Variable> exitVars;
 			Set<AccessedDOMNode> domNodes;
-			if(oracles.size()==1){
-				exitVars=oracles.get(0).getVariables();
-				domNodes=oracles.get(0).getAccessedDomNodes();
+			if(oracles.size()>1){
+				createQunitTestCaseWithCombinedAssertions(oracleList, functionEntry, funcName);
 			}
-			else {
+/*			else {
 				exitVars=getCommonVariablesAmongOracleList();
 				domNodes=getCommonAccessedDomAmongOracleList();
 			}
 			
-			if((exitVars!=null && exitVars.size()!=0) || (domNodes!=null && domNodes.size()!=0)){
-				oracles=oracleList;
+*/			else{ //if ((exitVars!=null && exitVars.size()!=0) || (domNodes!=null && domNodes.size()!=0)){
+				
+				exitVars=oracles.get(0).getVariables();
+				domNodes=oracles.get(0).getAccessedDomNodes();			
 				functionEntryPoint=functionEntry;
 				String[] funcAndScope=funcName.split("\\.");
 				functionName=funcAndScope[funcAndScope.length-1];
@@ -212,6 +213,123 @@ public class QunitTestCase {
 		
 		return commonAccessedDom;
 		
+	}
+	
+	private void createQunitTestCaseWithCombinedAssertions(List<Oracle> oracleList, FunctionPoint functionEntry, String funcName){
+		
+		functionEntryPoint=functionEntry;
+		String[] funcAndScope=funcName.split("\\.");
+		functionName=funcAndScope[funcAndScope.length-1];
+		testCaseName="\"" + "Testing " + this.functionName  + "\"";
+		
+		ArrayList<Variable> entryVars=functionEntry.getVariables();
+		testCaseCode+="\t";
+		for(Variable entryVar:entryVars){
+			if(entryVar.getVariableUsage().equals(variableUsageType.global.toString()) ||
+					entryVar.getVariableUsage().equals(variableUsageType.inputParam.toString())){
+				testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+			}
+		}
+		testCaseCode+="var result= ";
+		
+		
+		testCaseCode+="function" + "(";
+		for(Variable entryVar:entryVars){
+			String varUsage=entryVar.getVariableUsage();
+			if(varUsage.equals(variableUsageType.inputParam.toString())){
+				String varName=entryVar.getVariableName();
+				testCaseCode+=varName + ", ";
+			}
+		}
+		if(testCaseCode.endsWith(", ")){
+			testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
+		}
+		testCaseCode+=")" + ";";
+		testCaseCode += "\n" + "\t";
+		
+		
+		CombinedAssertions combinedAssertions=new CombinedAssertions();
+		for(Oracle oracle:oracleList){
+			Set<Variable> exitVars=oracle.getVariables();
+			Set<AccessedDOMNode> accessedDomNodes=oracle.getAccessedDomNodes();
+			IndividualAssertions individualAssertion=new IndividualAssertions();
+		for(Variable exitVar:exitVars){
+			String varUsage=exitVar.getVariableUsage();
+			
+			if(varUsage.equals(variableUsageType.returnVal.toString())){
+				if(exitVar.getValue().equals("[]")){
+					
+					individualAssertion.addIndividualAssertions("result.length","0", accessedDomNodes);
+
+				}
+				else{
+				
+					individualAssertion.addIndividualAssertions("result",exitVar.getValue(), accessedDomNodes);
+
+				}
+					
+				String actualType="getType(result)"; 
+				String expected="'" + exitVar.getType() + "'";
+				individualAssertion.addIndividualAssertions(actualType, expected, accessedDomNodes);
+
+			}
+			else{
+					
+					
+				if(varUsage.equals(variableUsageType.global.toString())){
+						
+					String actual=exitVar.getVariableName();
+					if(exitVar.getValue().equals("[]")){
+						actual+= ".length";
+						individualAssertion.addIndividualAssertions(actual, "0", accessedDomNodes);
+
+					}
+					else{
+							
+						individualAssertion.addIndividualAssertions(actual, exitVar.getValue(), accessedDomNodes);
+
+					}
+						
+					String actualType="getType"+ "(" + actual + ")";
+					String expected= "'" + exitVar.getType() + "'";
+					individualAssertion.addIndividualAssertions(actualType, expected, accessedDomNodes);
+
+				}
+					
+			}
+			
+		}
+		combinedAssertions.addIndividualAssertions(individualAssertion);
+		QunitAssertion combinedQunitAssertion=new QunitAssertion();
+		combinedQunitAssertion.makeCombinedQunitAssertion(combinedAssertions);
+		qunitAssertions.add(combinedQunitAssertion);
+			
+			
+		}
+		
+		int numberofExpectedAssertions=0;
+		for(QunitAssertion qunitAssertion:qunitAssertions){
+			String assertionCode=qunitAssertion.getAssertionCodeForVariable();
+			testCaseCode+=assertionCode;
+			testCaseCode+="\n" + "\t";
+			numberofExpectedAssertions+=qunitAssertion.getTotalNumberOfAssertions();
+			
+		}
+		
+		
+		String testCodeSetup="test"+"(" + testCaseName + "," + numberofExpectedAssertions + ","
+				+ "function()" +"{" +"\n" + "\t";
+		if(!functionEntry.getDomHtml().equals("")){
+			String domHtml=functionEntry.getDomHtml();
+			if(domHtml.startsWith("[\"") && domHtml.endsWith("\"]")){
+				domHtml=domHtml.substring(2, domHtml.length()-2);
+			}
+			String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
+			qunitFixture+="$fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
+			testCodeSetup+=qunitFixture;
+		}
+		testCaseCode=testCodeSetup.concat(testCaseCode);
+		testCaseCode+= "});";
 	}
 	
 	
