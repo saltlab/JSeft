@@ -100,9 +100,12 @@ public class QunitAssertion {
 
 	
 	private String getSelectElementByXpathCode(String xpath){
+		if(xpath.startsWith("//")){
+			xpath=xpath.replaceFirst("//", "/");
+		}
 		String code="";
 		/* div added because of <div id="qunit-fixture"></div> */
-		String xpathToEvaluate="/div" + xpath;
+		String xpathToEvaluate="//div" + xpath;
 		code= "evaluated=document.evaluate" + "(" + xpathToEvaluate + ", " + 
 		"document" + ", " + "null" +", " +"XPathResult.ANY_TYPE" + ", " + "null" + ")" + ";" + "\n";
 		code+= "node = $(evaluated.iterateNext());";

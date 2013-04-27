@@ -19,8 +19,21 @@ function addVariable(name, value, variableUsage) {
 	time=date.getTime();
 	var pattern=/[.]attr[(]/;
 	var getAttrPattern=/[.]getAttribute[(]/;
+	var xpaths=new Array();
+	var nodeValue=$(value).get(0);
+	if(typeof nodeValue == "object" && "nodeType" in nodeValue &&
+			   nodeValue.nodeType === 1 && nodeValue.cloneNode){
+		xpaths=getXpathOfNodes(value);
+		if(xpaths.length==1){
+			var oneXpath=xpaths[0];
+			return new Array(name, typeof(oneXpath), oneXpath, time, variableUsage);
+		}
+		return new Array(name, 'xpath', xpaths, time, variableUsage);
+		
+	}
+	
 
-	if(typeof(value) == 'object') {
+	else if(typeof(value) == 'object') {
 		if(value instanceof Array) {
 				if(value[0] instanceof Array){
 					
@@ -52,6 +65,20 @@ function addVariable(name, value, variableUsage) {
 }
 
 
+function getXpathOfNodes(element){
+	
+	var path="";
+	var xpaths=new Array();
+	for(var i=0;i<$(element).length;i++){
+		path=getElementXPath($(element).get(i));
+		xpaths.push("$(document.evaluate" + "(" + path +", document, null, XPathResult.ANY_TYPE,null).iterateNext())");
+		
+	}
+	return xpaths;
+	
+}
+
+
 function getAllAttrs(element){
 	var nodes=[];
 	for (var attr, i=0, attrs=element.attributes, l=attrs.length; i<l; i++){
@@ -76,8 +103,10 @@ var getElementTreeXPath = function(element) {
         var index = 0;
         
 
-        if(element.nodeName.toLowerCase()=="body")
-           break;
+        if(element.nodeName.toLowerCase()=="body"){
+          
+        	return paths.length ? "//" + paths.join("/") : null;
+        }
         
         for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
             // Ignore document type declaration.
@@ -106,15 +135,16 @@ function AddDomNodeProps(elementArray){
 	var date = new Date();
 	time=date.getTime();
 	var datas = new Array();
+	var path;
 	
 	while(elementArray.length>0){
 		element=elementArray.pop();
 		
-		for(i=0;i<$(element).length;i++){
+		for(var i=0;i<$(element).length;i++){
 			path=getElementXPath($(element).get(i));
 	        nodes=getAllAttrs($(element).get(i));
 	        nodeAttrs="";
-	        for(j=0;j<nodes.length;j++){
+	        for(var j=0;j<nodes.length;j++){
 	        	nodeAttrs+=nodes[j] + ",";
 	        }
 	        nodeAttrs=nodeAttrs.slice(0,-1);//trim the last comma

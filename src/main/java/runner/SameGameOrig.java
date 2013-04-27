@@ -66,24 +66,24 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
-		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
-		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
-//		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
-		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
-		funcStateComparator.analysingOutputDiffs();
-		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
-		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
-		testSuite.writeQunitTestSuiteToFile();
+//		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+//		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
+		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
+//		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
+//		funcStateComparator.analysingOutputDiffs();
+//		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
+//		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
+//		testSuite.writeQunitTestSuiteToFile();
 		int test=0;
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
-//		CrawljaxConfiguration config = getCrawljaxConfiguration();
-//		config.setOutputFolder(outputdir);
+		CrawljaxConfiguration config = getCrawljaxConfiguration();
+		config.setOutputFolder(outputdir);
 
 
-//		ProxyConfiguration prox = new ProxyConfiguration();
-//		WebScarabWrapper web = new WebScarabWrapper();
+		ProxyConfiguration prox = new ProxyConfiguration();
+		WebScarabWrapper web = new WebScarabWrapper();
 	
-//		DOM_JS_AstInstrumenter a=new DOM_JS_AstInstrumenter();
+		DOM_JS_AstInstrumenter a=new DOM_JS_AstInstrumenter();
 //		DOMMutAstInstrumenter a;
 //		DOMAstInstrumenter a=new DOMAstInstrumenter();
 //		DomMuteHelper helper=new DomMuteHelper(outputdir);
@@ -96,21 +96,21 @@ public class SameGameOrig {
 //			p.excludeDefaults();
 //			web.addPlugin(p);
 //		}
-/*		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
+		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
-*/		
+		
 				
 //		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domMuteExecutiontrace",stateName);
-//		DOM_JS_ExecutionTracer tracer = new DOM_JS_ExecutionTracer("jsExecutiontrace",false);
+		DOM_JS_ExecutionTracer tracer = new DOM_JS_ExecutionTracer("jsExecutiontrace",false);
 //		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
-//		tracer.setOutputFolder(outputdir);
-//		config.addPlugin(tracer);
-//		config.addPlugin(web);
-//		config.setProxyConfiguration(prox);
+		tracer.setOutputFolder(outputdir);
+		config.addPlugin(tracer);
+		config.addPlugin(web);
+		config.setProxyConfiguration(prox);
 
 
-/*		try {
+		try {
 			CrawljaxController crawljax = new CrawljaxController(config);
 			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
@@ -124,7 +124,7 @@ public class SameGameOrig {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-*/		
+		
 /*		
 		String outputdir = "same-output2";
 		DomTraceReading trace=new DomTraceReading(outputdir);
