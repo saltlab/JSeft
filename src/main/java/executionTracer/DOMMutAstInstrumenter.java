@@ -98,6 +98,30 @@ public class DOMMutAstInstrumenter extends DOMMuteASTModifier {
 				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
 				break;
 			
+			case ".prop":
+				jsMethodTobeCalled="changeProp";
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
+				break;
+				
+			case ".height":
+				jsMethodTobeCalled="changeHeight";
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
+				break;
+				
+			case ".width":
+				jsMethodTobeCalled="changeWidth";
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
+				break;
+				
+			case ".addClass":
+				jsMethodTobeCalled="changeAddClass";
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
+				break;
+				
+			case ".removeClass":
+				jsMethodTobeCalled="changeRemoveClass";
+				code=jsMethodTobeCalled + "(" + "\"" + xpath + "\"" + ","  + property + ")" + ";"; 
+				break;
 			
 			default:
 				break;	
