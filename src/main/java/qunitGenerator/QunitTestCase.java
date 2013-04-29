@@ -27,8 +27,9 @@ public class QunitTestCase {
 	List<Oracle> oracles=new ArrayList<Oracle>();
 	public QunitTestCase(List<Oracle> oracleList, FunctionPoint functionEntry, String funcName){
 		
+		this.functionName=funcName;
 		oracles=oracleList;
-		if(!functionName.contains("anonymous") && oracleList.size()>0){// && oracleList.size()==1){
+		if(oracleList.size()>0){// && oracleList.size()==1){
 		
 			Set<Variable> exitVars;
 			Set<AccessedDOMNode> domNodes;
@@ -60,7 +61,7 @@ public class QunitTestCase {
 				testCaseCode+="var result= ";
 				
 				
-				testCaseCode+="function" + "(";
+				testCaseCode+=this.functionName + "(";
 				for(Variable entryVar:entryVars){
 					String varUsage=entryVar.getVariableUsage();
 					if(varUsage.equals(variableUsageType.inputParam.toString())){
@@ -89,9 +90,19 @@ public class QunitTestCase {
 							qunitAssertions.add(qunitAssertionForValueChecking);
 						}
 						else{
-							QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-							qunitAssertionForValueChecking.makeQunitAssertionForVariable("result",exitVar.getValue(), AssertionType.deepEqual);
-							qunitAssertions.add(qunitAssertionForValueChecking);
+							
+							if(exitVar.getType().contains("array")){
+								String newVarName= exitVar.getVariableName() + "Array-qunitTest";
+								testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + "\n" + "\t";
+								QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
+								qunitAssertionForValueChecking.makeQunitAssertionForVariable("result", newVarName, AssertionType.deepEqual);
+								qunitAssertions.add(qunitAssertionForValueChecking);
+							}
+							else{
+								QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
+								qunitAssertionForValueChecking.makeQunitAssertionForVariable("result",exitVar.getValue(), AssertionType.deepEqual);
+								qunitAssertions.add(qunitAssertionForValueChecking);
+							}
 						}
 							
 						String actualType="getType(result)" + " == " + "'" + exitVar.getType() + "'"; 
@@ -112,10 +123,19 @@ public class QunitTestCase {
 								qunitAssertions.add(qunitAssertionForValueChecking);
 							}
 							else{
+								if(exitVar.getType().contains("array")){
+									String newVarName= exitVar.getVariableName() + "Array-qunitTest";
+									testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + "\n" + "\t";
+									QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
+									qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual, newVarName, AssertionType.deepEqual);
+									qunitAssertions.add(qunitAssertionForValueChecking);
+								}
+								else{
 									
-								QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-								qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual,exitVar.getValue(), AssertionType.deepEqual);
-								qunitAssertions.add(qunitAssertionForValueChecking);
+									QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
+									qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual,exitVar.getValue(), AssertionType.deepEqual);
+									qunitAssertions.add(qunitAssertionForValueChecking);
+								}
 							}
 								
 							String actualType="getType"+ "(" + actual + ")" + " == " + "'" + exitVar.getType() + "'"; 
@@ -127,9 +147,11 @@ public class QunitTestCase {
 					}
 				}
 					
+				int counter=0;
 				for(AccessedDOMNode domNode:domNodes){
+					counter++;
 					QunitAssertion qunitAssertionForDomChecking=new QunitAssertion();
-					qunitAssertionForDomChecking.makeQunitAssertionForDomNode(domNode);
+					qunitAssertionForDomChecking.makeQunitAssertionForDomNode(domNode, counter);
 					qunitAssertions.add(qunitAssertionForDomChecking);
 				}
 					
@@ -139,7 +161,8 @@ public class QunitTestCase {
 				
 				int numberofExpectedAssertions=0;
 				for(QunitAssertion qunitAssertion:qunitAssertions){
-					String assertionCode=qunitAssertion.getAssertionCodeForVariable();
+					String assertionCode=qunitAssertion.getAssertionCodeForVariable() + "\n" + "\t";
+					assertionCode+=qunitAssertion.getAssertionCodeForDom();
 					testCaseCode+=assertionCode;
 					testCaseCode+="\n" + "\t";
 					numberofExpectedAssertions+=qunitAssertion.getTotalNumberOfAssertions();
@@ -233,7 +256,7 @@ public class QunitTestCase {
 		testCaseCode+="var result= ";
 		
 		
-		testCaseCode+="function" + "(";
+		testCaseCode+=this.functionName + "(";
 		for(Variable entryVar:entryVars){
 			String varUsage=entryVar.getVariableUsage();
 			if(varUsage.equals(variableUsageType.inputParam.toString())){
@@ -250,66 +273,84 @@ public class QunitTestCase {
 		
 		CombinedAssertions combinedAssertions=new CombinedAssertions();
 		for(Oracle oracle:oracleList){
-			Set<Variable> exitVars=oracle.getVariables();
-			Set<AccessedDOMNode> accessedDomNodes=oracle.getAccessedDomNodes();
-			IndividualAssertions individualAssertion=new IndividualAssertions();
-		for(Variable exitVar:exitVars){
-			String varUsage=exitVar.getVariableUsage();
-			
-			if(varUsage.equals(variableUsageType.returnVal.toString())){
-				if(exitVar.getValue().equals("[]")){
-					
-					individualAssertion.addIndividualAssertions("result.length","0", accessedDomNodes);
-
-				}
-				else{
+				Set<Variable> exitVars=oracle.getVariables();
+				Set<AccessedDOMNode> accessedDomNodes=oracle.getAccessedDomNodes();
+				IndividualAssertions individualAssertion=new IndividualAssertions();
+			for(Variable exitVar:exitVars){
+				String varUsage=exitVar.getVariableUsage();
 				
-					individualAssertion.addIndividualAssertions("result",exitVar.getValue(), accessedDomNodes);
-
-				}
-					
-				String actualType="getType(result)"; 
-				String expected="'" + exitVar.getType() + "'";
-				individualAssertion.addIndividualAssertions(actualType, expected, accessedDomNodes);
-
-			}
-			else{
-					
-					
-				if(varUsage.equals(variableUsageType.global.toString())){
-						
-					String actual=exitVar.getVariableName();
+				if(varUsage.equals(variableUsageType.returnVal.toString())){
 					if(exitVar.getValue().equals("[]")){
-						actual+= ".length";
-						individualAssertion.addIndividualAssertions(actual, "0", accessedDomNodes);
-
+						
+						individualAssertion.addIndividualAssertions("result.length","0", accessedDomNodes);
+	
 					}
 					else{
-							
-						individualAssertion.addIndividualAssertions(actual, exitVar.getValue(), accessedDomNodes);
-
+					
+						if(exitVar.getType().contains("array")){
+							String newVarName= exitVar.getVariableName() + "Array-qunitTest";
+							testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() +"\n" + "\t";
+							String actual="true";
+							String expected="areEqualArray" + "(result, " + newVarName + ")";
+							individualAssertion.addIndividualAssertions(expected, actual, accessedDomNodes);
+						}
+						else{
+							individualAssertion.addIndividualAssertions("result", exitVar.getValue(), accessedDomNodes);
+						}
 					}
 						
-					String actualType="getType"+ "(" + actual + ")";
-					String expected= "'" + exitVar.getType() + "'";
+					String actualType="getType(result)"; 
+					String expected="'" + exitVar.getType() + "'";
 					individualAssertion.addIndividualAssertions(actualType, expected, accessedDomNodes);
-
+	
 				}
-					
+				else{
+						
+						
+					if(varUsage.equals(variableUsageType.global.toString())){
+							
+						String actual=exitVar.getVariableName();
+						if(exitVar.getValue().equals("[]")){
+							actual+= ".length";
+							individualAssertion.addIndividualAssertions(actual, "0", accessedDomNodes);
+	
+						}
+						else{
+							
+							
+							if(exitVar.getType().contains("array")){
+								String newVarName= exitVar.getVariableName() + "Array-qunitTest";
+								testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() +"\n" +"\t";
+								String actualVal="true";
+								String expected="areEqualArray" + "(" + exitVar.getVariableName() +", " + newVarName + ")";
+								individualAssertion.addIndividualAssertions(expected, actualVal, accessedDomNodes);
+							}
+							else
+								individualAssertion.addIndividualAssertions(actual, exitVar.getValue(), accessedDomNodes);
+	
+						}
+							
+						String actualType="getType"+ "(" + actual + ")";
+						String expected= "'" + exitVar.getType() + "'";
+						individualAssertion.addIndividualAssertions(actualType, expected, accessedDomNodes);
+	
+					}
+						
+				}
+				
 			}
-			
-		}
-		combinedAssertions.addIndividualAssertions(individualAssertion);
-		QunitAssertion combinedQunitAssertion=new QunitAssertion();
-		combinedQunitAssertion.makeCombinedQunitAssertion(combinedAssertions);
-		qunitAssertions.add(combinedQunitAssertion);
+			combinedAssertions.addIndividualAssertions(individualAssertion);
+			QunitAssertion combinedQunitAssertion=new QunitAssertion();
+			combinedQunitAssertion.makeCombinedQunitAssertion(combinedAssertions);
+			qunitAssertions.add(combinedQunitAssertion);
 			
 			
 		}
 		
 		int numberofExpectedAssertions=0;
 		for(QunitAssertion qunitAssertion:qunitAssertions){
-			String assertionCode=qunitAssertion.getAssertionCodeForVariable();
+			String assertionCode=qunitAssertion.getAssertionCodeForVariable() + "\n" + "\t";
+			assertionCode+=qunitAssertion.getAssertionCodeForDom();
 			testCaseCode+=assertionCode;
 			testCaseCode+="\n" + "\t";
 			numberofExpectedAssertions+=qunitAssertion.getTotalNumberOfAssertions();

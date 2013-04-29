@@ -124,7 +124,9 @@ public class Variable {
 				}
 		} else {
 			//if (type.equals("object")) {
-			return "\"" + value.toString() + "\"";
+		
+		//	return value.toString().replaceAll("\\\"", "\\\\\"");
+			return value.toString();
 		}
 
 	//	throw new CrawljaxException("Unhandled type when converting to trace file " + type);
@@ -142,14 +144,14 @@ public class Variable {
 			result += getValue(array.get(i), type);
 		}
 		result=result + "]";
-		if (isArray()){ 
+/*		if (isArray()){ 
 			if(result.endsWith("]]")){// && result.endsWith("]]")){
 				result="["+result.replace("[","").replace("]", "")+"]";
 //				result=result.replace(",", " ");
 				}
 
 		}
-		return result;
+*/		return result;
 	}
 	
 	
@@ -163,14 +165,14 @@ public class Variable {
 			result += getValue(array[i], type);
 		}
 		result=result + "]";
-		if (isArray()){ 
+/*		if (isArray()){ 
 			if(result.endsWith("]]")){// && result.endsWith("]]")){
 				result="["+result.replace("[","").replace("]", "")+"]";
 //				result=result.replace(",", " ");
 				}
 
 		}
-		return result;
+*/		return result;
 	}
 
 	

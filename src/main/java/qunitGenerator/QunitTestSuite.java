@@ -35,15 +35,18 @@ public class QunitTestSuite {
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
 			String funcName=iter.next();
-			List<ArrayListMultimap<FunctionPoint, Oracle>> funcEntryOracleList=oracleMultimap.get(funcName);
-			for(ArrayListMultimap<FunctionPoint , Oracle> funcEntryOracle:funcEntryOracleList){
-				Set<FunctionPoint> funcEntries=funcEntryOracle.keySet();
-				Iterator<FunctionPoint> funcEntryIter=funcEntries.iterator();
-				while(funcEntryIter.hasNext()){
-					FunctionPoint funcEntry=funcEntryIter.next();
-					List<Oracle> funcOracles=funcEntryOracle.get(funcEntry);
-					QunitTestCase qunitTestCase=new QunitTestCase(funcOracles, funcEntry, funcName);
-					qunitTestCases.add(qunitTestCase);
+			if(!funcName.contains("anonymous")){
+				List<ArrayListMultimap<FunctionPoint, Oracle>> funcEntryOracleList=oracleMultimap.get(funcName);
+				for(ArrayListMultimap<FunctionPoint , Oracle> funcEntryOracle:funcEntryOracleList){
+					Set<FunctionPoint> funcEntries=funcEntryOracle.keySet();
+					Iterator<FunctionPoint> funcEntryIter=funcEntries.iterator();
+					while(funcEntryIter.hasNext()){
+						FunctionPoint funcEntry=funcEntryIter.next();
+						List<Oracle> funcOracles=funcEntryOracle.get(funcEntry);
+						QunitTestCase qunitTestCase=new QunitTestCase(funcOracles, funcEntry, funcName);
+						if(qunitTestCase.getTestCaseCode()!="")
+							qunitTestCases.add(qunitTestCase);
+					}
 				}
 			}
 		
@@ -67,7 +70,7 @@ public class QunitTestSuite {
 		
 		try {
 			
-			code=Resources.toString(QunitTestSuite.class.getResource("/addVar_domNodePropsAccrossTheXpath.js"), Charsets.UTF_8);
+			code=Resources.toString(QunitTestSuite.class.getResource("/varTypeForTestCase.js"), Charsets.UTF_8);
 		} catch (IOException e) {
 	
 			e.printStackTrace();
