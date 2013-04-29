@@ -289,13 +289,13 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 					/* only add global variables and function parameters */
 					if (symbol.getDeclType() == Token.LP)
 					{
-						result.add(variableUsageType.inputParam + "::" + symbol.getName());
+						result.add(variableUsageType.inputParam.toString() + "::" + symbol.getName());
 						
 						
 					}
 					else if(symbol.getDeclType()==Token.VAR){
 						if(!origScope.equals(scope))	{
-							result.add(variableUsageType.global + "::" + symbol.getName());
+							result.add(variableUsageType.global.toString() + "::" + symbol.getName());
 						}
 					}
 				}

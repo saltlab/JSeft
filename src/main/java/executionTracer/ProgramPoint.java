@@ -72,6 +72,7 @@ public class ProgramPoint {
 
 		
 		result.append(name + "\n");
+
 		if(name.contains(ProgramPoint.ENTERPOSTFIX))
 			result.append(getDomInputData());
 		for (Variable var : variables) {
@@ -86,7 +87,7 @@ public class ProgramPoint {
 					result.append(var.getData(item.get(2)));
 					result.append("variableUsage::" + variableUsage + "\n");
 					found = true;
-					break;
+	//				break;
 				}
 			}
 			if (!found) {

@@ -66,18 +66,19 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
-		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
-		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
-		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
-		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
-		funcStateComparator.analysingOutputDiffs();
-		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
-		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
-		testSuite.writeQunitTestSuiteToFile();
+//		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+//		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
+//		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
+//		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
+//		funcStateComparator.analysingOutputDiffs();
+//		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
+//		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
+//		testSuite.writeQunitTestSuiteToFile();
 		int test=0;
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
+
 
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
