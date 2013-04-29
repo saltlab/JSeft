@@ -96,8 +96,8 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
 */		
-		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.returnVal.toString());
-		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.returnVal.toString());
+		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
+		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
 		HashSet<String> variables=new HashSet<String>();
 		
 		variables.addAll(variable);
@@ -112,6 +112,9 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				returnValues=getReturnValues(returnVal);
 			}
 		}
+		
+		
+		
 		name = getFunctionName(function);
 
 			/* only add instrumentation code if there are variables to log */

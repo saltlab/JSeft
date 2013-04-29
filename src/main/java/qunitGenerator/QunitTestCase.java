@@ -340,12 +340,14 @@ public class QunitTestCase {
 				
 			}
 			combinedAssertions.addIndividualAssertions(individualAssertion);
-			QunitAssertion combinedQunitAssertion=new QunitAssertion();
-			combinedQunitAssertion.makeCombinedQunitAssertion(combinedAssertions);
-			qunitAssertions.add(combinedQunitAssertion);
+
 			
 			
 		}
+		
+		QunitAssertion combinedQunitAssertion=new QunitAssertion();
+		combinedQunitAssertion.makeCombinedQunitAssertion(combinedAssertions);
+		qunitAssertions.add(combinedQunitAssertion);
 		
 		int numberofExpectedAssertions=0;
 		for(QunitAssertion qunitAssertion:qunitAssertions){
