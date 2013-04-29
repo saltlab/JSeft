@@ -30,7 +30,7 @@ public class QunitTestSuite {
 	/*oracle: (funcName->(entrypoint->oracle))*/
 	public QunitTestSuite(ArrayListMultimap<String,ArrayListMultimap<FunctionPoint,Oracle>> oracleMultimap, String outputFolder){
 		this.outputFolder=outputFolder;
-		testSuiteCode=getRequiredJsScripts() + "\n\n";
+	//	testSuiteCode=getRequiredJsScripts() + "\n\n";
 		Set<String> keys=oracleMultimap.keySet();
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
@@ -65,12 +65,16 @@ public class QunitTestSuite {
 		return testSuiteCode;
 	}
 	
-	private String getRequiredJsScripts() {
+	private void getRequiredJsScripts() {
 		String code=null;
 		
 		try {
 			
 			code=Resources.toString(QunitTestSuite.class.getResource("/varTypeForTestCase.js"), Charsets.UTF_8);
+			Helper.directoryCheck(outputFolder);
+			String outputfolder=getOutputFolder();
+			File file = new File(outputfolder + "varTypeForTestCase.js");
+			Files.write( code, file, Charsets.UTF_8 );
 		} catch (IOException e) {
 	
 			e.printStackTrace();
@@ -78,10 +82,11 @@ public class QunitTestSuite {
 
 	/*	File js = new File(this.getClass().getResource("/addVar.js").getFile());
 		code = Helper.getContent(js);
-	*/	return code;
+	*/	
 	}
 	
 	public void writeQunitTestSuiteToFile() throws IOException{
+		getRequiredJsScripts();
 		Helper.directoryCheck(outputFolder);
 		String outputfolder=getOutputFolder();
 		File file = new File(outputfolder + testName);

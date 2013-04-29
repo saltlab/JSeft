@@ -86,14 +86,14 @@ public class QunitTestCase {
 					if(varUsage.equals(variableUsageType.returnVal.toString())){
 						if(exitVar.getValue().equals("[]")){
 							QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-							qunitAssertionForValueChecking.makeQunitAssertionForVariable("result.length","0", AssertionType.ok);
+							qunitAssertionForValueChecking.makeQunitAssertionForVariable("result.length==0","0", AssertionType.ok);
 							qunitAssertions.add(qunitAssertionForValueChecking);
 						}
 						else{
 							
 							if(exitVar.getType().contains("array")){
-								String newVarName= exitVar.getVariableName() + "Array-qunitTest";
-								testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + "\n" + "\t";
+								String newVarName= exitVar.getVariableName() + "Array_qunitTest";
+								testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + ";" + "\n" + "\t";
 								QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
 								qunitAssertionForValueChecking.makeQunitAssertionForVariable("result", newVarName, AssertionType.deepEqual);
 								qunitAssertions.add(qunitAssertionForValueChecking);
@@ -117,15 +117,15 @@ public class QunitTestCase {
 								
 							String actual=exitVar.getVariableName();
 							if(exitVar.getValue().equals("[]")){
-								actual+= ".length";
+								actual+= ".length==0";
 								QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
-								qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual,"0", AssertionType.ok);
+								qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual ,"0", AssertionType.ok);
 								qunitAssertions.add(qunitAssertionForValueChecking);
 							}
 							else{
 								if(exitVar.getType().contains("array")){
-									String newVarName= exitVar.getVariableName() + "Array-qunitTest";
-									testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + "\n" + "\t";
+									String newVarName= exitVar.getVariableName() + "Array_qunitTest";
+									testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + ";" + "\n" + "\t";
 									QunitAssertion qunitAssertionForValueChecking=new QunitAssertion();
 									qunitAssertionForValueChecking.makeQunitAssertionForVariable(actual, newVarName, AssertionType.deepEqual);
 									qunitAssertions.add(qunitAssertionForValueChecking);
@@ -137,7 +137,7 @@ public class QunitTestCase {
 									qunitAssertions.add(qunitAssertionForValueChecking);
 								}
 							}
-								
+							actual=exitVar.getVariableName();	
 							String actualType="getType"+ "(" + actual + ")" + " == " + "'" + exitVar.getType() + "'"; 
 							QunitAssertion qunitAssertionForTypeChecking=new QunitAssertion();
 							qunitAssertionForTypeChecking.makeQunitAssertionForVariable(actualType,exitVar.getType(), AssertionType.ok);
@@ -177,8 +177,8 @@ public class QunitTestCase {
 					if(domHtml.startsWith("[\"") && domHtml.endsWith("\"]")){
 						domHtml=domHtml.substring(2, domHtml.length()-2);
 					}
-					String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
-					qunitFixture+="$fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
+					String qunitFixture="var fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
+					qunitFixture+="fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
 					testCodeSetup+=qunitFixture;
 				}
 				testCaseCode=testCodeSetup.concat(testCaseCode);
@@ -288,10 +288,10 @@ public class QunitTestCase {
 					else{
 					
 						if(exitVar.getType().contains("array")){
-							String newVarName= exitVar.getVariableName() + "Array-qunitTest";
-							testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() +"\n" + "\t";
+							String newVarName= exitVar.getVariableName() + "Array_qunitTest";
+							testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + ";" +"\n" + "\t";
 							String actual="true";
-							String expected="areEqualArray" + "(result, " + newVarName + ")";
+							String expected="areEqualArrays" + "(result, " + newVarName + ")";
 							individualAssertion.addIndividualAssertions(expected, actual, accessedDomNodes);
 						}
 						else{
@@ -319,10 +319,10 @@ public class QunitTestCase {
 							
 							
 							if(exitVar.getType().contains("array")){
-								String newVarName= exitVar.getVariableName() + "Array-qunitTest";
-								testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() +"\n" +"\t";
+								String newVarName= exitVar.getVariableName() + "Array_qunitTest";
+								testCaseCode+="var " + newVarName + "= "+ exitVar.getValue() + ";" + "\n" +"\t";
 								String actualVal="true";
-								String expected="areEqualArray" + "(" + exitVar.getVariableName() +", " + newVarName + ")";
+								String expected="areEqualArrays" + "(" + exitVar.getVariableName() +", " + newVarName + ")";
 								individualAssertion.addIndividualAssertions(expected, actualVal, accessedDomNodes);
 							}
 							else
@@ -365,8 +365,8 @@ public class QunitTestCase {
 			if(domHtml.startsWith("[\"") && domHtml.endsWith("\"]")){
 				domHtml=domHtml.substring(2, domHtml.length()-2);
 			}
-			String qunitFixture="var $fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
-			qunitFixture+="$fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
+			String qunitFixture="var fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
+			qunitFixture+="fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
 			testCodeSetup+=qunitFixture;
 		}
 		testCaseCode=testCodeSetup.concat(testCaseCode);

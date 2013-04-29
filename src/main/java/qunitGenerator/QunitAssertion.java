@@ -33,7 +33,8 @@ public class QunitAssertion {
 	public void makeQunitAssertionForVariable(String actual, String expected, AssertionType assertionType){
 
 		String assertionCode="";
-		String msg="\"" + expected + " is expected but " + "\"" + " + " + actual + " + " + "\""+ "is returned" + "\"";
+		
+		String msg="\"" + expected.replaceAll("\"", "\\\\\"") + " is expected but " + "\"" + " + " + actual.replaceAll("==.*", "").replaceAll("\"", "\\\"") + " + " + "\""+ " is returned" + "\"";
 		if(assertionType.name().equals(AssertionType.ok.toString())){
 			
 			assertionCode=assertionType.toString() + "(" + actual + ", " + msg +")" + ";";
@@ -61,7 +62,7 @@ public class QunitAssertion {
 				
 			String assertionCode=code+"\n" + "\t";
 
-			String msg="\"" + "node" + counter +".length is " + "\"" + "+" + "node.length";
+			String msg="\"" + "node" + counter +".length is " + "\"" + "+" + "node"+ counter + ".length";
 			assertionCode+=AssertionType.ok.toString() + "(" +"node" + counter + ".length>0" + ", " + msg +")" + ";" + "\n" + "\t";
 			Iterator<Attribute> iter=attrs.iterator();
 			while(iter.hasNext()){
@@ -71,8 +72,8 @@ public class QunitAssertion {
 				if(attrName.equals("tagName")){
 					
 					String actual="node" + counter +".prop" + "(" +"'" + attrName + "'" + ")";
-					String expected=attrValue;
-					msg="\"" + expected + " is expected but " + "\"" + " + " + actual + " + " + "\""+ "is returned" + "\"";
+					String expected="'"+ attrValue + "'";
+					msg="\"" + expected.replaceAll("\"", "\\\\\"") + " is expected but " + "\"" + " + " + actual.replaceAll("\"", "\\\"") + " + " + "\""+ " is returned" + "\"";
 					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
 					assertionCode+="\n\n" + "\t";
 					assertionCodes.add(assertionCode);
@@ -80,8 +81,15 @@ public class QunitAssertion {
 				
 				else{
 					String actual="node" + counter + ".attr" + "(" +"'" + attrName + "'" + ")";
-					String expected=attrValue;
-					msg="\"" + expected + " is expected but " + "\"" + " + " + actual + " + " + "\""+ "is returned" + "\"";
+					String expected;
+					if(attrValue.equals("")){
+						attrValue="undefined";
+						 expected=attrValue;
+					}
+					else{
+						expected="'" + attrValue + "'";
+					}
+					msg="\"" + expected.replaceAll("\"", "\\\\\"") + " is expected but " + "\"" + " + " + actual.replaceAll("\"", "\\\"") + " + " + "\""+ " is returned" + "\"";
 				
 					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
 					assertionCode+="\n\n" + "\t";
@@ -109,7 +117,7 @@ public class QunitAssertion {
 		String xpathToEvaluate="//div" + xpath;
 		code= "var evaluated" + counter +"=document.evaluate" + "(" + "\"" + xpathToEvaluate + "\"" + ", " + 
 		"document" + ", " + "null" +", " +"XPathResult.ANY_TYPE" + ", " + "null" + ")" + ";" + "\n" +"\t";
-		code+= "var node" + counter + "= $(evaluated.iterateNext());";
+		code+= "var node" + counter + "= $(evaluated" + counter + ".iterateNext());";
 		return code;
 	}
 	
@@ -144,6 +152,8 @@ public class QunitAssertion {
 					
 			}
 			
+			assertionCode=assertionCode.substring(0, assertionCode.length()-3);
+			
 			/////
 			for(AccessedDOMNode expectedAccessedDomNode:listOfNodes){
 	//			String xpath=expectedAccessedDomNode.xpath;
@@ -171,6 +181,8 @@ public class QunitAssertion {
 						
 					}
 				}
+				
+				assertionCode=assertionCode.substring(0, assertionCode.length()-3);
 			}
 			
 			/////
@@ -179,6 +191,7 @@ public class QunitAssertion {
 			assertionCode+=")";
 			assertionCode+=" || ";
 		}
+		assertionCode=assertionCode.substring(0, assertionCode.length()-3);
 		assertionCode+=", "+ msg + ")" + ";";
 
 		assertionCodeForVariable=assertionCode;

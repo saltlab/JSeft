@@ -79,7 +79,6 @@ public class SameGameOrig {
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
 
-
 		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
 	
