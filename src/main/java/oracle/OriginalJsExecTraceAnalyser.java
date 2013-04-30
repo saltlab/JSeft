@@ -120,9 +120,6 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						else if(line.contains("node::")){
 							String node=line.split("node::")[1];
 							ObjectMapper mapper = new ObjectMapper();
-							int test=0;
-							if(node.contains("none repeat scroll 0% 0% rgb(0, 255, 0);,"))
-								test=0;
 						    AccessedDOMNode domNode = mapper.readValue(node, AccessedDOMNode.class);  
 						    mapper.writeValueAsString(domNode);
 						    domNode.makeAllAttributes();

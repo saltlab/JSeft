@@ -26,7 +26,7 @@ function addVariable(name, value, variableUsage) {
 	
 	if(typeof nodeValue == "object" && "nodeType" in nodeValue &&
 			   nodeValue.nodeType === 1 && nodeValue.cloneNode){
-		xpaths=getXpathOfNodes(value);
+		xpaths=getXpathOfNodes($(value).clone());
 		if(xpaths.length==1){
 			var oneXpath=xpaths[0];
 			return new Array(name, typeof(oneXpath), oneXpath, time, variableUsage);
@@ -36,24 +36,33 @@ function addVariable(name, value, variableUsage) {
 	}
 	
 
-	else if(typeof(value) == 'object') {
+
+	if(typeof(value) == 'object') {
+
+
 		if(value instanceof Array) {
-				if(value[0] instanceof Array){
+			var newValue;
+			newValue=jQuery.makeArray($.extend(true,{},$(value)));
+				if(newValue[0] instanceof Array){
 					
-					if(value[0].length > 0) 
-						return new Array(name, typeof (value[0][0]) + '_array', value, time, variableUsage);
-				
+					if(newValue[0].length > 0)
+						
+						return new Array(name, typeof (newValue[0][0]) + '_array', newValue, time, variableUsage);
+					
 					else
-						return new Array(name, 'object_array', value, time, variableUsage);
+						return new Array(name, 'object_array', newValue, time, variableUsage);
 				}
 				else
-					if(value.length > 0)
-						return new Array(name, typeof (value[0]) + '_array', value, time, variableUsage);
+					if(newValue.length > 0)
+						return new Array(name, typeof (newValue[0]) + '_array', newValue, time, variableUsage);
 					else 
-						return new Array(name, 'object_array', value, time, variableUsage);
+						return new Array(name, 'object_array', newValue, time, variableUsage);
 		}
-		else
-			return new Array(name, 'object', value, time, variableUsage);
+		else{
+			var newValue;
+			newValue=$.extend(true,{},value);
+			return new Array(name, 'object', newValue, time, variableUsage);
+		}
 	
 	} else if(typeof(value) != 'undefined' && typeof(value) != 'function') {
 		return new Array(name, typeof(value), value, time, variableUsage);

@@ -75,6 +75,7 @@ public class ProgramPoint {
 
 		if(name.contains(ProgramPoint.ENTERPOSTFIX))
 			result.append(getDomInputData());
+
 		for (Variable var : variables) {
 			found=false;
 			for (int i = 0; i < data.length(); i++) {

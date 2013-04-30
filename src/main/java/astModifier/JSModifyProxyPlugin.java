@@ -315,13 +315,13 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 			return response;
 		}
 		
-		if (request.getURL().toString().contains("?thisisajsdomexecutiontracingcall")) {
+		else if (request.getURL().toString().contains("?thisisajsdomexecutiontracingcall")) {
 			LOGGER.info("Execution trace request " + request.getURL().toString());
 			DOM_JS_ExecutionTracer.addPoint(new String(request.getContent()));
 			return response;
 		}
 		
-		if(request.getURL().toString().contains("?thisisadomtracingcall")){
+		else if(request.getURL().toString().contains("?thisisadomtracingcall")){
 			LOGGER.info("Execution trace request " + request.getURL().toString());
 			DOMExecutionTracer.addPoint(new String(request.getContent()));
 			return response;
