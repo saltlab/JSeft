@@ -21,6 +21,9 @@ function addVariable(name, value, variableUsage) {
 	var getAttrPattern=/[.]getAttribute[(]/;
 	var xpaths=new Array();
 	var nodeValue=$(value).get(0);
+	
+
+	
 	if(typeof nodeValue == "object" && "nodeType" in nodeValue &&
 			   nodeValue.nodeType === 1 && nodeValue.cloneNode){
 		xpaths=getXpathOfNodes(value);
@@ -71,7 +74,7 @@ function getXpathOfNodes(element){
 	var xpaths=new Array();
 	for(var i=0;i<$(element).length;i++){
 		path=getElementXPath($(element).get(i));
-		xpaths.push("$(document.evaluate" + "(" + path +", document, null, XPathResult.ANY_TYPE,null).iterateNext())");
+		xpaths.push("$(document.evaluate" + "(" + "\"" + "//div"+path.replace("//","/") + "\"" +", document, null, XPathResult.ANY_TYPE,null).iterateNext())");
 		
 	}
 	return xpaths;

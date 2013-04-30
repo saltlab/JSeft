@@ -43,6 +43,7 @@ public class QunitTestCase {
 			
 */			else{ //if ((exitVars!=null && exitVars.size()!=0) || (domNodes!=null && domNodes.size()!=0)){
 				
+				boolean thisKeyWordInBodyOfFunction=false;
 				exitVars=oracles.get(0).getVariables();
 				domNodes=oracles.get(0).getAccessedDomNodes();			
 				functionEntryPoint=functionEntry;
@@ -53,14 +54,26 @@ public class QunitTestCase {
 				ArrayList<Variable> entryVars=functionEntry.getVariables();
 				testCaseCode+="\t";
 				for(Variable entryVar:entryVars){
+			
 					if(entryVar.getVariableUsage().equals(variableUsageType.global.toString()) ||
 							entryVar.getVariableUsage().equals(variableUsageType.inputParam.toString())){
-						testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+						if(entryVar.getVariableName().equals("this")){
+							if(entryVar.getValue().contains("evaluate")){
+								thisKeyWordInBodyOfFunction=true;
+								String entryVarVal=entryVar.getValue().replaceFirst("\"", "").replaceAll("\\\\\"", "\"");
+								String entryVarName="var thisVar=";
+								testCaseCode+= entryVarName + entryVarVal.substring(0,entryVarVal.length()-1) + ";" + "\n" +"\t";
+							}
+						}
+						else
+							testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
 					}
 				}
 				testCaseCode+="var result= ";
 				
-				
+				if(thisKeyWordInBodyOfFunction){
+					testCaseCode+="thisVar" + "." + "trigger" + "(";
+				}
 				testCaseCode+=this.functionName + "(";
 				for(Variable entryVar:entryVars){
 					String varUsage=entryVar.getVariableUsage();
@@ -71,6 +84,9 @@ public class QunitTestCase {
 				}
 				if(testCaseCode.endsWith(", ")){
 					testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
+				}
+				if(thisKeyWordInBodyOfFunction){
+					testCaseCode+=")";
 				}
 				testCaseCode+=")" + ";";
 				testCaseCode += "\n" + "\t";
@@ -239,7 +255,7 @@ public class QunitTestCase {
 	}
 	
 	private void createQunitTestCaseWithCombinedAssertions(List<Oracle> oracleList, FunctionPoint functionEntry, String funcName){
-		
+		boolean thisKeyWordInBodyOfFunction=false;
 		functionEntryPoint=functionEntry;
 		String[] funcAndScope=funcName.split("\\.");
 		functionName=funcAndScope[funcAndScope.length-1];
@@ -250,11 +266,25 @@ public class QunitTestCase {
 		for(Variable entryVar:entryVars){
 			if(entryVar.getVariableUsage().equals(variableUsageType.global.toString()) ||
 					entryVar.getVariableUsage().equals(variableUsageType.inputParam.toString())){
-				testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+				
+				
+				if(entryVar.getVariableName().equals("this")){
+					if(entryVar.getValue().contains("evaluate")){
+						thisKeyWordInBodyOfFunction=true;
+						String entryVarVal=entryVar.getValue().replaceFirst("\"", "").replaceAll("\\\\\"", "\"");
+						String entryVarName="var thisVar=";
+						testCaseCode+=  entryVarName+entryVarVal.substring(0,entryVarVal.length()-1) + ";" + "\n" +"\t";
+					}
+				}
+				
+				else
+					testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
 			}
 		}
 		testCaseCode+="var result= ";
-		
+		if(thisKeyWordInBodyOfFunction){
+			testCaseCode+="thisVar" + "." + "trigger" + "(";
+		}
 		
 		testCaseCode+=this.functionName + "(";
 		for(Variable entryVar:entryVars){
@@ -266,6 +296,9 @@ public class QunitTestCase {
 		}
 		if(testCaseCode.endsWith(", ")){
 			testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
+		}
+		if(thisKeyWordInBodyOfFunction){
+			testCaseCode+=")";
 		}
 		testCaseCode+=")" + ";";
 		testCaseCode += "\n" + "\t";

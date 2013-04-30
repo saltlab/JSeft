@@ -233,6 +233,11 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 					vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
 				}
 			}
+			
+			KeywordVisitor keyVis=new KeywordVisitor();
+			function.visit(keyVis);
+			if(keyVis.getHasThisKeyword())
+				vars+="addVariable('" + "this" + "', " + "this" + ", " + "'" + "global" + "'" + "),";
 			if (vars.length() > 0) {
 				/* remove last comma */
 				vars = vars.substring(0, vars.length() - 1);
