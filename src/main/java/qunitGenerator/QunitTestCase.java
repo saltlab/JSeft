@@ -63,6 +63,8 @@ public class QunitTestCase {
 								String entryVarVal=entryVar.getValue().replaceFirst("\"", "").replaceAll("\\\\\"", "\"");
 								String entryVarName="var thisVar=";
 								testCaseCode+= entryVarName + entryVarVal.substring(0,entryVarVal.length()-1) + ";" + "\n" +"\t";
+								testCaseCode+="thisVar.on("+"\"click\""+ "," + this.functionName + ");" + "\n" + "\t";
+								
 							}
 						}
 						else
@@ -72,23 +74,23 @@ public class QunitTestCase {
 				testCaseCode+="var result= ";
 				
 				if(thisKeyWordInBodyOfFunction){
-					testCaseCode+="thisVar" + "." + "trigger" + "(";
+					testCaseCode+="thisVar" + "." + "trigger" + "(" + "\"click\"" + ");";
 				}
-				testCaseCode+=this.functionName + "(";
-				for(Variable entryVar:entryVars){
-					String varUsage=entryVar.getVariableUsage();
-					if(varUsage.equals(variableUsageType.inputParam.toString())){
-						String varName=entryVar.getVariableName();
-						testCaseCode+=varName + ", ";
+				else{
+					testCaseCode+=this.functionName + "(";
+					for(Variable entryVar:entryVars){
+						String varUsage=entryVar.getVariableUsage();
+						if(varUsage.equals(variableUsageType.inputParam.toString())){
+							String varName=entryVar.getVariableName();
+							testCaseCode+=varName + ", ";
+						}
 					}
+					if(testCaseCode.endsWith(", ")){
+						testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
+					}
+	
+					testCaseCode+=")" + ";";
 				}
-				if(testCaseCode.endsWith(", ")){
-					testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
-				}
-				if(thisKeyWordInBodyOfFunction){
-					testCaseCode+=")";
-				}
-				testCaseCode+=")" + ";";
 				testCaseCode += "\n" + "\t";
 				
 				
@@ -273,7 +275,8 @@ public class QunitTestCase {
 						thisKeyWordInBodyOfFunction=true;
 						String entryVarVal=entryVar.getValue().replaceFirst("\"", "").replaceAll("\\\\\"", "\"");
 						String entryVarName="var thisVar=";
-						testCaseCode+=  entryVarName+entryVarVal.substring(0,entryVarVal.length()-1) + ";" + "\n" +"\t";
+						testCaseCode+= entryVarName + entryVarVal.substring(0,entryVarVal.length()-1) + ";" + "\n" +"\t";
+						testCaseCode+="thisVar.on("+"\"click\""+ "," + this.functionName + ");" + "\n" + "\t";
 					}
 				}
 				
@@ -283,24 +286,23 @@ public class QunitTestCase {
 		}
 		testCaseCode+="var result= ";
 		if(thisKeyWordInBodyOfFunction){
-			testCaseCode+="thisVar" + "." + "trigger" + "(";
+			testCaseCode+="thisVar" + "." + "trigger" + "(" + "\"click\"" + ");";
 		}
-		
-		testCaseCode+=this.functionName + "(";
-		for(Variable entryVar:entryVars){
-			String varUsage=entryVar.getVariableUsage();
-			if(varUsage.equals(variableUsageType.inputParam.toString())){
-				String varName=entryVar.getVariableName();
-				testCaseCode+=varName + ", ";
+		else{
+			testCaseCode+=this.functionName + "(";
+			for(Variable entryVar:entryVars){
+				String varUsage=entryVar.getVariableUsage();
+				if(varUsage.equals(variableUsageType.inputParam.toString())){
+					String varName=entryVar.getVariableName();
+					testCaseCode+=varName + ", ";
+				}
 			}
+			if(testCaseCode.endsWith(", ")){
+				testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
+			}
+	
+			testCaseCode+=")" + ";";
 		}
-		if(testCaseCode.endsWith(", ")){
-			testCaseCode=testCaseCode.substring(0, testCaseCode.length()-2);
-		}
-		if(thisKeyWordInBodyOfFunction){
-			testCaseCode+=")";
-		}
-		testCaseCode+=")" + ";";
 		testCaseCode += "\n" + "\t";
 		
 		
