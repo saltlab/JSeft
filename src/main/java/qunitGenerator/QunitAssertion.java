@@ -69,12 +69,14 @@ public class QunitAssertion {
 				Attribute attr=iter.next();
 				String attrName=attr.getAttrName();
 				String attrValue=attr.getAttrValue();
+				
+					
 				if(attrName.equals("tagName")){
 					
 					String actual="node" + counter +".prop" + "(" +"'" + attrName + "'" + ")";
 					String expected="'"+ attrValue + "'";
 					msg="\"" + expected.replaceAll("\"", "\\\\\"") + " is expected but " + "\"" + " + " + actual.replaceAll("\"", "\\\"") + " + " + "\""+ " is returned" + "\"";
-					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
+					assertionCode+=AssertionType.deepEqual.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
 					assertionCode+="\n\n" + "\t";
 					assertionCodes.add(assertionCode);
 				}
@@ -82,16 +84,16 @@ public class QunitAssertion {
 				else{
 					String actual="node" + counter + ".attr" + "(" +"'" + attrName + "'" + ")";
 					String expected;
-					if(attrValue.equals("")){
-						attrValue="undefined";
+	/*				if(attrValue.equals("EMPTY")){
+						attrValue="\"\"";
 						 expected=attrValue;
 					}
-					else{
+	*/	//			else{
 						expected="'" + attrValue + "'";
-					}
+		//			}
 					msg="\"" + expected.replaceAll("\"", "\\\\\"") + " is expected but " + "\"" + " + " + actual.replaceAll("\"", "\\\"") + " + " + "\""+ " is returned" + "\"";
 				
-					assertionCode+=AssertionType.equal.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
+					assertionCode+=AssertionType.deepEqual.toString() + "(" + actual +", " + expected + ", " + msg +")" + ";";
 					assertionCode+="\n\n" + "\t";
 					assertionCodes.add(assertionCode);
 				}
@@ -181,7 +183,10 @@ public class QunitAssertion {
 					
 					else{
 						String actual="node.attr" + "(" +"'" + attrName + "'" + ")";
-						String expected=attrValue;
+	/*					if(attrValue.equals("EMPTY"))
+						attrValue="\"\"";
+	*/					String expected=attrValue;
+
 					
 						assertionCode+="(" + actual +"==" + expected + ")" + " && ";
 						

@@ -158,7 +158,7 @@ function AddDomNodeProps(elementArray){
 	        for(var j=0;j<nodes.length;j++){
 	        	nodeAttrs+=nodes[j] + ":::";
 	        }
-	        nodeAttrs=nodeAttrs.slice(0,-1);//trim the last comma
+	        nodeAttrs=nodeAttrs.slice(0,-3);//trim the last comma
 	        datas.push({
 	        	id:$($(element).get(i)).prop('id'), 
 	        	className: $($(element).get(i)).prop('className'),

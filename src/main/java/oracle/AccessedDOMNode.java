@@ -27,21 +27,26 @@ public class AccessedDOMNode extends Node {
 	public void makeAllAttributes(){
 		String attrName="class";
 		String attrValue=this.className;
-		allAttributes.add(new Attribute("class", this.className));
-		allAttributes.add(new Attribute("id",this.id));
-		allAttributes.add(new Attribute("tagName",this.tagName));
+		if(!this.className.equals(""))
+			allAttributes.add(new Attribute("class", this.className));
+		if(!this.id.equals(""))
+			allAttributes.add(new Attribute("id",this.id));
+		if(!this.tagName.equals(""))
+			allAttributes.add(new Attribute("tagName",this.tagName));
 	
 		
 		String[] attrs=attributes.split(":::");
 		for(int i=0;i<attrs.length;i++){
 			attrName=attrs[i].split("::")[0];
 			if(attrs[i].split("::").length==1)
-				attrValue="null";
+				continue;
 			else
 				attrValue=attrs[i].split("::")[1];
 			Attribute attr=new Attribute(attrName, attrValue);
 			allAttributes.add(attr);
 		}
+		
+		
 		
 	}
 	
