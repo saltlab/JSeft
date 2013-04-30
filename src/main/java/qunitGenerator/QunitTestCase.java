@@ -196,7 +196,7 @@ public class QunitTestCase {
 						domHtml=domHtml.substring(2, domHtml.length()-2);
 					}
 					String qunitFixture="var fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
-					qunitFixture+="fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
+					qunitFixture+="fixture.append"+ "(" + "\""  + domHtml  + "\"" + ")"+ ";" + "\n";
 					testCodeSetup+=qunitFixture;
 				}
 				testCaseCode=testCodeSetup.concat(testCaseCode);
@@ -403,7 +403,7 @@ public class QunitTestCase {
 				domHtml=domHtml.substring(2, domHtml.length()-2);
 			}
 			String qunitFixture="var fixture = $(\"#qunit-fixture\");" + "\n" + "\t";
-			qunitFixture+="fixture.append"+ "(" + "\"" + "<div>" + domHtml +"</div>" + "\"" + ")"+ ";" + "\n";
+			qunitFixture+="fixture.append"+ "(" + "\""  + domHtml  + "\"" + ")"+ ";" + "\n";
 			testCodeSetup+=qunitFixture;
 		}
 		testCaseCode=testCodeSetup.concat(testCaseCode);

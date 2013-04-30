@@ -94,8 +94,12 @@ function getAllAttrs(element){
 }
 
 var getElementXPath = function(element) {
+    if (element && element.id)
+        return "//"+element.tagName.toLowerCase() + "[@id=" + "'"+ element.id + "'" + "]";
     
-	return getElementTreeXPath(element);
+    else
+
+    	return getElementTreeXPath(element);
 };
 
 var getElementTreeXPath = function(element) {
@@ -105,13 +109,17 @@ var getElementTreeXPath = function(element) {
     for (; element && element.nodeType == 1; element = element.parentNode)  {
         var index = 0;
         
+        if (element && element.id) {
+            paths.splice(0, 0, "/" + element.tagName.toLowerCase() + "[@id=" + "'"+ element.id + "'" + "]");
+            break;
+        }
 
-        if(element.nodeName.toLowerCase()=="body"){
+  /*      if(element.nodeName.toLowerCase()=="body"){
           
         	return paths.length ? "//" + paths.join("/") : null;
         }
         
-        for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
+   */     for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
             // Ignore document type declaration.
             if (sibling.nodeType == Node.DOCUMENT_TYPE_NODE)
               continue;
@@ -148,7 +156,7 @@ function AddDomNodeProps(elementArray){
 	        nodes=getAllAttrs($(element).get(i));
 	        nodeAttrs="";
 	        for(var j=0;j<nodes.length;j++){
-	        	nodeAttrs+=nodes[j] + ",";
+	        	nodeAttrs+=nodes[j] + ":::";
 	        }
 	        nodeAttrs=nodeAttrs.slice(0,-1);//trim the last comma
 	        datas.push({

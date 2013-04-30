@@ -32,7 +32,7 @@ public class AccessedDOMNode extends Node {
 		allAttributes.add(new Attribute("tagName",this.tagName));
 	
 		
-		String[] attrs=attributes.split(",");
+		String[] attrs=attributes.split(":::");
 		for(int i=0;i<attrs.length;i++){
 			attrName=attrs[i].split("::")[0];
 			if(attrs[i].split("::").length==1)

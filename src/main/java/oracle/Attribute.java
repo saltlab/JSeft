@@ -1,5 +1,7 @@
 package oracle;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class Attribute {
 
 	private String attrName;
@@ -24,6 +26,11 @@ public class Attribute {
 	}
 	
 	@Override
+	public String toString(){
+		return this.attrName+this.attrValue;
+	}
+	
+	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof Attribute){
 			Attribute attr=(Attribute) obj;
@@ -32,6 +39,14 @@ public class Attribute {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return  new HashCodeBuilder(23, 51).
+	            append(this.toString()).
+	            toHashCode();
+		
 	}
 	
 }
