@@ -35,13 +35,13 @@ function addVariable(name, value, variableUsage) {
 		
 	}
 	
-
+	var newValue;
 
 	if(typeof(value) == 'object') {
 
 
 		if(value instanceof Array) {
-			var newValue;
+			
 			newValue=jQuery.makeArray($.extend(true,{},$(value)));
 				if(newValue[0] instanceof Array){
 					

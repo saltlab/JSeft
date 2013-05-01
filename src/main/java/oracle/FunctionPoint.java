@@ -99,8 +99,7 @@ public class FunctionPoint {
 				boolean found=false;
 				for(Variable thisvar:this.variables){
 					if(thisvar.getVariableName().equals(var.getVariableName()) &&
-							thisvar.getVariableUsage().equals(var.getVariableUsage()) &&
-							thisvar.getType().equals(var.getType())){
+							thisvar.getVariableUsage().equals(var.getVariableUsage())){
 						found=true;
 						break;
 						

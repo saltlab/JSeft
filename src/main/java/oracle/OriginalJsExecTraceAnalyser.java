@@ -169,25 +169,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 
 					
 				functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
-				for(int i=0; i<funcListToSort.size();i++){
-					FunctionPoint fPoint=(FunctionPoint) funcListToSort.get(i)[0];
-					String fName=(String) funcListToSort.get(i)[1];
-					if(fPoint.getPointName().toLowerCase().equals("enter")){
-						for(int j=i+1; j<funcListToSort.size(); j++){
-							FunctionPoint fNextPoint=(FunctionPoint) funcListToSort.get(j)[0];
-							String fNextName=(String) funcListToSort.get(j)[1];
-							if(fNextName.equals(fName) && fNextPoint.getPointName().toLowerCase().equals("exit")){
-								break;
-							}
-							else 
-								if(!fNextName.equals(fName) && fNextPoint.getPointName().toLowerCase().equals("enter")){
-									fPoint.addGlobVariableIfNotExist(fNextPoint.getVariables());
-									fPoint.addAccessedDomNodes(fNextPoint.getAccessedDomNodes());
-									
-								}
-						}
-					}
-				}
+
 				Object[] funcPointFuncName=new Object[2];
 				funcPointFuncName[0]=functionPoint;
 				funcPointFuncName[1]=funcName;
@@ -202,6 +184,26 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				}
 				input.close();
 			  }
+			
+			for(int i=0; i<funcListToSort.size();i++){
+				FunctionPoint fPoint=(FunctionPoint) funcListToSort.get(i)[0];
+				String fName=(String) funcListToSort.get(i)[1];
+				if(fPoint.getPointName().toLowerCase().equals("enter")){
+					for(int j=i+1; j<funcListToSort.size(); j++){
+						FunctionPoint fNextPoint=(FunctionPoint) funcListToSort.get(j)[0];
+						String fNextName=(String) funcListToSort.get(j)[1];
+						if(fNextName.equals(fName) && fNextPoint.getPointName().toLowerCase().equals("exit")){
+							break;
+						}
+						else 
+							if(!fNextName.equals(fName) && fNextPoint.getPointName().toLowerCase().equals("enter")){
+								fPoint.addGlobVariableIfNotExist(fNextPoint.getVariables());
+						//		fPoint.addAccessedDomNodes(fNextPoint.getAccessedDomNodes());
+								
+							}
+					}
+				}
+			}
 			
 			for(int i=0;i<funcListToSort.size();i++){
 				FunctionPoint fPoint=(FunctionPoint) funcListToSort.get(i)[0];
@@ -243,23 +245,59 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 		Iterator<String> iter=funcNames.iterator();
 		while(iter.hasNext()){
 			String funcName=iter.next();
-			List<FunctionPoint> funcPoints=(List<FunctionPoint>) funcNameToFuncPointMap.get(funcName);
-			for(int i=0;i<funcPoints.size();i++){
+			List<FunctionPoint> funcPoints=new ArrayList<FunctionPoint>((List<FunctionPoint>) funcNameToFuncPointMap.get(funcName));
+			int i=0;
+			while(i<funcPoints.size()){
 				FunctionState funcState;
 				FunctionPoint entry=null;
 				FunctionPoint exit=null;
 				FunctionPoint funcPoint=funcPoints.get(i);
 				String pointName=funcPoint.getPointName();
 				if(pointName.toLowerCase().equals("enter")){
-					entry=funcPoint;
-					for(int j=i+1;j<funcPoints.size();j++){
-						FunctionPoint point=funcPoints.get(j);
-						if(point.getPointName().toLowerCase().equals("exit")){
-							exit=point;
-							break;
+					if(funcPoints.get(i+1).getPointName().toLowerCase().equals("enter")){
+					
+						for(int count=i+1;count<funcPoints.size();count++){
+							
+							if(funcPoints.get(count).getPointName().toLowerCase().equals("exit")){
+							
+									entry=funcPoints.get(count-1);
+									exit=funcPoints.get(count);
+									funcPoints.remove(entry);
+									funcPoints.remove(exit);
+									i=0;
+									break;							
+								
+							}
 						}
-						
 					}
+					else{
+						entry=funcPoint;
+						for(int j=i;j<funcPoints.size();j++){
+							FunctionPoint point=funcPoints.get(j);
+							if(point.getPointName().toLowerCase().equals("exit")){
+								exit=point;
+								funcPoints.remove(entry);
+								funcPoints.remove(exit);
+								i=0;
+								break;
+							}
+							
+						}
+					}
+					funcState=new FunctionState(entry, exit);
+					List<FunctionState> fStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
+					int test=0;
+					if(entry==null || exit==null)
+						test=0;
+					if(!fStates.contains(funcState))
+						funcNameToFuncStateMap.put(funcName, funcState);
+				}
+				else{
+					entry=funcPoint;
+					exit=funcPoints.get(i-1);
+					funcPoints.remove(entry);
+					funcPoints.remove(exit);
+					i=0;
 					funcState=new FunctionState(entry, exit);
 					List<FunctionState> fStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
 					if(!fStates.contains(funcState))
