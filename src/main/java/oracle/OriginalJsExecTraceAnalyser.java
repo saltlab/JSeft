@@ -66,6 +66,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			funcNameToFuncStateMap=ArrayListMultimap.create();
 			funcNameToFuncPointMap=ArrayListMultimap.create();
 			List<String>filenameAndPathList=getTraceFilenameAndPath();
+			List<Object[]> funcListToSort=	new ArrayList<Object[]>();
 			for (String filenameAndPath:filenameAndPathList){
 				BufferedReader input =
 					new BufferedReader(new FileReader(filenameAndPath));
@@ -168,13 +169,48 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 
 					
 				functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
+				for(int i=0; i<funcListToSort.size();i++){
+					FunctionPoint fPoint=(FunctionPoint) funcListToSort.get(i)[0];
+					String fName=(String) funcListToSort.get(i)[1];
+					if(fPoint.getPointName().toLowerCase().equals("enter")){
+						for(int j=i+1; j<funcListToSort.size(); j++){
+							FunctionPoint fNextPoint=(FunctionPoint) funcListToSort.get(j)[0];
+							String fNextName=(String) funcListToSort.get(j)[1];
+							if(fNextName.equals(fName) && fNextPoint.getPointName().toLowerCase().equals("exit")){
+								break;
+							}
+							else 
+								if(!fNextName.equals(fName) && fNextPoint.getPointName().toLowerCase().equals("enter")){
+									fPoint.addGlobVariableIfNotExist(fNextPoint.getVariables());
+									fPoint.addAccessedDomNodes(fNextPoint.getAccessedDomNodes());
+									
+								}
+						}
+					}
+				}
+				Object[] funcPointFuncName=new Object[2];
+				funcPointFuncName[0]=functionPoint;
+				funcPointFuncName[1]=funcName;
+								
+				funcListToSort.add(funcPointFuncName);
+				java.util.Collections.sort(funcListToSort, funcNameFuncPointComp);
+				
 				if(domNodes.size()>0){
 					functionPoint.addAccessedDomNodes(domNodes);
 				}
-				funcNameToFuncPointMap.put(funcName, functionPoint);
+		//		funcNameToFuncPointMap.put(funcName, functionPoint);
 				}
 				input.close();
 			  }
+			
+			for(int i=0;i<funcListToSort.size();i++){
+				FunctionPoint fPoint=(FunctionPoint) funcListToSort.get(i)[0];
+				String fName=(String) funcListToSort.get(i)[1];
+				List<FunctionPoint> funcList=(List<FunctionPoint>) funcNameToFuncPointMap.get(fName);
+				if(!funcList.contains(fPoint))
+					funcNameToFuncPointMap.put(fName, fPoint);
+		
+			}
 			
 			Set<String> keys=funcNameToFuncPointMap.keySet();
 			Iterator<String> it=keys.iterator();

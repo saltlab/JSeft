@@ -27,6 +27,7 @@ public abstract class JsExecTraceAnalyser {
 	protected List<String> traceFilenameAndPath;
 	
 	protected Comparator<FunctionPoint> vc;
+	protected Comparator<Object[]> funcNameFuncPointComp;
 	
 	public JsExecTraceAnalyser(String outputFolder){
 		vc=new Comparator<FunctionPoint>() {
@@ -41,6 +42,28 @@ public abstract class JsExecTraceAnalyser {
 		        return 0;
 				
 			}
+			
+			
+		};
+		
+		
+		funcNameFuncPointComp=new Comparator<Object[]>() {
+
+			@Override
+			public int compare(Object[] funcNameFuncPoint1, Object[] funcNameFuncPoint2) {
+		        
+				FunctionPoint f1=(FunctionPoint) funcNameFuncPoint1[0];
+				FunctionPoint f2=(FunctionPoint) funcNameFuncPoint2[0];
+				if(f1.getTime()>f2.getTime())
+		        	return 1;
+		        else if(f1.getTime()<f2.getTime()){
+		        	return -1;
+		        }
+		        return 0;
+				
+			}
+			
+			
 		};
 		this.outputFolder=Helper.addFolderSlashIfNeeded(outputFolder);
 		traceFilenameAndPath=allTraceFiles();

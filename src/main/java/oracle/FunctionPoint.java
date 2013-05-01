@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import domMutation.NodeProperty;
+import executionTracer.AstInstrumenter.variableUsageType;
 
 public class FunctionPoint {
 
@@ -89,6 +90,29 @@ public class FunctionPoint {
 		+ this.getVariables().toString()
 		+ this.getAccessedDomNodes().toString()
 		+ this.domHtml.toString();
+	}
+
+
+	public void addGlobVariableIfNotExist(ArrayList<Variable> varList) {
+		for(Variable var:varList){
+			if(var.getVariableUsage().equals(variableUsageType.global.toString())){
+				boolean found=false;
+				for(Variable thisvar:this.variables){
+					if(thisvar.getVariableName().equals(var.getVariableName()) &&
+							thisvar.getVariableUsage().equals(var.getVariableUsage()) &&
+							thisvar.getType().equals(var.getType())){
+						found=true;
+						break;
+						
+					}
+				}
+				if(!found){
+					this.variables.add(var);
+				}
+			}
+		}
+		
+		
 	}
 	
 }
