@@ -209,8 +209,8 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				FunctionPoint fPoint=(FunctionPoint) funcListToSort.get(i)[0];
 				String fName=(String) funcListToSort.get(i)[1];
 				List<FunctionPoint> funcList=(List<FunctionPoint>) funcNameToFuncPointMap.get(fName);
-				if(!funcList.contains(fPoint))
-					funcNameToFuncPointMap.put(fName, fPoint);
+		
+				funcNameToFuncPointMap.put(fName, fPoint);
 		
 			}
 			

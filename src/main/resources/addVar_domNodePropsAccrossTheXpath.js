@@ -42,24 +42,24 @@ function addVariable(name, value, variableUsage) {
 
 		if(value instanceof Array) {
 			
-			newValue=jQuery.makeArray($.extend(true,{},$(value)));
-				if(newValue[0] instanceof Array){
+			newValue=value.clone();
+				if(value[0] instanceof Array){
 					
-					if(newValue[0].length > 0)
-						
+					if(value[0].length > 0)
+					
 						return new Array(name, typeof (newValue[0][0]) + '_array', newValue, time, variableUsage);
 					
 					else
 						return new Array(name, 'object_array', newValue, time, variableUsage);
 				}
 				else
-					if(newValue.length > 0)
+					if(value.length > 0)
 						return new Array(name, typeof (newValue[0]) + '_array', newValue, time, variableUsage);
 					else 
 						return new Array(name, 'object_array', newValue, time, variableUsage);
 		}
 		else{
-			var newValue;
+			
 			newValue=$.extend(true,{},value);
 			return new Array(name, 'object', newValue, time, variableUsage);
 		}
@@ -207,4 +207,14 @@ function pushIfItDoesNotExist(domNode,instrumentationArray){
 	}
 }
 
-;
+Array.prototype.clone = function() {
+    var arr = new Array();
+    arr=this.slice(0);
+    for( var i = 0; i < this.length; i++ ) {
+        if( this[i].clone ) {
+            //recursion
+            arr[i] = this[i].clone();
+        }
+    }
+    return arr;
+};
