@@ -67,8 +67,14 @@ public class QunitTestCase {
 								
 							}
 						}
-						else
-							testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+						else{
+							if(entryVar.getVariableUsage().equals(variableUsageType.inputParam.toString())){
+								testCaseCode+= "var " + entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+							}
+							else{
+								testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+							}
+						}
 					}
 				}
 				testCaseCode+="var result= ";
