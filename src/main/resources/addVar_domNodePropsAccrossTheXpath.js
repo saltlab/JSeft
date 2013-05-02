@@ -20,10 +20,10 @@ function addVariable(name, value, variableUsage) {
 	var pattern=/[.]attr[(]/;
 	var getAttrPattern=/[.]getAttribute[(]/;
 	var xpaths=new Array();
-	var nodeValue=$(value).get(0);
-	
 
+	var newValue;
 	
+	var nodeValue=$(value).get(0);
 	if(typeof nodeValue == "object" && "nodeType" in nodeValue &&
 			   nodeValue.nodeType === 1 && nodeValue.cloneNode){
 		xpaths=getXpathOfNodes($(value).clone());
@@ -35,28 +35,34 @@ function addVariable(name, value, variableUsage) {
 		
 	}
 	
-	var newValue;
-
 	if(typeof(value) == 'object') {
 
 
 		if(value instanceof Array) {
 			
-			newValue=value.clone();
+			
 				if(value[0] instanceof Array){
 					
-					if(value[0].length > 0)
+					if(value[0].length > 0){
+						newValue=value.clone();
 					
 						return new Array(name, typeof (newValue[0][0]) + '_array', newValue, time, variableUsage);
-					
-					else
+					}
+					else{
+						newValue=$.extend(true,[],value);
+						
 						return new Array(name, 'object_array', newValue, time, variableUsage);
+					}
 				}
 				else
-					if(value.length > 0)
+					if(value.length > 0){
+						newValue=value.clone();
 						return new Array(name, typeof (newValue[0]) + '_array', newValue, time, variableUsage);
-					else 
+					}
+					else {
+						newValue=$.extend(true,[],value);
 						return new Array(name, 'object_array', newValue, time, variableUsage);
+					}
 		}
 		else{
 			
@@ -73,6 +79,7 @@ function addVariable(name, value, variableUsage) {
 	else if (name.match(pattern)==".attr("){
 		return new Array(name, 'string', 'java.lang.String', time, variableUsage);
 	}
+	
 	return new Array(name, typeof(value), 'undefined', time, variableUsage);
 }
 
@@ -83,7 +90,7 @@ function getXpathOfNodes(element){
 	var xpaths=new Array();
 	for(var i=0;i<$(element).length;i++){
 		path=getElementXPath($(element).get(i));
-		xpaths.push("$(document.evaluate" + "(" + "\"" + "//div"+path.replace("//","/") + "\"" +", document, null, XPathResult.ANY_TYPE,null).iterateNext())");
+		xpaths.push("$(document.evaluate" + "(" + "\"" + path + "\"" +", document, null, XPathResult.ANY_TYPE,null).iterateNext())");
 		
 	}
 	return xpaths;

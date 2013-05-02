@@ -26,9 +26,9 @@ import com.crawljax.core.state.StateMachine;
 import com.crawljax.util.Helper;
 
 public class DOM_JS_ExecutionTracer 
-	implements OnFireEventSuccessPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
+	implements OnFireEventSuccessPlugin, /*OnNewStatePlugin,*/ PreCrawlingPlugin, GeneratesOutput {
 
-		private static final int ONE_SEC = 8000;
+		private static final int ONE_SEC = 2000;
 		
 		private static String outputFolder;
 		private static String assertionFilename;
@@ -128,7 +128,7 @@ public class DOM_JS_ExecutionTracer
 		
 		
 		
-		
+		/*
 		@Override
 		public void onNewState(CrawlSession session) {
 		
@@ -173,7 +173,7 @@ public class DOM_JS_ExecutionTracer
 		}
 		
 		
-		
+	*/	
 		
 		
 		

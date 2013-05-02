@@ -285,9 +285,15 @@ public class QunitTestCase {
 						testCaseCode+="thisVar.on("+"\"click\""+ "," + this.functionName + ");" + "\n" + "\t";
 					}
 				}
+				else{
+					if(entryVar.getVariableUsage().equals(variableUsageType.inputParam.toString())){
+						testCaseCode+= "var " + entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+					}
+					
+					else
+						testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
 				
-				else
-					testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
+					}
 			}
 		}
 		testCaseCode+="var result= ";
