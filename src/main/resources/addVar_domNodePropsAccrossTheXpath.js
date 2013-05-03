@@ -73,6 +73,12 @@ function addVariable(name, value, variableUsage) {
 	} else if(typeof(value) != 'undefined' && typeof(value) != 'function') {
 		return new Array(name, typeof(value), value, time, variableUsage);
 	}
+	else if(typeof(value)=='function'){
+		
+		var funcName=functionName(value)
+		return new Array(funcName, typeof(value), funcName, time, variableUsage);
+		
+	}
 		else if (pattern.test(name) || getAttrPattern.test(name)){
 			return new Array(name, 'string', value, time, variableUsage);//'java.lang.String');
 		}
@@ -224,4 +230,12 @@ Array.prototype.clone = function() {
         }
     }
     return arr;
+}
+
+
+function functionName(fun) {
+	  var ret = fun.toString();
+	  ret = ret.substr('function '.length);
+	  ret = ret.substr(0, ret.indexOf('('));
+	  return ret;
 };

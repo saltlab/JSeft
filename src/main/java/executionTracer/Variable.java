@@ -122,7 +122,14 @@ public class Variable {
 						else
 							return ("false");
 				}
-		} else {
+		} 
+		
+		else if (type.equals("function")){
+
+			return value.toString();
+		}
+		
+		else {
 			//if (type.equals("object")) {
 		
 		//	return value.toString().replaceAll("\\\"", "\\\\\"");
