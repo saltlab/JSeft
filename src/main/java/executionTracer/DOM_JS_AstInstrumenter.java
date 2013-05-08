@@ -54,6 +54,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		excludeVariableNamesList.add("window.");
 		excludeVariableNamesList.add("parseInt");
 		excludeVariableNamesList.add("game10K");
+		excludeVariableNamesList.add("btoa");
 	}
 
 	/**
@@ -181,7 +182,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				while(iter.hasNext()){
 					String var=iter.next();
 					if (shouldInstrument(var)) {
-						vars += "addVariable('" + var.split("::")[1].replaceAll("\\\'", "\\\\\'") + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0].replaceAll("\\\'", "\\\\\'") + "'" + "),";
+						vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
 					}
 				}
 
@@ -192,7 +193,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			/* only instrument variables that should not be excluded */
 				String retVal=iter.next();
 				if (shouldInstrument(retVal)) {
-					vars += "addVariable('" + retVal.split("::")[1].replaceAll("\\\'", "\\\\\'") + "', " + retVal.split("::")[1] + ", " + "'" + retVal.split("::")[0].replaceAll("\\\'", "\\\\\'") + "'" + "),";
+					vars += "addVariable('" + "retunedVal"+ "', " + retVal.split("::")[1] + ", " + "'" + retVal.split("::")[0] + "'" + "),";
 				}
 			}
 			
@@ -250,7 +251,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				String var=iter.next();
 				/* only instrument variables that should not be excluded */
 				if (shouldInstrument(var)) {
-					vars += "addVariable('" + var.split("::")[1].replaceAll("\\\'", "\\\\\'") + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0].replaceAll("\\\'", "\\\\\'") + "'" + "),";
+					vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
 				}
 			}
 			
@@ -411,14 +412,10 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			if(elements!=null){
 			
 				for(ObjectProperty op:elements){
-		/*			if(op.getRight() instanceof FunctionNode)
-						continue;
-		*/			if(op.getLeft() instanceof StringLiteral)
+
+					if(op.getLeft() instanceof StringLiteral)
 						result.add(variableUsageType.returnVal +"::" + ((StringLiteral) op.getLeft()).getValue());
-					else{// if(op.getLeft() instanceof Name){
-						result.add(variableUsageType.returnVal +"::" + op.getLeft().toSource());
-					}
-					
+				
 				}
 			}
 		}

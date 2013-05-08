@@ -153,8 +153,8 @@ public class GhostOrig {
 			crawler.click("input").withAttribute("type", "submit");
 	*/		crawler.click("div");
 		//	crawler.click("td");
-			crawler.setWaitTimeAfterEvent(1000, TimeUnit.MILLISECONDS);
-			crawler.setWaitTimeAfterReloadUrl(20000, TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterEvent(100, TimeUnit.MILLISECONDS);
+	//		crawler.setWaitTimeAfterReloadUrl(20000, TimeUnit.MILLISECONDS);
 		}else{
 			// this is just for the TuduList application
 			Form form=new Form();

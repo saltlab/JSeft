@@ -22,6 +22,8 @@ function addVariable(name, value, variableUsage) {
 	var xpaths=new Array();
 
 	var newValue;
+	if(typeof(value=="undefined"))
+		return new Array(name, typeof(value), 'undefined', time, variableUsage);
 	
 	var nodeValue=$(value).get(0);
 	if(typeof nodeValue == "object" && "nodeType" in nodeValue &&
