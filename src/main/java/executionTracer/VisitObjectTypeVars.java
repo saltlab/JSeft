@@ -51,7 +51,8 @@ public class VisitObjectTypeVars implements NodeVisitor{
 			return false;
 		}
 		
-		if(!node.toSource().equals(scope.getAstRoot().toSource()) && !node.getEnclosingScope().toSource().contains(this.scope.toSource())){
+		
+		if(!node.toSource().equals(scope.getAstRoot().toSource()) && (node.getEnclosingScope()!=null &&!node.getEnclosingScope().toSource().contains(this.scope.toSource()))){
 			return false;
 		}
 		if(node instanceof Name && node.getParent() instanceof PropertyGet 

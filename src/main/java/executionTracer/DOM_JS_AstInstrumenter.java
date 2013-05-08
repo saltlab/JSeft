@@ -10,9 +10,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.mozilla.javascript.Token;
+import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.FunctionNode;
+import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.ObjectLiteral;
 import org.mozilla.javascript.ast.ObjectProperty;
 import org.mozilla.javascript.ast.ReturnStatement;
@@ -46,6 +48,12 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	public DOM_JS_AstInstrumenter() {
 		super();
 		excludeVariableNamesList = new ArrayList<String>();
+		excludeVariableNamesList.add("getElementXPath");
+		excludeVariableNamesList.add("getElementTreeXPath");
+		excludeVariableNamesList.add("Array.prototype.clone");
+		excludeVariableNamesList.add("window.");
+		excludeVariableNamesList.add("parseInt");
+		excludeVariableNamesList.add("game10K");
 	}
 
 	/**
@@ -85,6 +93,9 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		function.visit(domVis);
 		ArrayList<String[]> domRelated=(ArrayList<String[]>) domVis.getDomRelatedAtExitPoint();
 */		
+		if(getFunctionName(function).contains("anonymous")){
+			return parse("/* empty */");
+		}
 		String name;
 		String code="";
 		String htmlCode="";
@@ -107,7 +118,12 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		
 		
 		if(returnNode!=null){
-			AstNode returnVal=returnNode.getReturnValue();
+			AstNode returnVal;
+			if(returnNode.getReturnValue() instanceof Assignment){
+				returnVal=((Assignment)returnNode.getReturnValue()).getRight();
+			}
+			else
+				returnVal=returnNode.getReturnValue();
 			if(!(returnVal instanceof FunctionNode)){
 				returnValues=getReturnValues(returnVal);
 			}
@@ -165,7 +181,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				while(iter.hasNext()){
 					String var=iter.next();
 					if (shouldInstrument(var)) {
-						vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
+						vars += "addVariable('" + var.split("::")[1].replaceAll("\\\'", "\\\\\'") + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0].replaceAll("\\\'", "\\\\\'") + "'" + "),";
 					}
 				}
 
@@ -176,7 +192,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			/* only instrument variables that should not be excluded */
 				String retVal=iter.next();
 				if (shouldInstrument(retVal)) {
-					vars += "addVariable('" + retVal.split("::")[1] + "', " + retVal.split("::")[1] + ", " + "'" + retVal.split("::")[0] + "'" + "),";
+					vars += "addVariable('" + retVal.split("::")[1].replaceAll("\\\'", "\\\\\'") + "', " + retVal.split("::")[1] + ", " + "'" + retVal.split("::")[0].replaceAll("\\\'", "\\\\\'") + "'" + "),";
 				}
 			}
 			
@@ -191,6 +207,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				code = "/* empty */";
 			}
 		
+		//	System.out.println(code + "\n");
 			return parse(code);
 		
 		
@@ -200,6 +217,9 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	protected AstNode createEnterNode(FunctionNode function, String postfix, int lineNo) {
 		String name;
 		String code;
+		
+		if(getFunctionName(function).contains("anonymous"))
+			return parse("/* empty */");
 		TreeSet<String> variables = new TreeSet<String>();
 		variables.addAll(getVariablesNamesInScope(function));
 /*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.global.toString());
@@ -230,15 +250,15 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				String var=iter.next();
 				/* only instrument variables that should not be excluded */
 				if (shouldInstrument(var)) {
-					vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
+					vars += "addVariable('" + var.split("::")[1].replaceAll("\\\'", "\\\\\'") + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0].replaceAll("\\\'", "\\\\\'") + "'" + "),";
 				}
 			}
 			
-			KeywordVisitor keyVis=new KeywordVisitor();
+	/*		KeywordVisitor keyVis=new KeywordVisitor();
 			function.visit(keyVis);
 			if(keyVis.getHasThisKeyword())
 				vars+="addVariable('" + "this" + "', " + "this" + ", " + "'" + "global" + "'" + "),";
-			if (vars.length() > 0) {
+	*/		if (vars.length() > 0) {
 				/* remove last comma */
 				vars = vars.substring(0, vars.length() - 1);
 				code += vars + ")));";
@@ -259,13 +279,13 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	 * @return True if we should add instrumentation code.
 	 */
 	private boolean shouldInstrument(String name) {
-		if (name == null) {
+		if (name == null || name.split("::")[1].equals("$")) {
 			return false;
 		}
 
 		/* is this an excluded variable? */
 		for (String regex : excludeVariableNamesList) {
-			if (name.matches(regex)) {
+			if (name.contains(regex)) {
 				LOGGER.debug("Not instrumenting variable " + name);
 				return false;
 			}
@@ -391,8 +411,14 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			if(elements!=null){
 			
 				for(ObjectProperty op:elements){
-					if(op.getLeft() instanceof StringLiteral)
+		/*			if(op.getRight() instanceof FunctionNode)
+						continue;
+		*/			if(op.getLeft() instanceof StringLiteral)
 						result.add(variableUsageType.returnVal +"::" + ((StringLiteral) op.getLeft()).getValue());
+					else{// if(op.getLeft() instanceof Name){
+						result.add(variableUsageType.returnVal +"::" + op.getLeft().toSource());
+					}
+					
 				}
 			}
 		}
