@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_13" class="java.beans.XMLDecoder">
+ <object class="java.util.HashMap">
+  <void method="put">
+   <long>1</long>
+   <object class="com.crawljax.core.state.Eventable">
+    <void property="element">
+     <object class="com.crawljax.core.state.Element">
+      <void property="attributes">
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>class</string>
+         </void>
+         <void property="value">
+          <string>clickable</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>data</string>
+         </void>
+         <void property="value">
+          <string>0.4104470161931893</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>id</string>
+         </void>
+         <void property="value">
+          <string>1-3</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>style</string>
+         </void>
+         <void property="value">
+          <string>background: #f00;</string>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="tag">
+       <string>TD</string>
+      </void>
+      <void property="text">
+       <string> </string>
+      </void>
+     </object>
+    </void>
+    <void property="eventType">
+     <object class="java.lang.Enum" id="Eventable$EventType0" method="valueOf">
+      <class>com.crawljax.core.state.Eventable$EventType</class>
+      <string>click</string>
+     </object>
+    </void>
+    <void property="id">
+     <long>1</long>
+    </void>
+    <void property="identification">
+     <object class="com.crawljax.core.state.Identification">
+      <void property="how">
+       <object class="java.lang.Enum" id="Identification$How0" method="valueOf">
+        <class>com.crawljax.core.state.Identification$How</class>
+        <string>xpath</string>
+       </object>
+      </void>
+      <void property="value">
+       <string>/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[2]</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <long>2</long>
+   <object class="com.crawljax.core.state.Eventable">
+    <void property="element">
+     <object class="com.crawljax.core.state.Element">
+      <void property="attributes">
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>class</string>
+         </void>
+         <void property="value">
+          <string>clickable</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>data</string>
+         </void>
+         <void property="value">
+          <string>0.850490514340408</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>id</string>
+         </void>
+         <void property="value">
+          <string>2-1</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>style</string>
+         </void>
+         <void property="value">
+          <string>background: #0f0;</string>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="tag">
+       <string>TD</string>
+      </void>
+      <void property="text">
+       <string> </string>
+      </void>
+     </object>
+    </void>
+    <void property="eventType">
+     <object idref="Eventable$EventType0"/>
+    </void>
+    <void property="id">
+     <long>2</long>
+    </void>
+    <void property="identification">
+     <object class="com.crawljax.core.state.Identification">
+      <void property="how">
+       <object idref="Identification$How0"/>
+      </void>
+      <void property="value">
+       <string>/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[3]</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <long>3</long>
+   <object class="com.crawljax.core.state.Eventable">
+    <void property="element">
+     <object class="com.crawljax.core.state.Element">
+      <void property="attributes">
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>class</string>
+         </void>
+         <void property="value">
+          <string>clickable</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>data</string>
+         </void>
+         <void property="value">
+          <string>0.9373406961916094</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>id</string>
+         </void>
+         <void property="value">
+          <string>1-4</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>style</string>
+         </void>
+         <void property="value">
+          <string>background: none repeat scroll 0% 0% rgb(255, 0, 0);</string>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="tag">
+       <string>TD</string>
+      </void>
+      <void property="text">
+       <string> </string>
+      </void>
+     </object>
+    </void>
+    <void property="eventType">
+     <object idref="Eventable$EventType0"/>
+    </void>
+    <void property="id">
+     <long>3</long>
+    </void>
+    <void property="identification">
+     <object class="com.crawljax.core.state.Identification">
+      <void property="how">
+       <object idref="Identification$How0"/>
+      </void>
+      <void property="value">
+       <string>/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <long>4</long>
+   <object class="com.crawljax.core.state.Eventable">
+    <void property="element">
+     <object class="com.crawljax.core.state.Element">
+      <void property="attributes">
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>class</string>
+         </void>
+         <void property="value">
+          <string>clickable</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>data</string>
+         </void>
+         <void property="value">
+          <string>0.28895777701063957</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>id</string>
+         </void>
+         <void property="value">
+          <string>0-3</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>style</string>
+         </void>
+         <void property="value">
+          <string>background: none repeat scroll 0% 0% rgb(0, 0, 255);</string>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="tag">
+       <string>TD</string>
+      </void>
+      <void property="text">
+       <string> </string>
+      </void>
+     </object>
+    </void>
+    <void property="eventType">
+     <object idref="Eventable$EventType0"/>
+    </void>
+    <void property="id">
+     <long>4</long>
+    </void>
+    <void property="identification">
+     <object class="com.crawljax.core.state.Identification">
+      <void property="how">
+       <object idref="Identification$How0"/>
+      </void>
+      <void property="value">
+       <string>/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[1]</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <long>5</long>
+   <object class="com.crawljax.core.state.Eventable">
+    <void property="element">
+     <object class="com.crawljax.core.state.Element">
+      <void property="attributes">
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>class</string>
+         </void>
+         <void property="value">
+          <string>clickable</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>data</string>
+         </void>
+         <void property="value">
+          <string>0.11002079652561617</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>id</string>
+         </void>
+         <void property="value">
+          <string>1-4</string>
+         </void>
+        </object>
+       </void>
+       <void method="add">
+        <object class="com.crawljax.core.state.Attribute">
+         <void property="name">
+          <string>style</string>
+         </void>
+         <void property="value">
+          <string>background: none repeat scroll 0% 0% rgb(255, 0, 0);</string>
+         </void>
+        </object>
+       </void>
+      </void>
+      <void property="tag">
+       <string>TD</string>
+      </void>
+      <void property="text">
+       <string> </string>
+      </void>
+     </object>
+    </void>
+    <void property="eventType">
+     <object idref="Eventable$EventType0"/>
+    </void>
+    <void property="id">
+     <long>5</long>
+    </void>
+    <void property="identification">
+     <object class="com.crawljax.core.state.Identification">
+      <void property="how">
+       <object idref="Identification$How0"/>
+      </void>
+      <void property="value">
+       <string>/HTML[1]/BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

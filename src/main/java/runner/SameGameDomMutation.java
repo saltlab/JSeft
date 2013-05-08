@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import oracle.DomStateComparator;
 import oracle.FunctionPoint;
 import oracle.FunctionStateComparator;
 import oracle.JsExecTraceAnalyser;
@@ -29,30 +30,33 @@ import com.crawljax.path.AllPath;
 import com.crawljax.path.DOMElement;
 import com.crawljax.path.Globals;
 import com.crawljax.plugins.proxy.WebScarabWrapper;
+import com.crawljax.plugins.testcasegenerator.TestSuiteGenerator;
 import com.crawljax.util.Helper;
 import com.google.common.collect.ArrayListMultimap;
 
 import domMutation.DomMuteHelper;
 import domMutation.Dom_Mut_Analyser;
 import domMutation.Dom_OrigMut_Analyser;
+import domMutation.Dom_Orig_Analyser;
 
 import executionTracer.AstInstrumenter;
 import executionTracer.DOMAstInstrumenter;
 import executionTracer.DOMExecutionTracer;
 import executionTracer.DOMMutAstInstrumenter;
 import executionTracer.DOMMuteExecutionTracer;
+import executionTracer.DOMOrigExecutionTracer;
 import executionTracer.DOM_JS_AstInstrumenter;
 import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
-public class SameGameOrig {
+public class SameGameDomMutation {
 	
 	private static final String URL = "http://localhost:8080//same-game/same-game.htm";	
 	/* No limit on max depth or max state*/
 	private static final int MAX_DEPTH = 0;
 	private static final int MAX_NUMBER_STATES = 0;
 
-	private SameGameOrig() {
+	private SameGameDomMutation() {
 
 	}
 
@@ -67,54 +71,59 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
-/*		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
-		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
+
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
-		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
-		funcStateComparator.analysingOutputDiffs();
-		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
-		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
-		testSuite.writeQunitTestSuiteToFile();
-*/		int test=0;
+
+	
+
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
 
 
-		ProxyConfiguration prox = new ProxyConfiguration();
-		WebScarabWrapper web = new WebScarabWrapper();
+//		ProxyConfiguration prox = new ProxyConfiguration();
+//		WebScarabWrapper web = new WebScarabWrapper();
+		config.addPlugin(new TestSuiteGenerator());
 	
-		DOM_JS_AstInstrumenter a=new DOM_JS_AstInstrumenter();
+	/*	Dom_Mut_Analyser domMutAnalyser=new Dom_Mut_Analyser(outputdir);
+		Dom_Orig_Analyser domOrigAnalyser=new Dom_Orig_Analyser(outputdir);
+		DomStateComparator domComparator=new DomStateComparator(outputdir);
+		domComparator.analysingOutPutDiffs();
+	*/	
+		
+		
 //		DOMMutAstInstrumenter a;
+//		DOMAstInstrumenter b=new DOMAstInstrumenter();
 //		DOMAstInstrumenter a=new DOMAstInstrumenter();
 //		DomMuteHelper helper=new DomMuteHelper(outputdir);
 //		ArrayList<DOMMutAstInstrumenter> dommutes=helper.domMutAstInstrumenterGenerator();
-//		String stateName="";
-//		for(int i=0;i<2;i++){
-//			a=dommutes.get(1);
+		String stateName="";
+	//	for(int i=0;i<2;i++){
+//			a=dommutes.get(2);
 //			stateName=a.getStateName();
 //			JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 //			p.excludeDefaults();
 //			web.addPlugin(p);
-//		}
-		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
+	//	}
+/*		JSModifyProxyPlugin p = new JSModifyProxyPlugin(b);
 		p.excludeDefaults();
 		web.addPlugin(p);
-		
-				
+*/		
+//		DOMExecutionTracer tracer=new DOMExecutionTracer("domExecutiontrace");		
 //		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domMuteExecutiontrace",stateName);
-		DOM_JS_ExecutionTracer tracer = new DOM_JS_ExecutionTracer("jsExecutiontrace",false);
 //		JSExecutionTracer tracer = new JSExecutionTracer("jsExecutionTrace");
-		tracer.setOutputFolder(outputdir);
+//		DOMOrigExecutionTracer tracer = new DOMOrigExecutionTracer("domOrigExecutiontrace",stateName);
+/*		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 		config.addPlugin(web);
 		config.setProxyConfiguration(prox);
-
+*/
 
 		try {
 			CrawljaxController crawljax = new CrawljaxController(config);
 			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
+			
 			for(int i=0;i<allPath.size();i++){
 				Globals.allPath=allPath.get(0);
 				crawljax.run();

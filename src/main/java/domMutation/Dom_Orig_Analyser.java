@@ -10,6 +10,7 @@ import java.util.List;
 import com.google.common.collect.ArrayListMultimap;
 
 import executionTracer.DOMExecutionTracer;
+import executionTracer.DOMOrigExecutionTracer;
 
 public class Dom_Orig_Analyser extends Dom_OrigMut_Analyser {
 	
@@ -27,7 +28,7 @@ public class Dom_Orig_Analyser extends Dom_OrigMut_Analyser {
 		ArrayList<String> result = new ArrayList<String>();
 
 		// find all trace files in the trace directory
-		File dir = new File(outputFolder +  DOMExecutionTracer.EXECUTIONTRACEDIRECTORY);
+		File dir = new File(outputFolder +  DOMOrigExecutionTracer.EXECUTIONTRACEDIRECTORY);
 
 		String[] files = dir.list();
 		if (files == null) {
@@ -35,7 +36,7 @@ public class Dom_Orig_Analyser extends Dom_OrigMut_Analyser {
 		}
 		for (String file : files) {
 			if (file.endsWith(".txt")) {
-				result.add(outputFolder + DOMExecutionTracer.EXECUTIONTRACEDIRECTORY + file);
+				result.add(outputFolder + DOMOrigExecutionTracer.EXECUTIONTRACEDIRECTORY + file);
 			}
 		}
 

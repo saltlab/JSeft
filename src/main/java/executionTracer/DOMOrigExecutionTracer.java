@@ -28,7 +28,7 @@ import com.crawljax.core.state.StateMachine;
 import com.crawljax.util.Helper;
 import com.crawljax.util.XPathHelper;
 
-public class DOMOrigExecutionTracer implements OnFireEventSuccessPlugin, OnNewStatePlugin, PreCrawlingPlugin, GeneratesOutput {
+public class DOMOrigExecutionTracer implements OnFireEventSuccessPlugin, /*OnNewStatePlugin,*/ PreCrawlingPlugin, GeneratesOutput {
 	private static final int ONE_SEC = 1000;
 	private String stateName;
 	private static String outputFolder;
@@ -37,7 +37,7 @@ public class DOMOrigExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(JSExecutionTracer.class.getName());
 	
-	public static final String EXECUTIONTRACEDIRECTORY = "domMuteExecutiontrace/";
+	public static final String EXECUTIONTRACEDIRECTORY = "domOrigExecutiontrace/";
 	/**
 	* @param filename
 	*            How to name the file that will contain the assertions after execution.
@@ -92,7 +92,7 @@ public class DOMOrigExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 		outputFolder = absolutePath;
 	}
 
-	@Override
+/*	@Override
 	public void onNewState(CrawlSession session) {
 		try {
 			ArrayList<Element> elemList=new ArrayList<Element>();
@@ -128,7 +128,7 @@ public class DOMOrigExecutionTracer implements OnFireEventSuccessPlugin, OnNewSt
 		}
 		
 	}
-
+*/
 	@Override
 	public void onFireEventSuccessed(Eventable eventable, List<Eventable> pathToSuccess, CrawlSession session, StateMachine stateMachine) {
 		

@@ -1,5 +1,8 @@
 package domMutation;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,8 +10,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.crawljax.path.AllPath;
 import com.crawljax.path.DOMElement;
 import com.crawljax.path.Globals;
+import com.crawljax.util.Helper;
 
 import executionTracer.DOMMutAstInstrumenter;
 
@@ -17,11 +22,16 @@ public class DomMuteHelper {
 	private DomTraceReading domTraceReading;
 	//excluded elements from the mutation list: because they are among our selected clickables for crawljax
 	ArrayList<String> excludedElementsList=new ArrayList<String>();
-	
+	AllPath paths;
 	public DomMuteHelper(String outputFolder){
+		String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputFolder) + "allPossiblePath" + ".txt";
+		ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
+		for(int i=0;i<allPath.size();i++){
+			paths=allPath.get(0);
+		}
 		
 		domTraceReading=new DomTraceReading(outputFolder);
-		Queue<DOMElement> eventSequence=Globals.allPath.getEventSequence();
+		Queue<DOMElement> eventSequence=paths.getEventSequence();
 		
 		for(DOMElement event:eventSequence){
 			HashMap<String,String> events=event.getElementAttributes();
@@ -71,5 +81,63 @@ public class DomMuteHelper {
 		}
 		return domMutAstInstrumenterList;
 	}
+	
+	
+	private static ArrayList<AllPath> readAllPossiblePathFile(String filenameAndPath){
+		ArrayList<AllPath> allPossiblePath=new ArrayList<AllPath>();
+		try {
+			BufferedReader input =
+					new BufferedReader(new FileReader(filenameAndPath));
+			String line="";
+			while((line = input.readLine()) != null){
+				
+				String[] str=line.split("::");
+				String startVertex=str[0];
+				String endVertex=str[1];
+				AllPath allPath=new AllPath(startVertex,endVertex);
+				while(true){
+					String attributeName="";
+					String attributeValue="";
+					String elementName="";
+				//	ArrayList<ElementAttribute> attributes=new ArrayList<ElementAttribute>();
+					DOMElement domElement = new DOMElement();
+					while(!(line=input.readLine()).equals("---------------------------------------------------------------------------")){
+						if(line.equals("===========================================================================")){
+							allPossiblePath.add(allPath);
+							break;
+						}
+						if(line.contains("tagName::")){
+							elementName=line.split("::")[1];
+							domElement.setDOMElementName(elementName);
+						}
+						else{
+							String[] attr=line.split("::");
+							attributeName=attr[0];
+							attributeValue=attr[1];
+				//			ElementAttribute attribute=new ElementAttribute(attributeName, attributeValue);
+							domElement.setAttributes(attributeName, attributeValue);
+				//			attributes.add(attribute);
+						}
+					}
+					
+					if(line.equals("===========================================================================")){
+			
+						break;
+					}
+			//		DOMElement domElement=new DOMElement(elementName, attributes);
+					allPath.pushToQueue(domElement);
+				
+				}
+			
+				
+			}
+			input.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		return allPossiblePath;
+	}
+	
 
 }

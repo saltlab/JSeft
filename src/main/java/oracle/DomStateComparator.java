@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -45,10 +46,10 @@ public class DomStateComparator {
 			String clickedOn_state=clickedOn + "::" + state;
 			List<DomAttribute> mutDomAttrs=Dom_Mut_Analyser.stateXpathToNodeAttrsMap_MutVer.get(clickedOn_state_xpath);
 			List<DomAttribute> origDomAttrs=Dom_Orig_Analyser.stateXpathToNodeAttrsMap.get(clickedOn_state_xpath);
-			if(origDomAttrs!=null){
+			if(origDomAttrs!=null && origDomAttrs.size()!=0){
 				for(int i=0;i<origDomAttrs.size();i++){
 					boolean matched=false;
-					DomAttribute origDomAttr=mutDomAttrs.get(i);
+					DomAttribute origDomAttr=origDomAttrs.get(i);
 				
 					for(int j=0;j<mutDomAttrs.size();j++){
 						if(origDomAttr.equals(mutDomAttrs.get(j))){
@@ -82,7 +83,7 @@ public class DomStateComparator {
 	
 	private void addElementToDomOracleMultimap(String element, DomAttribute origDomAttr, String clickedOn_state){
 		List<ArrayListMultimap<String, DomAttribute>> elemList=domOracleMultimap.get(clickedOn_state);
-		if(elemList!=null){
+		if(elemList.size()!=0){
 			for(ArrayListMultimap<String, DomAttribute> elem:elemList){
 				
 				if(elem.get(element)!=null){
@@ -114,7 +115,7 @@ public class DomStateComparator {
 		Iterator<String> iter=keys.iterator();
 		while(iter.hasNext()){
 			String clickedOn_state=iter.next();
-			result.append("clickedOn_state::" + clickedOn_state + "\n");
+			result.append("clickedOn_state::" + clickedOn_state.toString() + "\n");
 			List<ArrayListMultimap<String, DomAttribute>> elements=domOracleMultimap.get(clickedOn_state);
 			for(ArrayListMultimap<String, DomAttribute> elementMap:elements){
 				Set<String> keySet=elementMap.keySet();
@@ -142,13 +143,10 @@ public class DomStateComparator {
 		String domOracleMap=getDomOracleMultimapAsString();
 		Helper.directoryCheck(outputFolder);
 		String outputfolder=getOutputFolder();
-		File file = new File(outputfolder + "domOracle" + ".txt");
-		try {
-		 Files.write( domOracleMap, file, Charsets.UTF_8 );
-		} catch( IOException e ) {
-		 
-			e.printStackTrace();
-		}
+		PrintWriter file=new PrintWriter(outputfolder + "domOracle" + ".txt");
+//		File file = new File(outputfolder + "domOracle" + ".txt");
+		file.write( domOracleMap );
+		file.close();
 		
 	}
 	
