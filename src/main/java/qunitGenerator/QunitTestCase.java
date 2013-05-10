@@ -72,6 +72,7 @@ public class QunitTestCase {
 								testCaseCode+= "var " + entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
 							}
 							else{
+						//		if(!entryVar.getValue().equals("undefined") && entryVar.getValue().equals("[]"))
 								testCaseCode+= entryVar.getVariableName() + "= " + entryVar.getValue() + ";" + "\n" +"\t";
 							}
 						}

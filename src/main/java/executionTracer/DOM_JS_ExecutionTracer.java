@@ -28,7 +28,7 @@ import com.crawljax.util.Helper;
 public class DOM_JS_ExecutionTracer 
 	implements OnFireEventSuccessPlugin, /*OnNewStatePlugin,*/ PreCrawlingPlugin, GeneratesOutput {
 
-		private static final int ONE_SEC = 2000;
+		private static final int ONE_SEC = 1000;
 		
 		private static String outputFolder;
 		private static String assertionFilename;

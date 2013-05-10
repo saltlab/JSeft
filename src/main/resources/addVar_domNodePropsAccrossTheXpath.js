@@ -3,7 +3,7 @@ window.buffer = new Array();
 
 function send(value) {
 	window.buffer.push(value);
-	if(window.buffer.length == 200) {
+	if(window.buffer.length == 100) {
 		sendReally();	
 	}
 }
@@ -22,12 +22,11 @@ function addVariable(name, value, variableUsage) {
 	var xpaths=new Array();
 
 	var newValue;
-	if(typeof(value=="undefined"))
-		return new Array(name, typeof(value), 'undefined', time, variableUsage);
-	
-	var nodeValue=$(value).get(0);
-	if(typeof nodeValue == "object" && "nodeType" in nodeValue &&
-			   nodeValue.nodeType === 1 && nodeValue.cloneNode){
+
+
+//	var nodeValue=$(value).get(0);
+	if(typeof value == "object" && "nodeType" in value &&
+			   value.nodeType === 1 && value.cloneNode){
 		xpaths=getXpathOfNodes($(value).clone());
 		if(xpaths.length==1){
 			var oneXpath=xpaths[0];
@@ -36,7 +35,7 @@ function addVariable(name, value, variableUsage) {
 		return new Array(name, 'xpath', xpaths, time, variableUsage);
 		
 	}
-	
+
 	if(typeof(value) == 'object') {
 
 
@@ -58,6 +57,7 @@ function addVariable(name, value, variableUsage) {
 				}
 				else
 					if(value.length > 0){
+						
 						newValue=value.clone();
 						return new Array(name, typeof (newValue[0]) + '_array', newValue, time, variableUsage);
 					}
@@ -69,7 +69,7 @@ function addVariable(name, value, variableUsage) {
 		else{
 			
 			newValue=$.extend(true,{},value);
-			return new Array(name, 'object', newValue, time, variableUsage);
+			return new Array(name, 'object', value, time, variableUsage);
 		}
 	
 	} else if(typeof(value) != 'undefined' && typeof(value) != 'function') {
@@ -167,7 +167,7 @@ var getElementTreeXPath = function(element) {
 }
 
 function AddDomNodeProps(elementArray){
-	var date = new Date();
+/*	var date = new Date();
 	time=date.getTime();
 	var datas = new Array();
 	var path;
@@ -194,8 +194,8 @@ function AddDomNodeProps(elementArray){
 		}
 	}
 	
-	
-	return new Array(datas);
+*/	
+	return new Array("");
 
 }
 
@@ -223,15 +223,21 @@ function pushIfItDoesNotExist(domNode,instrumentationArray){
 }
 
 Array.prototype.clone = function() {
-    var arr = new Array();
+
+	return $.extend(true,[],this);
+	
+ /*   var arr = new Array();
     arr=this.slice(0);
+  
     for( var i = 0; i < this.length; i++ ) {
         if( this[i].clone ) {
             //recursion
             arr[i] = this[i].clone();
         }
     }
+    
     return arr;
+*/
 }
 
 

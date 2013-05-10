@@ -55,6 +55,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		excludeVariableNamesList.add("parseInt");
 		excludeVariableNamesList.add("game10K");
 		excludeVariableNamesList.add("btoa");
+		excludeVariableNamesList.add("that");
 	}
 
 	/**
@@ -182,7 +183,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				while(iter.hasNext()){
 					String var=iter.next();
 					if (shouldInstrument(var)) {
-						vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
+						vars += "addVariable('" + var.split("::")[1].replaceAll("\\\'", "\\\\\'").replaceAll("\\\"", "\\\\\"")   + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
 					}
 				}
 
@@ -251,7 +252,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				String var=iter.next();
 				/* only instrument variables that should not be excluded */
 				if (shouldInstrument(var)) {
-					vars += "addVariable('" + var.split("::")[1] + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
+					vars += "addVariable('" + var.split("::")[1].replaceAll("\\\'", "\\\\\'").replaceAll("\\\"", "\\\\\"") + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
 				}
 			}
 			
