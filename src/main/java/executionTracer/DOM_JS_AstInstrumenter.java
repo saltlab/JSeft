@@ -77,7 +77,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		String code=null;
 		
 		try {
-			
+
 			code=Resources.toString(DOM_JS_AstInstrumenter.class.getResource("/addVar_domNodePropsAccrossTheXpath.js"), Charsets.UTF_8);
 		} catch (IOException e) {
 	
@@ -98,6 +98,16 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		if(getFunctionName(function).contains("anonymous")){
 			return parse("/* empty */");
 		}
+		List<AstNode> inputs=function.getParams();
+		String inputstrs="(";
+		
+		for(AstNode node:inputs){
+			inputstrs+=node.toSource()+",";
+		}
+		if(inputstrs.contains(","))
+			inputstrs=inputstrs.substring(0, inputstrs.length() - 1);
+		inputstrs+=")";
+		
 		String name;
 		String code="";
 		String htmlCode="";
@@ -139,10 +149,22 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			if (variables.size()==0 && returnValues.size()==0) {
 				code = "/* empty */";
 			} else {
+	/*			ArrayList<String> addedVarNames=new ArrayList<String>();
+				Iterator<String> iterForAddedVars=returnValues.iterator();
+				int varCounter=0;
+				while (iterForAddedVars.hasNext()) {
 				
+					String retVal=iterForAddedVars.next();
+					if (shouldInstrument(retVal)) {
+						vars+=	"var shabnam"+varCounter+"="+retVal.split("::")[1] + ";" +"\n";
+						addedVarNames.add("shabnam"+varCounter);
+						varCounter++;
+					}
+				}
+	*/			
 				
 				code =
-			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix + "'";
+			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + "'";
 				if(numberOfDomRelatedNodes>0){
 					htmlCode= ", new Array('DOM', AddDomNodeProps(instrumentationArray))";
 				
@@ -181,20 +203,26 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	
 				Iterator<String> iter=variables.iterator();
 				while(iter.hasNext()){
+			
 					String var=iter.next();
 					if (shouldInstrument(var)) {
+							
 						vars += "addVariable('" + var.split("::")[1].replaceAll("\\\'", "\\\\\'").replaceAll("\\\"", "\\\\\"")   + "', " + var.split("::")[1] + ", " + "'" + var.split("::")[0] + "'" + "),";
+						
 					}
 				}
 
 			}
 
 			Iterator<String> iter=returnValues.iterator();
+	//		int varCounter=0;
 			while (iter.hasNext()) {
 			/* only instrument variables that should not be excluded */
 				String retVal=iter.next();
 				if (shouldInstrument(retVal)) {
+	//				vars+=	"var shabnam"+varCounter+"="+retVal.split("::")[1] + ";" +"\n";
 					vars += "addVariable('" + "retunedVal"+ "', " + retVal.split("::")[1] + ", " + "'" + retVal.split("::")[0] + "'" + "),";
+	//				varCounter++;
 				}
 			}
 			
@@ -207,6 +235,12 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			} else {
 			/* no variables to instrument here, so just return an empty node */
 				code = "/* empty */";
+			}
+			if(code.equals("/* empty */")){
+				code="send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + "'"+
+						", new Array(addVariable('" + "retunedVal"+ "', " +"\"shabnam\"" + ", " + "'" + variableUsageType.returnVal + "'" + ")" +
+						
+						")));";
 			}
 		
 		//	System.out.println(code + "\n");
@@ -234,7 +268,15 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		variables.addAll(globVars);
 
 		name = getFunctionName(function);
+		List<AstNode> inputs=function.getParams();
+		String inputstrs="(";
 		
+		for(AstNode node:inputs){
+			inputstrs+=node.toSource()+",";
+		}
+		if(inputstrs.contains(","))
+			inputstrs=inputstrs.substring(0, inputstrs.length() - 1);
+		inputstrs+=")";
 
 		/* only add instrumentation code if there are variables to log */
 		if (variables.size() == 0) {
@@ -243,7 +285,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			/* TODO: this uses JSON.stringify which only works in Firefox? make browser indep. */
 			/* post to the proxy server */
 			code =
-			        "send(new Array('" + getScopeName() + "." + name + "', '" + postfix
+			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix
 			                + "', new Array(stripScripts(document.getElementsByTagName(\"body\")[0].innerHTML))" + ", new Array(";
 
 			String vars = "";
@@ -268,6 +310,15 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				/* no variables to instrument here, so just return an empty node */
 				code = "/* empty */";
 			}
+	
+		}
+		if(code.equals("/* empty */")){
+			code="send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix
+	                + "', new Array(stripScripts(\"empty\"))" + ", new Array(" 
+					
+					+ "addVariable('" + "shabnam"+ "', " +"\"shabnam\"" + ", " + "'" + variableUsageType.global.toString() + "'" + ")" +
+					
+					")));";
 		}
 		return parse(code);
 	}
@@ -375,6 +426,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		/* add initialization code for the function and logging array */
 		node.addChildToFront(jsLoggingFunctions());
 	}
+
 
 	@Override
 	public void start() {

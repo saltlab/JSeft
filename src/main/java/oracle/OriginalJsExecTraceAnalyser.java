@@ -254,6 +254,11 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				FunctionPoint funcPoint=funcPoints.get(i);
 				String pointName=funcPoint.getPointName();
 				if(pointName.toLowerCase().equals("enter")){
+					if(funcPoints.size()==1){
+						funcPoints.remove(entry);
+						i=0;
+						break;
+					}
 					if(funcPoints.get(i+1).getPointName().toLowerCase().equals("enter")){
 					
 						for(int count=i+1;count<funcPoints.size();count++){
@@ -287,9 +292,15 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					funcState=new FunctionState(entry, exit);
 					List<FunctionState> fStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
 					int test=0;
-					if(entry==null || exit==null)
-						test=0;
-					if(!fStates.contains(funcState))
+					if(entry!=null && exit==null){
+						
+						exit=new FunctionPoint("exit", entry.getVariables(), entry.getDomHtml(), entry.getTime());
+						funcPoints.remove(entry);
+						i=0;
+					}
+					if(entry==null && exit==null)
+						break;
+					if(!fStates.contains(funcState) && entry!=null && exit!=null)
 						funcNameToFuncStateMap.put(funcName, funcState);
 				}
 				else{
@@ -300,7 +311,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					i=0;
 					funcState=new FunctionState(entry, exit);
 					List<FunctionState> fStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
-					if(!fStates.contains(funcState))
+					if(!fStates.contains(funcState)  && entry!=null && exit!=null)
 						funcNameToFuncStateMap.put(funcName, funcState);
 				}
 			}

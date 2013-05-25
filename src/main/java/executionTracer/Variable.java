@@ -129,12 +129,15 @@ public class Variable {
 			return value.toString();
 		}
 		
-		else {
-			//if (type.equals("object")) {
+		else 
+			if (type.equals("object")) {
 		
-		//	return value.toString().replaceAll("\\\"", "\\\\\"");
-			return value.toString();
-		}
+				value=value.toString().replaceAll("\\\"", "\\\\\"");
+				return "\"" +value.toString() + "\"";
+			}
+			else
+				return value.toString();
+
 
 	//	throw new CrawljaxException("Unhandled type when converting to trace file " + type);
 	}

@@ -45,14 +45,15 @@ import executionTracer.DOM_JS_AstInstrumenter;
 import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
-public class GhostOrig {
+public class PhormerOrig {
 	
-	private static final String URL = "http://localhost:8080//Ghostbusters/Ghostbusters.htm";	
+	private static final String URL ="http://127.0.0.1/phormer331/index.php";	
 	/* No limit on max depth or max state*/
-	private static final int MAX_DEPTH = 0;
-	private static final int MAX_NUMBER_STATES = 0;
+	private static final int MAX_DEPTH = 3;
+	private static final int MAX_NUMBER_STATES = 30;
 
-	private GhostOrig() {
+	private PhormerOrig() {
+		
 
 	}
 
@@ -66,8 +67,8 @@ public class GhostOrig {
 	public static void main(String[] args) throws IOException {
 
 
-		String outputdir = "ghost-output";
-		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+		String outputdir = "phormer-output";
+/*		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
 		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
 		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
@@ -75,7 +76,7 @@ public class GhostOrig {
 		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
 		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
 		testSuite.writeQunitTestSuiteToFile();
-		int test=0;
+*/	
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -113,13 +114,13 @@ public class GhostOrig {
 
 		try {
 			CrawljaxController crawljax = new CrawljaxController(config);
-			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
-			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
-			for(int i=0;i<allPath.size();i++){
-				Globals.allPath=allPath.get(0);
+		//	String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
+		//	ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
+		//	for(int i=0;i<allPath.size();i++){
+		//		Globals.allPath=allPath.get(0);
 				crawljax.run();
-				break;
-			}
+		//		break;
+		//	}
 				
 
 		} catch (Exception e) {
@@ -151,11 +152,30 @@ public class GhostOrig {
 			crawler.click("span");
 			crawler.click("img");
 			crawler.click("input").withAttribute("type", "submit");
-	*/		crawler.click("div");
-	//		crawler.click("td");
-	//		crawler.setWaitTimeAfterEvent(1000, TimeUnit.MILLISECONDS);
-			crawler.setWaitTimeAfterReloadUrl(20000, TimeUnit.MILLISECONDS);
-
+	*/	//	crawler.click("div");
+		//	crawler.click("td");
+		//	crawler.click("p");
+			
+		//	crawler.click("a").withAttribute("id", "tog_play");
+		//	crawler.click("a");
+		//	crawler.setMaximumRuntime(20,TimeUnit.SECONDS);
+			crawler.setWaitTimeAfterEvent(100,TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterReloadUrl(100,TimeUnit.MILLISECONDS);
+	//		crawler.setMaximumRuntime(90,TimeUnit.SECONDS);
+			
+			crawler.clickDefaultElements();
+			crawler.click("a");
+			crawler.click("div");
+			crawler.click("span");
+			crawler.click("img");
+			crawler.click("button");
+			crawler.click("input").withAttribute("type", "submit");
+			crawler.click("td");
+			crawler.dontClick("a").withAttribute("href", "admin.php");
+			crawler.dontClick("a").withAttribute("title", "RSS Feed");
+			crawler.dontClick("a").withAttribute("href", "mailto%");
+	
+		
 		}else{
 			// this is just for the TuduList application
 			Form form=new Form();
@@ -193,7 +213,7 @@ public class GhostOrig {
 		if (!tudu)
 			crawler.setInputSpecification(getInputSpecification());
 
-		crawler.setClickOnce(false);		
+		crawler.setClickOnce(true);		
 		crawler.setMaximumStates(MAX_NUMBER_STATES);
 		crawler.setDepth(MAX_DEPTH);
 
@@ -254,7 +274,9 @@ public class GhostOrig {
 						else{
 							String[] attr=line.split("::");
 							attributeName=attr[0];
-							attributeValue=attr[1];
+							if(attr.length>1)
+								attributeValue=attr[1];
+							else attributeValue="";
 				//			ElementAttribute attribute=new ElementAttribute(attributeName, attributeValue);
 							domElement.setAttributes(attributeName, attributeValue);
 				//			attributes.add(attribute);

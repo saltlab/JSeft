@@ -141,6 +141,8 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		excludeFilenamePatterns.add(".*scriptaculous.*.js?.*");
 		excludeFilenamePatterns.add(".*mootools.js?.*");
 		excludeFilenamePatterns.add(".*dojo.xd.js?.*");
+		excludeFilenamePatterns.add(".*dojo.js.uncompressed?.*");
+		excludeFilenamePatterns.add(".*dojo.js?.*");
 		excludeFilenamePatterns.add(".*yuiloader.js?.*");
 		excludeFilenamePatterns.add(".*google.*");
 		excludeFilenamePatterns.add(".*min.*.js?.*");
@@ -168,7 +170,32 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		excludeFilenamePatterns.add(".*functional.js");
 		excludeFilenamePatterns.add(".*test.core.js");
 		excludeFilenamePatterns.add(".*inject.js");
+		/* for fractal viewr */
+		excludeFilenamePatterns.add(".*Branch.js?.*");
+		excludeFilenamePatterns.add(".*Brush.js?.*");
+		excludeFilenamePatterns.add(".*Leaf.js?.*");
+		excludeFilenamePatterns.add(".*Rect2.js?.*");
+		excludeFilenamePatterns.add(".*the_bones.js?.*");
+//		excludeFilenamePatterns.add(".*the_meat.js?.*");
+		excludeFilenamePatterns.add(".*the_ui.js?.*");
+		excludeFilenamePatterns.add(".*Vec2.js?.*");
+		excludeFilenamePatterns.add(".*the_beast.js?.*");
+		
+		excludeFilenamePatterns.add(".*canvastext.js?.*");
+		excludeFilenamePatterns.add(".*enumerable.js?.*");
+		excludeFilenamePatterns.add(".*flux.js?.*");
+	//	excludeFilenamePatterns.add(".*homeostasis.js?.*");
+		excludeFilenamePatterns.add(".*linkage.js?.*");
+		excludeFilenamePatterns.add(".*math.js?.*");
+		excludeFilenamePatterns.add(".*sylvester.js?.*");
+		
+		excludeFilenamePatterns.add(".*design.js?.*");
+	//	excludeFilenamePatterns.add(".*transform.js?.*");
 		 
+		excludeFilenamePatterns.add(".*help.js?.*");
+		excludeFilenamePatterns.add(".*admin.js?.*");
+		
+		excludeFilenamePatterns.add(".*pegsDraw.js?.*");
 	}
 	
 

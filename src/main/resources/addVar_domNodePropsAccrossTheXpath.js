@@ -1,17 +1,25 @@
+
 window.xhr = new XMLHttpRequest();
 window.buffer = new Array();
-
 function send(value) {
 	window.buffer.push(value);
 	if(window.buffer.length == 100) {
 		sendReally();	
 	}
 }
+function includeFunctions(key, value) {
+	if (typeof(value) === 'function') {
+		return value.toString();
+	}
+	return value;
+}
 
 function sendReally() {
 	window.xhr.open('POST', document.location.href + '?thisisajsdomexecutiontracingcall', false);
-	window.xhr.send(JSON.stringify(window.buffer));
+	window.xhr.send(JSON.stringify(JSON.decycle(window.buffer),includeFunctions);
 	window.buffer = new Array();
+			
+
 }
 
 function addVariable(name, value, variableUsage) {
@@ -22,19 +30,23 @@ function addVariable(name, value, variableUsage) {
 	var xpaths=new Array();
 
 	var newValue;
+	
+	
 
-
-//	var nodeValue=$(value).get(0);
 	if(typeof value == "object" && "nodeType" in value &&
 			   value.nodeType === 1 && value.cloneNode){
+		var dojoXpath;
 		xpaths=getXpathOfNodes($(value).clone());
 		if(xpaths.length==1){
 			var oneXpath=xpaths[0];
-			return new Array(name, typeof(oneXpath), oneXpath, time, variableUsage);
+		
+			return new Array(name, 'xpath', oneXpath, time, variableUsage);
 		}
-		return new Array(name, 'xpath', xpaths, time, variableUsage);
+		
+			return new Array(name, 'xpath', xpaths, time, variableUsage);
 		
 	}
+
 
 	if(typeof(value) == 'object') {
 
@@ -45,45 +57,50 @@ function addVariable(name, value, variableUsage) {
 				if(value[0] instanceof Array){
 					
 					if(value[0].length > 0){
-						newValue=value.clone();
-					
+						newValue=$.extend(true,[],value);
+				
 						return new Array(name, typeof (newValue[0][0]) + '_array', newValue, time, variableUsage);
 					}
 					else{
 						newValue=$.extend(true,[],value);
-						
 						return new Array(name, 'object_array', newValue, time, variableUsage);
 					}
 				}
 				else
 					if(value.length > 0){
 						
-						newValue=value.clone();
+						
+						newValue=$.extend(true,[],value);
+						var dojoValue;
+					
 						return new Array(name, typeof (newValue[0]) + '_array', newValue, time, variableUsage);
 					}
 					else {
 						newValue=$.extend(true,[],value);
+						var dojoValue;
 						return new Array(name, 'object_array', newValue, time, variableUsage);
 					}
 		}
 		else{
 			
 			newValue=$.extend(true,{},value);
-			return new Array(name, 'object', value, time, variableUsage);
+
+			return new Array(name, 'object', newValue, time, variableUsage);
 		}
 	
 	} else if(typeof(value) != 'undefined' && typeof(value) != 'function') {
 		return new Array(name, typeof(value), value, time, variableUsage);
 	}
+	
 	else if(typeof(value)=='function'){
 		
 		var funcName=functionName(value)
 		return new Array(funcName, typeof(value), funcName, time, variableUsage);
 		
 	}
-		else if (pattern.test(name) || getAttrPattern.test(name)){
-			return new Array(name, 'string', value, time, variableUsage);//'java.lang.String');
-		}
+	else if (pattern.test(name) || getAttrPattern.test(name)){
+		return new Array(name, 'string', value, time, variableUsage);//'java.lang.String');
+	}
 	else if (name.match(pattern)==".attr("){
 		return new Array(name, 'string', 'java.lang.String', time, variableUsage);
 	}
@@ -167,7 +184,7 @@ var getElementTreeXPath = function(element) {
 }
 
 function AddDomNodeProps(elementArray){
-/*	var date = new Date();
+	var date = new Date();
 	time=date.getTime();
 	var datas = new Array();
 	var path;
@@ -194,13 +211,14 @@ function AddDomNodeProps(elementArray){
 		}
 	}
 	
-*/	
-	return new Array("");
+	
+	return new Array(datas);
 
 }
 
 function stripScripts(html) {
 
+	
     var div = document.createElement('div');
     div.innerHTML = html;
     var scripts = div.getElementsByTagName('script');
@@ -210,6 +228,8 @@ function stripScripts(html) {
     }
 
     return div.innerHTML.replace(/(\r\n|\n|\r|\t)/gm,"");
+ 
+	
  }
 
 function pushIfItDoesNotExist(domNode,instrumentationArray){
@@ -222,11 +242,11 @@ function pushIfItDoesNotExist(domNode,instrumentationArray){
 	}
 }
 
-Array.prototype.clone = function() {
+/*Array.prototype.clone = function() {
 
 	return $.extend(true,[],this);
 	
- /*   var arr = new Array();
+    var arr = new Array();
     arr=this.slice(0);
   
     for( var i = 0; i < this.length; i++ ) {
@@ -237,10 +257,10 @@ Array.prototype.clone = function() {
     }
     
     return arr;
-*/
+
 }
 
-
+*/
 function functionName(fun) {
 	  var ret = fun.toString();
 	  ret = ret.substr('function '.length);

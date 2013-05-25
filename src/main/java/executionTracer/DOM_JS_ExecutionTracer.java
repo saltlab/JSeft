@@ -15,18 +15,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.crawljax.browser.EmbeddedBrowser;
+import com.crawljax.core.CandidateElement;
 import com.crawljax.core.CrawlSession;
 import com.crawljax.core.CrawljaxException;
 import com.crawljax.core.plugin.GeneratesOutput;
 import com.crawljax.core.plugin.OnFireEventSuccessPlugin;
 import com.crawljax.core.plugin.OnNewStatePlugin;
 import com.crawljax.core.plugin.PreCrawlingPlugin;
+import com.crawljax.core.plugin.PreStateCrawlingPlugin;
 import com.crawljax.core.state.Eventable;
 import com.crawljax.core.state.StateMachine;
 import com.crawljax.util.Helper;
 
 public class DOM_JS_ExecutionTracer 
-	implements OnFireEventSuccessPlugin, /*OnNewStatePlugin,*/ PreCrawlingPlugin, GeneratesOutput {
+	implements OnFireEventSuccessPlugin, OnNewStatePlugin,/*PreStateCrawlingPlugin,*/ PreCrawlingPlugin, GeneratesOutput {
 
 		private static final int ONE_SEC = 1000;
 		
@@ -128,7 +130,7 @@ public class DOM_JS_ExecutionTracer
 		
 		
 		
-		/*
+	
 		@Override
 		public void onNewState(CrawlSession session) {
 		
@@ -173,7 +175,7 @@ public class DOM_JS_ExecutionTracer
 		}
 		
 		
-	*/	
+	
 		
 		
 		
@@ -256,5 +258,49 @@ public class DOM_JS_ExecutionTracer
 		
 		}
 
+/*		@Override
+		public void preStateCrawling(CrawlSession session,
+				List<CandidateElement> arg1) {
+			String filename;
+			if(execTraceForMutatedVer)
+				filename=getOutputFolder() + MUTATEDEXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
+			else
+				filename=getOutputFolder() + EXECUTIONTRACEDIRECTORY + assertionFilename+ "-";
+			filename += session.getCurrentState().getName();
+			
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+			Date date = new Date();
+			filename += dateFormat.format(date) + ".txt";
+			
+			try {
+			
+				LOGGER.info("Reading execution trace");
+			
+				LOGGER.info("Parsing JavaScript execution trace");
+			
+				
+				session.getBrowser().executeJavaScript("sendReally();");
+				Thread.sleep(ONE_SEC);
+				DOM_JS_Trace trace=new DOM_JS_Trace();
+				String result = trace.getTraceRecord(points);
+			//	if (!trace.getData(points).equals("")) {
+				PrintWriter file = new PrintWriter(filename);
+				file.write(result);
+				file.close();
+				
+				LOGGER.info("Saved execution trace as " + filename);
+			
+				points = new JSONArray();
+			} catch (CrawljaxException we) {
+				we.printStackTrace();
+				LOGGER.error("Unable to get instrumentation log from the browser");
+				return;
+			} catch (Exception e) {
+				e.printStackTrace();
+		
+			
+			}
+		}
+*/
 
 }

@@ -371,6 +371,12 @@ public abstract class JSASTModifier implements NodeVisitor  {
 							
 							objectAndFunction=objectAndFunction.replace(" ", "____");
 							AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
+							if(parent instanceof ReturnStatement){
+								parent.addChildBefore(
+										 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+										 getLineNode(node));
+							}
+							else
 							parent.addChildAfter(
 							 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
 							 getLineNode(node));
@@ -399,10 +405,15 @@ public abstract class JSASTModifier implements NodeVisitor  {
 								    			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "")+ ")";
 								    		}	
 								    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-												
-											parent.addChildAfter(
-											 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
-											 getLineNode(node));
+											if(parent instanceof ReturnStatement){
+												parent.addChildBefore(
+														 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+														 getLineNode(node));
+											}
+											else
+												parent.addChildAfter(
+												 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+												 getLineNode(node));
 											numberOfDomRelatedNodes++;
 								    
 											objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
@@ -427,10 +438,15 @@ public abstract class JSASTModifier implements NodeVisitor  {
 
 										   			objectAndFunction+="(" + args[i].split(":")[0].replace(" ", "") + ")";								    	
 										    		AstNode parent = makeSureBlockExistsAround(getLineNode(node));
-															
-													parent.addChildAfter(
-													 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
-													 getLineNode(node));
+													if(parent instanceof ReturnStatement){
+														parent.addChildBefore(
+																 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+																 getLineNode(node));
+													}
+													else
+														parent.addChildAfter(
+														 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+														 getLineNode(node));
 													numberOfDomRelatedNodes++;
 													
 										    		objectAndFunction = g.getLeft().toSource().replace(" ", "____")+ "." + node.toSource();
@@ -455,9 +471,15 @@ public abstract class JSASTModifier implements NodeVisitor  {
 								String domNodeToLog=node.toSource();
 								String objectAndFunction="DIRECTACCESS";
 								AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
-								parent.addChildAfter(
-								 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
-								 getLineNode(node));
+								if(parent instanceof ReturnStatement){
+									parent.addChildAfter(
+											 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+											 getLineNode(node));
+								}
+								else
+									parent.addChildAfter(
+									 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+									 getLineNode(node));
 								numberOfDomRelatedNodes++;
 					    	
 								
@@ -469,9 +491,15 @@ public abstract class JSASTModifier implements NodeVisitor  {
 							String domNodeToLog="document" + "." + node.toSource();
 							String objectAndFunction="DIRECTACCESS";
 							AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
-							parent.addChildAfter(
-							 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
-							 getLineNode(node));
+							if (parent instanceof ReturnStatement){
+								parent.addChildAfter(
+										 createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+										 getLineNode(node));
+							}
+							else
+								parent.addChildAfter(
+										createNodeToLogDomNodes(domNodeToLog, objectAndFunction),
+										getLineNode(node));
 							numberOfDomRelatedNodes++;
 				    	
 							
@@ -491,9 +519,11 @@ public abstract class JSASTModifier implements NodeVisitor  {
 
 	private AstNode getLineNode(AstNode node) {
 		while ((!(node instanceof ExpressionStatement) && !(node instanceof Assignment))
-		        || node.getParent() instanceof ReturnStatement) {
+		        && !(node.getParent() instanceof ReturnStatement)) {
 			node = node.getParent();
 		}
+		if(node.getParent() instanceof ReturnStatement)
+			return node.getParent();
 		return node;
 	}
 
