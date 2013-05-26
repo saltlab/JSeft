@@ -153,6 +153,8 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		excludeFilenamePatterns.add(".*gdn6pnx.*.js?.*");
 		excludeFilenamePatterns.add(".*show_ads.*.js?.*");
 		excludeFilenamePatterns.add(".*ga.*.js?.*");
+		excludeFilenamePatterns.add(".*cycle.*.js?.*");
+		
 		//The following 10 excluded files are just for Tudu
 		excludeFilenamePatterns.add(".*builder.js");
 		excludeFilenamePatterns.add(".*controls.js");

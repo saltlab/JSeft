@@ -16,7 +16,7 @@ function includeFunctions(key, value) {
 
 function sendReally() {
 	window.xhr.open('POST', document.location.href + '?thisisajsdomexecutiontracingcall', false);
-	window.xhr.send(JSON.stringify(JSON.decycle(window.buffer),includeFunctions);
+	window.xhr.send(JSON.stringify(JSON.decycle(window.buffer),includeFunctions));
 	window.buffer = new Array();
 			
 
@@ -32,7 +32,10 @@ function addVariable(name, value, variableUsage) {
 	var newValue;
 	
 	
-
+	if(value==null){
+		
+		return new Array(name, typeof(value), null, time, variableUsage);
+	}
 	if(typeof value == "object" && "nodeType" in value &&
 			   value.nodeType === 1 && value.cloneNode){
 		var dojoXpath;
