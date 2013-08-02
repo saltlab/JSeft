@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
+import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
@@ -25,6 +26,7 @@ import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.ReturnStatement;
 import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.SwitchCase;
+import org.mozilla.javascript.ast.VariableDeclaration;
 import org.mozilla.javascript.ast.WhileLoop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,15 +133,42 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	 *            The function node.
 	 * @return The function name.
 	 */
+	
 	protected String getFunctionName(FunctionNode f) {
+		
 		if (f==null)
 			return "NoFunctionNode";
 	/*	else if(f.getParent() instanceof LabeledStatement){
 			return ((LabeledStatement)f.getParent()).shortName();
 		}
-	*/	else if(f.getParent() instanceof ObjectProperty){
+	*/	
+		else if(f.getParent() instanceof ObjectProperty){
 			return ((ObjectProperty)f.getParent()).getLeft().toSource();
 		}
+		
+
+		else if(f.getParent() instanceof Assignment){
+			AstNode funcAssignLeft=((Assignment) f.getParent()).getLeft();
+			if(funcAssignLeft instanceof VariableDeclaration){
+				return ((VariableDeclaration)funcAssignLeft).getVariables().get(0).toSource();
+			}
+			if(funcAssignLeft instanceof Name){
+				return ((Name)funcAssignLeft).getIdentifier();
+			}
+			
+			if(funcAssignLeft instanceof PropertyGet){
+				if(((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
+					String constructorName=f.getEnclosingFunction().getFunctionName().getIdentifier();
+					String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
+					String funcName="new " + constructorName + "()" + "." + memberName; 
+					return(funcName);
+				}
+				
+			}
+				
+		}
+		
+	
 		Name functionName = f.getFunctionName();
 
 		if (functionName == null) {
