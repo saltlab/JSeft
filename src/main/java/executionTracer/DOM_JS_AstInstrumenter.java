@@ -525,6 +525,22 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		String code="var instrumentationArray=new Array();";
 		return parse(code);
 	}
+	
+	@Override
+	protected AstNode createCovgArrayInitialization(FunctionNode func) {
+		
+		String funcName=getFunctionName(func);
+		String code="stmCovgArray" + "[" + "'"+ funcName + "'" + "]" + "=0;";
+		return parse(code);
+	}
+
+	@Override
+	protected AstNode createCovgCalcNode(FunctionNode func) {
+	
+		String funcName=getFunctionName(func);
+		String code="stmCovgArray" + "[" + "'"+ funcName + "'" + "]" + "++;";
+		return parse(code);
+	}
 		
 	
 

@@ -398,6 +398,18 @@ public class AstInstrumenter extends JSASTModifier{
 		return null;
 	}
 		
+
+	@Override
+	protected AstNode createCovgArrayInitialization(FunctionNode func) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected AstNode createCovgCalcNode(FunctionNode function) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 
