@@ -13,6 +13,7 @@ import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
+import org.mozilla.javascript.ast.FunctionCall;
 import org.mozilla.javascript.ast.FunctionNode;
 import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.ObjectLiteral;
@@ -539,6 +540,15 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	
 		String funcName=getFunctionName(func);
 		String code="stmCovgArray" + "[" + "'"+ funcName + "'" + "]" + "++;";
+		return parse(code);
+	}
+
+	@Override
+	protected AstNode createCovgCalcNodeForCalledFunction(
+			FunctionNode callerFunc, FunctionCall calleeFunc) {
+		String callerFuncName=getFunctionName(callerFunc);
+		String calleeFuncName=calleeFunc.getTarget().toSource();
+		String code="stmCovgArray" + "[" + "'"+ callerFuncName + "'" + "]" + "stmCovgArray" + "[" + "'" + calleeFuncName + "'" +"]";
 		return parse(code);
 	}
 		

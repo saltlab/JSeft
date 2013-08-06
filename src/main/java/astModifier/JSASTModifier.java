@@ -212,6 +212,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	protected abstract AstNode createInstrumentationArrayLocalVariable();
 	protected abstract AstNode createCovgArrayInitialization(FunctionNode function);
 	protected abstract AstNode createCovgCalcNode(FunctionNode function);
+	protected abstract AstNode createCovgCalcNodeForCalledFunction(FunctionNode callerFunc, FunctionCall calleeFunc);
 	/**
 	 * Create a new block node with two children.
 	 * 

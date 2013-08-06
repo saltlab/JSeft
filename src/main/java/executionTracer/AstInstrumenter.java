@@ -16,6 +16,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.AstRoot;
+import org.mozilla.javascript.ast.FunctionCall;
 import org.mozilla.javascript.ast.FunctionNode;
 import org.mozilla.javascript.ast.ObjectLiteral;
 import org.mozilla.javascript.ast.ObjectProperty;
@@ -407,6 +408,13 @@ public class AstInstrumenter extends JSASTModifier{
 
 	@Override
 	protected AstNode createCovgCalcNode(FunctionNode function) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected AstNode createCovgCalcNodeForCalledFunction(
+			FunctionNode callerFunc, FunctionCall calleeFunc) {
 		// TODO Auto-generated method stub
 		return null;
 	}
