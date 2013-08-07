@@ -272,12 +272,16 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	 *            The node that is currently visited.
 	 * @return Whether to visit the children.
 	 */
+	
 /*	private boolean domPropAdded=false;
 	private FunctionNode enclosedFunc = null;
 	private String objAndFunc = "";
 */	@Override
 	public boolean visit(AstNode node) {
 		
+		StatementCvgCalc stmCvgCalc=new StatementCvgCalc();
+	
+		node.visit(stmCvgCalc);
 		if(!shouldVisitNode(node))
 			return false;
 		FunctionNode func;
@@ -599,6 +603,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		return true;
 	}
 	
+	@Deprecated
 	private boolean visitNodesForCovgCalc(AstNode node)
 	{
 		
@@ -676,6 +681,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				return true; //no need to add instrumentation before try statement anyway since we only instrument what's inside the blocks
 			}
 			
+			
 			func = node.getEnclosingFunction();
 			
 			if (func != null) {
@@ -703,7 +709,15 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				}
 				
 				if (node.getLineno() >= firstLine) {
-					AstNode newNode = createCovgCalcNode(func);
+					AstNode newNode;
+					if(node instanceof FunctionCall){
+						 newNode= createCovgCalcNodeForCalledFunction(node.getEnclosingFunction(), (FunctionCall)node);
+					}
+						
+					else{
+						newNode = createCovgCalcNode(func);
+					}
+					
 					//AstNode parent = node.getParent();
 					
 					AstNode parent = makeSureBlockExistsAround(node);

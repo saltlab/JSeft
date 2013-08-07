@@ -57,6 +57,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		excludeVariableNamesList.add("game10K");
 		excludeVariableNamesList.add("btoa");
 		excludeVariableNamesList.add("that");
+		excludeVariableNamesList.add("stmCovgArray");
 	}
 
 	/**
@@ -200,6 +201,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 						
 				}
 				
+				code+= ", new Array(stmCovgArray" + "[" + "'" + name + "'" + "]";
 				code+= ", new Array(";
 	
 				Iterator<String> iter=variables.iterator();
@@ -548,7 +550,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			FunctionNode callerFunc, FunctionCall calleeFunc) {
 		String callerFuncName=getFunctionName(callerFunc);
 		String calleeFuncName=calleeFunc.getTarget().toSource();
-		String code="stmCovgArray" + "[" + "'"+ callerFuncName + "'" + "]" + "stmCovgArray" + "[" + "'" + calleeFuncName + "'" +"]";
+		String code="stmCovgArray" + "[" + "'"+ callerFuncName + "'" + "]" + "= " + "stmCovgArray" + "[" + "'"+ callerFuncName + "'" + "]" + "stmCovgArray" + "[" + "'" + calleeFuncName + "'" +"];";
 		return parse(code);
 	}
 		
