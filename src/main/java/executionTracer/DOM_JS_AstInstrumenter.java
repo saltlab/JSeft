@@ -166,7 +166,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	*/			
 				
 				code =
-			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + "'";
+			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + ", stmCovgArray" + "[" + "'" + name + "'" + "]" + "'";
 				if(numberOfDomRelatedNodes>0){
 					htmlCode= ", new Array('DOM', AddDomNodeProps(instrumentationArray))";
 				
@@ -201,7 +201,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 						
 				}
 				
-				code+= ", new Array(stmCovgArray" + "[" + "'" + name + "'" + "]";
+				
 				code+= ", new Array(";
 	
 				Iterator<String> iter=variables.iterator();
@@ -288,7 +288,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			/* TODO: this uses JSON.stringify which only works in Firefox? make browser indep. */
 			/* post to the proxy server */
 			code =
-			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix
+			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + ", stmCovgArray" + "[" + "'" + name + "'" + "]" 
 			                + "', new Array(stripScripts(document.getElementsByTagName(\"body\")[0].innerHTML))" + ", new Array(";
 
 			String vars = "";

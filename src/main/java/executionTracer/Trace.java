@@ -28,12 +28,12 @@ public class Trace {
 	 *            Name of the program point.
 	 * @return The ProgramPoint object.
 	 */
-	public ProgramPoint programPoint(String name) {
+	public ProgramPoint programPoint(String name, String coverage) {
 
 
 	
 
-		ProgramPoint p = new ProgramPoint(name);
+		ProgramPoint p = new ProgramPoint(name, coverage);
 		programPoints.add(p);
 
 		return p;
@@ -57,8 +57,8 @@ public class Trace {
 
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+ prefix;
-			
-			ProgramPoint prog = new ProgramPoint(programPointName);
+			String coverage="0";
+			ProgramPoint prog = new ProgramPoint(programPointName, coverage);
 		
 			JSONArray jasonvalue = value.getJSONArray(2);
 			for (int i = 0; i < jasonvalue.length(); i++) {
@@ -98,8 +98,8 @@ public class Trace {
 			JSONArray value = jsonObject.getJSONArray(j);
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+prefix;
-			
-			ProgramPoint prog = programPoint(programPointName);
+			String coverage="0";
+			ProgramPoint prog = programPoint(programPointName, coverage);
 			
 			
 			result.append(prog.getData(value.getJSONArray(2)));

@@ -25,12 +25,12 @@ public class DOM_JS_Trace {
 	 *            Name of the program point.
 	 * @return The ProgramPoint object.
 	 */
-	public ProgramPoint programPoint(String name) {
+	public ProgramPoint programPoint(String name, String coverage) {
 
 
 	
 
-		ProgramPoint p = new ProgramPoint(name);
+		ProgramPoint p = new ProgramPoint(name, coverage);
 		programPoints.add(p);
 
 		return p;
@@ -56,7 +56,8 @@ public class DOM_JS_Trace {
 
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+ prefix;
-			ProgramPoint prog = new ProgramPoint(programPointName);
+			String coverage=value.getString(2);
+			ProgramPoint prog = new ProgramPoint(programPointName, coverage);
 			if(prefix.equals(ProgramPoint.EXITPOSTFIX)){
 				result+=getTraceRecordForExitPoint(value, prog);
 
@@ -94,8 +95,8 @@ public class DOM_JS_Trace {
 			JSONArray value = jsonObject.getJSONArray(j);
 			String prefix = value.getString(1);
 			String programPointName = value.getString(0)+prefix;
-			
-			ProgramPoint prog = programPoint(programPointName);
+			String coverage=value.getString(2);
+			ProgramPoint prog = programPoint(programPointName,coverage);
 			
 			
 			result.append(prog.getData(value.getJSONArray(2)));
@@ -180,6 +181,7 @@ public class DOM_JS_Trace {
 		
 		result.append(prog.getData(value.getJSONArray(indexForAddVariablePart)));
 		result.append(prog.getDomOutPutData());
+		result.append(prog.getCoverage());
 		result.append("===========================================================================\n");
 			
 
@@ -213,7 +215,8 @@ public class DOM_JS_Trace {
 		}	
 		
 		
-		result.append(prog.getData(value.getJSONArray(3)));			
+		result.append(prog.getData(value.getJSONArray(3)));
+		result.append(prog.getCoverage());
 		result.append("===========================================================================\n");
 
 		return result.toString();

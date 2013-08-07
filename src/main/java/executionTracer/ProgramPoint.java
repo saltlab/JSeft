@@ -18,6 +18,7 @@ public class ProgramPoint {
 	private ArrayList<Variable> variables;
 	private ArrayList<DOMInput> domInputs;
 	private ArrayList<DOMOutPut> domOutPuts;
+	private String coverage;
 
 
 	/**
@@ -26,11 +27,12 @@ public class ProgramPoint {
 	 * @param name
 	 *            The name of the program point.
 	 */
-	public ProgramPoint(String name) {
+	public ProgramPoint(String name, String coverage) {
 		this.name = name;
 		variables = new ArrayList<Variable>();
 		domInputs=new ArrayList<DOMInput>();
 		domOutPuts=new ArrayList<DOMOutPut>();
+		this.coverage=coverage;
 	
 
 	}
@@ -51,6 +53,12 @@ public class ProgramPoint {
 /*			result.append("line::" + domOutput.getLine() + "\n");
 			result.append("value::" + domOutput.getValue() + "\n");
 */		}
+		return result.toString();
+	}
+	
+	public String getCoverage(){
+		StringBuffer result = new StringBuffer();
+		result.append("coverage::" + coverage + "\n");
 		return result.toString();
 	}
 
