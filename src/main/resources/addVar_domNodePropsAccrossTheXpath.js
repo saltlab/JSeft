@@ -1,6 +1,7 @@
 
 window.xhr = new XMLHttpRequest();
 window.buffer = new Array();
+var stmCovgArray=new Array();
 function send(value) {
 	window.buffer.push(value);
 	if(window.buffer.length == 100) {
