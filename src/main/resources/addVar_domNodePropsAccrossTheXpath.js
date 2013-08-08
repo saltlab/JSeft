@@ -2,6 +2,7 @@
 window.xhr = new XMLHttpRequest();
 window.buffer = new Array();
 var stmCovgArray=new Array();
+var brnCovgArray=new Array();
 function send(value) {
 	window.buffer.push(value);
 	if(window.buffer.length == 100) {
@@ -270,4 +271,22 @@ function functionName(fun) {
 	  ret = ret.substr('function '.length);
 	  ret = ret.substr(0, ret.indexOf('('));
 	  return ret;
-};
+}
+
+function initializeBranchCovgArray(){
+	$.each(brnCovgArray, function(index){brnCovgArray[index]=-1;});
+	
+}
+
+function detectCoveredBranch(currCondition, linoNo){
+
+	if(currCondition==true){
+		brnCovgArray[index]=1;
+		
+	}
+	else{
+		brnCovgArray[index]=0;
+		
+	}
+	return currCondition;
+}

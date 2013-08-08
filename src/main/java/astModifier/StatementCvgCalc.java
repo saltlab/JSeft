@@ -33,7 +33,7 @@ public class StatementCvgCalc  implements NodeVisitor{
 
 	@Override
 	public boolean visit(AstNode node) {
-FunctionNode func;
+		FunctionNode func;
 		
 		if (!((node instanceof FunctionNode || node instanceof ReturnStatement || node instanceof SwitchCase || node instanceof AstRoot || node instanceof ExpressionStatement || node instanceof BreakStatement || node instanceof ContinueStatement || node instanceof ThrowStatement || node instanceof VariableDeclaration))) {// || node instanceof ExpressionStatement || node instanceof BreakStatement || node instanceof ContinueStatement || node instanceof ThrowStatement || node instanceof VariableDeclaration || node instanceof ReturnStatement || node instanceof SwitchCase)) {
 			return true;
