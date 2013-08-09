@@ -2,7 +2,7 @@
 window.xhr = new XMLHttpRequest();
 window.buffer = new Array();
 var stmCovgArray=new Array();
-var brnCovgArray=new Array();
+var brnCovgArray={};
 function send(value) {
 	window.buffer.push(value);
 	if(window.buffer.length == 100) {
@@ -273,20 +273,41 @@ function functionName(fun) {
 	  return ret;
 }
 
-function initializeBranchCovgArray(){
-	$.each(brnCovgArray, function(index){brnCovgArray[index]=-1;});
+function initializeBranchCovgArray(functionName){
+//	$.each(brnCovgArray, function(index){brnCovgArray[index]=-1;});
+	$.each(brnCovgArray, 
+			function(index){
+				if (index.substring(0,functionName.length+1)==(funcName+"_"))
+					delete brnCovgArray[index];
+			}
+	);
 	
 }
 
-function detectCoveredBranch(currCondition, linoNo){
+function detectCoveredBranch(currCondition, funcName_lineNo){
 
 	if(currCondition==true){
-		brnCovgArray[index]=1;
+		brnCovgArray[funcName_lineNo]=1;
 		
 	}
 	else{
-		brnCovgArray[index]=0;
+		brnCovgArray[funcName_lineNo]=0;
 		
 	}
 	return currCondition;
+}
+
+function adjustBranchCovgAfterFuncCall(calleeName, callerName){
+	
+	$.each(brnCovgArray, 
+			function(index){
+				if (index.substring(0,calleeName.length+1)==(calleeName+"_")){
+					lineNo=index.split("_")[1];
+					
+					brnCovgArray[callerName+"_"+ lineNo]=brnCovgArray[index];
+				}
+					
+			}
+	);
+	
 }

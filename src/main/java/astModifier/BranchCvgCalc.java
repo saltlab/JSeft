@@ -4,15 +4,21 @@ import java.util.List;
 
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
+import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.Block;
 import org.mozilla.javascript.ast.ConditionalExpression;
 import org.mozilla.javascript.ast.ForLoop;
+import org.mozilla.javascript.ast.FunctionCall;
 import org.mozilla.javascript.ast.FunctionNode;
 import org.mozilla.javascript.ast.IfStatement;
+import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.NodeVisitor;
+import org.mozilla.javascript.ast.ObjectProperty;
+import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.SwitchStatement;
+import org.mozilla.javascript.ast.VariableDeclaration;
 import org.mozilla.javascript.ast.WhileLoop;
 
 public class BranchCvgCalc implements NodeVisitor {
@@ -23,15 +29,25 @@ public class BranchCvgCalc implements NodeVisitor {
 		
 		if(node instanceof FunctionNode){
 			FunctionNode func=(FunctionNode)node;
-			AstNode covgArray=createBrnCovgArrayInitialization();
+			String funcName=getFunctionName(func);
+			AstNode covgArray=createBrnCovgArrayInitialization(func);
 
 			func.getBody().addChildToFront(covgArray);
 		}
 		
+		if(node instanceof FunctionCall){
+			FunctionCall callee=(FunctionCall) node;
+			FunctionNode caller=node.getEnclosingFunction();
+			AstNode newNode=createAdjustBranchCovgAfterFuncCall(caller, callee);
+			AstNode parent=makeSureBlockExistsAround(node);
+			parent.addChildAfter(newNode, node);
+		}
+			
+		
 		if(node instanceof IfStatement){
 			IfStatement ifstm=(IfStatement) node;
 			AstNode currentCondition=ifstm.getCondition();
-			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() + ", " + "'" + ifstm.getLineno() + "'" +")";
+			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + ifstm.getLineno() + "'" +")";
 			AstNode wrappedCondition=parse(newConditonSource);
 			ifstm.setCondition(wrappedCondition);
 		}
@@ -41,7 +57,7 @@ public class BranchCvgCalc implements NodeVisitor {
 				
 			WhileLoop whilestm=(WhileLoop) node;
 			AstNode currentCondition=whilestm.getCondition();
-			String newConditonSource="detectCoveredBranch"+"("  + currentCondition.toSource() + ", " + "'" + whilestm.getLineno() + "'" +")";
+			String newConditonSource="detectCoveredBranch"+"("  + currentCondition.toSource() + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + whilestm.getLineno() + "'" +")";
 			AstNode wrappedCondition=parse(newConditonSource);
 			whilestm.setCondition(wrappedCondition);
 				
@@ -53,7 +69,7 @@ public class BranchCvgCalc implements NodeVisitor {
 			
 			ForLoop forstm=(ForLoop) node;
 			AstNode currentCondition=forstm.getCondition();
-			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() +  ", " + "'"  + forstm.getLineno() + "'"  +")";
+			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() +  ", " + "'"  + getFunctionName(node.getEnclosingFunction()) + "_" + forstm.getLineno() + "'"  +")";
 			AstNode wrappedCondition=parse(newConditonSource);
 			forstm.setCondition(wrappedCondition);
 				
@@ -65,7 +81,7 @@ public class BranchCvgCalc implements NodeVisitor {
 			
 			ForLoop forstm=(ForLoop) node;
 			AstNode currentCondition=forstm.getCondition();
-			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() + ", " + "'" + forstm.getLineno() +"'" +")";
+			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_"+ forstm.getLineno() +"'" +")";
 			AstNode wrappedCondition=parse(newConditonSource);
 			forstm.setCondition(wrappedCondition);
 				
@@ -78,7 +94,7 @@ public class BranchCvgCalc implements NodeVisitor {
 			SwitchStatement switchstm=(SwitchStatement) node;
 			List<SwitchCase> currentCases=switchstm.getCases();
 			for(SwitchCase currCase:currentCases){
-				String newCaseSource="detectCoveredBranch"+"(" + currCase.getExpression().toSource()  + ", " + "'" + currCase.getLineno() + "'" +")";
+				String newCaseSource="detectCoveredBranch"+"(" + currCase.getExpression().toSource()  + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + currCase.getLineno() + "'" +")";
 				AstNode wrappedCondition=parse(newCaseSource);
 				currCase.setExpression(wrappedCondition);
 			}
@@ -91,7 +107,7 @@ public class BranchCvgCalc implements NodeVisitor {
 			
 			ConditionalExpression conditionalstm=(ConditionalExpression) node;
 			AstNode currentCondition=conditionalstm.getTestExpression();
-			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource()  + ", " +  "'"  + conditionalstm.getLineno() + "'" +")";
+			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource()  + ", " +  "'"  + getFunctionName(node.getEnclosingFunction()) + "_" + conditionalstm.getLineno() + "'" +")";
 			AstNode wrappedCondition=parse(newConditonSource);
 			conditionalstm.setTestExpression(wrappedCondition);
 				
@@ -100,10 +116,63 @@ public class BranchCvgCalc implements NodeVisitor {
 		return true;
 	}
 
-	private AstNode createBrnCovgArrayInitialization() {
-		String code="initializeBranchCovgArray();";
+	private String getFunctionName(FunctionNode f) {
+		
+		if (f==null)
+			return "NoFunctionNode";
+	/*	else if(f.getParent() instanceof LabeledStatement){
+			return ((LabeledStatement)f.getParent()).shortName();
+		}
+	*/	
+		else if(f.getParent() instanceof ObjectProperty){
+			return ((ObjectProperty)f.getParent()).getLeft().toSource();
+		}
+		
+
+		else if(f.getParent() instanceof Assignment){
+			AstNode funcAssignLeft=((Assignment) f.getParent()).getLeft();
+			if(funcAssignLeft instanceof VariableDeclaration){
+				return ((VariableDeclaration)funcAssignLeft).getVariables().get(0).toSource();
+			}
+			if(funcAssignLeft instanceof Name){
+				return ((Name)funcAssignLeft).getIdentifier();
+			}
+			
+			if(funcAssignLeft instanceof PropertyGet){
+				if(((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
+					String constructorName=f.getEnclosingFunction().getFunctionName().getIdentifier();
+					String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
+					String funcName="new " + constructorName + "()" + "." + memberName; 
+					return(funcName);
+				}
+				
+			}
+				
+		}
+		
+	
+		Name functionName = f.getFunctionName();
+
+		if (functionName == null) {
+			return "anonymous" + f.getLineno();
+		} else {
+			return functionName.toSource();
+		}
+	}
+
+	private AstNode createBrnCovgArrayInitialization(FunctionNode func) {
+		String funcName=getFunctionName(func);
+		String code="initializeBranchCovgArray" + "(" + "'" + funcName + "'" + ");";
 		return parse(code);
 	}
+	
+	private AstNode createAdjustBranchCovgAfterFuncCall(FunctionNode caller, FunctionCall callee) {
+		String callerName=getFunctionName(caller);
+		String calleeName=callee.getTarget().toSource();
+		String code="adjustBranchCovgAfterFuncCall" + "(" + "'" + callerName + "'" + ", " + "'" + calleeName + "'" + ");";
+		return parse(code);
+	}
+		
 
 	private AstNode parse(String code) {
 		Parser p = new Parser(compilerEnvirons, null);
