@@ -311,3 +311,17 @@ function adjustBranchCovgAfterFuncCall(calleeName, callerName){
 	);
 	
 }
+
+function getFunctionBrnCovgArray(funcName){
+	var tempBrnCovgArray={};
+	$.each(brnCovgArray, 
+			function(index){
+				if (index.substring(0,funcName.length+1)==(funcName+"_")){
+					
+					tempBrnCovgArray[index]=brnCovgArray[index];
+				}
+					
+			}
+	);
+	return tempBrnCovgArray;
+}
