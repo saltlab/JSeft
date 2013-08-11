@@ -268,12 +268,15 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 			ast = rhinoParser.parse(new String(input), scopename, 0);
 
 			if(this.jsModify){
+				BranchCvgCalc brnCvgCalc=new BranchCvgCalc(ast);
+				ast.visit(brnCvgCalc);
 				modifier.setScopeName(scopename);
 
 				modifier.start();
 
 				/* recurse through AST */
 				ast.visit(modifier);
+
 
 				modifier.finish(ast);
 			}

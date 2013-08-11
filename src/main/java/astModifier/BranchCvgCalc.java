@@ -8,6 +8,7 @@ import org.mozilla.javascript.ast.Assignment;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.Block;
 import org.mozilla.javascript.ast.ConditionalExpression;
+import org.mozilla.javascript.ast.ExpressionStatement;
 import org.mozilla.javascript.ast.ForLoop;
 import org.mozilla.javascript.ast.FunctionCall;
 import org.mozilla.javascript.ast.FunctionNode;
@@ -23,11 +24,15 @@ import org.mozilla.javascript.ast.WhileLoop;
 
 public class BranchCvgCalc implements NodeVisitor {
 	private CompilerEnvirons compilerEnvirons = new CompilerEnvirons();
+	private FunctionNodeFinder funcFinder;
 
+	public BranchCvgCalc(AstNode node){
+		funcFinder=new FunctionNodeFinder();
+		node.visit(funcFinder);
+	}
 	@Override
 	public boolean visit(AstNode node) {
-		FunctionNodeFinder funcFinder=new FunctionNodeFinder();
-		node.visit(funcFinder);
+
 		
 		if(node instanceof FunctionNode){
 			FunctionNode func=(FunctionNode)node;
@@ -38,6 +43,7 @@ public class BranchCvgCalc implements NodeVisitor {
 		}
 		
 		if(node instanceof FunctionCall){
+		
 			String funcCallName=((FunctionCall)node).getTarget().toSource();
 			if(funcFinder.functionNodeNames.contains(funcCallName)){
 				
@@ -58,8 +64,9 @@ public class BranchCvgCalc implements NodeVisitor {
 			IfStatement ifstm=(IfStatement) node;
 			AstNode currentCondition=ifstm.getCondition();
 			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + ifstm.getLineno() + "'" +")";
-			AstNode wrappedCondition=parse(newConditonSource);
-			ifstm.setCondition(wrappedCondition);
+			ExpressionStatement wrappedCondition=(ExpressionStatement) parse(newConditonSource).getFirstChild();
+		
+			ifstm.setCondition(wrappedCondition.getExpression());
 		}
 		
 		else if(node instanceof WhileLoop){
@@ -68,8 +75,8 @@ public class BranchCvgCalc implements NodeVisitor {
 			WhileLoop whilestm=(WhileLoop) node;
 			AstNode currentCondition=whilestm.getCondition();
 			String newConditonSource="detectCoveredBranch"+"("  + currentCondition.toSource() + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + whilestm.getLineno() + "'" +")";
-			AstNode wrappedCondition=parse(newConditonSource);
-			whilestm.setCondition(wrappedCondition);
+			ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newConditonSource).getFirstChild();
+			whilestm.setCondition(wrappedCondition.getExpression());
 				
 			
 		}
@@ -80,23 +87,14 @@ public class BranchCvgCalc implements NodeVisitor {
 			ForLoop forstm=(ForLoop) node;
 			AstNode currentCondition=forstm.getCondition();
 			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() +  ", " + "'"  + getFunctionName(node.getEnclosingFunction()) + "_" + forstm.getLineno() + "'"  +")";
-			AstNode wrappedCondition=parse(newConditonSource);
-			forstm.setCondition(wrappedCondition);
+			System.out.println(newConditonSource);
+			ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newConditonSource).getFirstChild();
+			forstm.setCondition(wrappedCondition.getExpression());
 				
 			
 		}
 		
-		else if(node instanceof ForLoop){
-			
-			
-			ForLoop forstm=(ForLoop) node;
-			AstNode currentCondition=forstm.getCondition();
-			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_"+ forstm.getLineno() +"'" +")";
-			AstNode wrappedCondition=parse(newConditonSource);
-			forstm.setCondition(wrappedCondition);
-				
-			
-		}
+
 		
 		else if(node instanceof SwitchStatement){
 			
@@ -105,8 +103,8 @@ public class BranchCvgCalc implements NodeVisitor {
 			List<SwitchCase> currentCases=switchstm.getCases();
 			for(SwitchCase currCase:currentCases){
 				String newCaseSource="detectCoveredBranch"+"(" + currCase.getExpression().toSource()  + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + currCase.getLineno() + "'" +")";
-				AstNode wrappedCondition=parse(newCaseSource);
-				currCase.setExpression(wrappedCondition);
+				ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newCaseSource).getFirstChild();
+				currCase.setExpression(wrappedCondition.getExpression());
 			}
 			
 			
@@ -118,8 +116,8 @@ public class BranchCvgCalc implements NodeVisitor {
 			ConditionalExpression conditionalstm=(ConditionalExpression) node;
 			AstNode currentCondition=conditionalstm.getTestExpression();
 			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource()  + ", " +  "'"  + getFunctionName(node.getEnclosingFunction()) + "_" + conditionalstm.getLineno() + "'" +")";
-			AstNode wrappedCondition=parse(newConditonSource);
-			conditionalstm.setTestExpression(wrappedCondition);
+			ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newConditonSource).getFirstChild();
+			conditionalstm.setTestExpression(wrappedCondition.getExpression());
 				
 			
 		}

@@ -146,7 +146,7 @@ public class DOM_JS_Trace {
 		StringBuffer result = new StringBuffer();
 		int indexForAddVariablePart;
 	
-		JSONArray domjasonvalue = value.getJSONArray(2);
+		JSONArray domjasonvalue = value.getJSONArray(3);
 		if(domjasonvalue.get(0).toString().equals("DOM")){
 			for (int i = 1; i < domjasonvalue.length(); i++) {
 				JSONArray o = domjasonvalue.getJSONArray(i);
@@ -164,11 +164,11 @@ public class DOM_JS_Trace {
 					}
 				}
 			}
-			indexForAddVariablePart=3;
+			indexForAddVariablePart=4;
 		}
 		
 		else{
-			indexForAddVariablePart=2;
+			indexForAddVariablePart=3;
 		}
 		
 		JSONArray varjasonvalue = value.getJSONArray(indexForAddVariablePart);
@@ -191,10 +191,10 @@ public class DOM_JS_Trace {
 	
 	private String getTraceRecordforEntryPoint(JSONArray value, ProgramPoint prog) throws JSONException{
 		StringBuffer result = new StringBuffer();
-		String domHtml=value.getString(2);
+		String domHtml=value.getString(3);
 		DOMInput domInput=new DOMInput(domHtml);
 		prog.domInput(domInput);
-		JSONArray jasonvalue = value.getJSONArray(3);
+		JSONArray jasonvalue = value.getJSONArray(4);
 
 		for (int i = 0; i < jasonvalue.length(); i++) {
 			JSONArray o = jasonvalue.getJSONArray(i);
@@ -215,7 +215,7 @@ public class DOM_JS_Trace {
 		}	
 		
 		
-		result.append(prog.getData(value.getJSONArray(3)));
+		result.append(prog.getData(value.getJSONArray(4)));
 		result.append(prog.getCoverage());
 		result.append("===========================================================================\n");
 

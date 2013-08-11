@@ -77,6 +77,9 @@ public abstract class JSASTModifier implements NodeVisitor  {
 	 * Abstract constructor to initialize the mapper variable.
 	 */
 	protected JSASTModifier() {
+		
+
+		
 		nodesNotTolook.add("send(new Array(");
 		nodesNotTolook.add("new Array(");
 		nodesNotTolook.add("addVariable");
@@ -281,9 +284,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		
 //		StatementCvgCalc stmCvgCalc=new StatementCvgCalc();
 	
-		BranchCvgCalc brnCvgCalc=new BranchCvgCalc();
-	
-		node.visit(brnCvgCalc);
+
 		if(!shouldVisitNode(node))
 			return false;
 		FunctionNode func;
