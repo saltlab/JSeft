@@ -46,16 +46,21 @@ public class BranchCvgCalc implements NodeVisitor {
 		
 			String funcCallName=((FunctionCall)node).getTarget().toSource();
 			if(funcFinder.functionNodeNames.contains(funcCallName)){
+				AstNode exp=node.getParent();
+				while(!(exp instanceof ExpressionStatement) && !(exp instanceof IfStatement)
+						&& !(exp instanceof WhileLoop) && !(exp instanceof ForLoop)
+						&& !(exp instanceof SwitchCase)){
+					exp=exp.getParent();
+				}
 				
 				FunctionCall callee=(FunctionCall) node;
 				FunctionNode caller=node.getEnclosingFunction();
-				int x=0;
-				if (callee.toSource().equals("jQuery('#board').append(result)")){
-					x=0;
-				}
 				AstNode newNode=createAdjustBranchCovgAfterFuncCall(caller, callee);
-				AstNode parent=makeSureBlockExistsAround(node);
-				parent.addChildAfter(newNode, node);
+				AstNode parent=makeSureBlockExistsAround(exp);
+				parent.addChildAfter(newNode, exp);
+				
+				
+			
 			}
 		}
 			

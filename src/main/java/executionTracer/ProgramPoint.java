@@ -58,7 +58,7 @@ public class ProgramPoint {
 	
 	public String getCoverage(){
 		StringBuffer result = new StringBuffer();
-		result.append("coverage::" + coverage + "\n");
+		result.append("branchCoverage::" + coverage + "\n");
 		return result.toString();
 	}
 
