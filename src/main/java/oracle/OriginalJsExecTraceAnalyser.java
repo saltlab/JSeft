@@ -94,13 +94,30 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					
 					FunctionPoint functionPoint;
 //					FunctionPoint domRelatedFunctionPoint;
-				
+					FunctionBranchCoverage funcBrnCovg = new FunctionBranchCoverage(funcName);
 					while (!(line = input.readLine()).equals
 							("===========================================================================")){
 
 						if(line.contains("time::")){
 						
 							time=Long.valueOf(line.split("::")[1]);
+						}
+						else if(line.contains("branchCoverage::")){
+							funcBrnCovg=new FunctionBranchCoverage(funcName);
+							String brCovgline=line.split("::")[1].replace("{", "").replace("}", "").replace("\"", "");
+							String[] funcName_lineNo_covered=brCovgline.split(",");
+							for(String str:funcName_lineNo_covered){
+								
+								String[] strArray=str.split(":");
+								String covered=strArray[strArray.length-1];
+								String funcName_lineNo=str.replace(":"+covered, "");
+								String lineNo=funcName_lineNo.split("_")[funcName_lineNo.length()-1];
+								BranchCoverage brCov=new BranchCoverage(lineNo, covered);
+								funcBrnCovg.addCoveredBranch(brCov);
+							}
+							
+							
+							
 						}
 						else if(line.contains("variable::")){
 							variableName=line.split("::")[1];
@@ -168,7 +185,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 //					java.util.Collections.sort(functionPoints, bvc);
 
 					
-				functionPoint=new FunctionPoint(pointName, variables, domHtml, time);
+				functionPoint=new FunctionPoint(pointName, variables, domHtml, time, funcBrnCovg);
 
 				Object[] funcPointFuncName=new Object[2];
 				funcPointFuncName[0]=functionPoint;
@@ -294,7 +311,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					int test=0;
 					if(entry!=null && exit==null){
 						
-						exit=new FunctionPoint("exit", entry.getVariables(), entry.getDomHtml(), entry.getTime());
+						exit=new FunctionPoint("exit", entry.getVariables(), entry.getDomHtml(), entry.getTime(), entry.getFunctionBranchCoverage());
 						funcPoints.remove(entry);
 						i=0;
 					}

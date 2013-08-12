@@ -15,12 +15,14 @@ public class FunctionPoint {
 	private String domHtml;
 	ArrayList<AccessedDOMNode> accessedDomNodes=new ArrayList<AccessedDOMNode>();
 	private long time;
+	private FunctionBranchCoverage functionBranchCoverage;
 	
-	public FunctionPoint(String pointName, ArrayList<Variable> variables, String domHtml, long time){
+	public FunctionPoint(String pointName, ArrayList<Variable> variables, String domHtml, long time, FunctionBranchCoverage funcBrnCoverage){
 		this.pointName=pointName;
 		this.variables=variables;
 		this.time=time;
 		this.domHtml=domHtml;
+		this.functionBranchCoverage=funcBrnCoverage;
 	}
 	
 	
@@ -55,6 +57,10 @@ public class FunctionPoint {
 	}
 	public String getDomHtml(){
 		return domHtml;
+	}
+	
+	public FunctionBranchCoverage getFunctionBranchCoverage(){
+		return functionBranchCoverage;
 	}
 	
 	@Override
