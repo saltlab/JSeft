@@ -427,7 +427,19 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	
 	@Override
 	protected void functionStateAbstraction(){
-		
+		Set<String> keys=funcNameToFuncStateMap.keySet();
+		Iterator<String> iter=keys.iterator();
+		while(iter.hasNext()){
+			String funcName=iter.next();
+			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
+			for(int i=0;i<funcStates.size();i++){
+				FunctionState f_i=funcStates.get(i);
+				for(int j=0;j<funcStates.size();j++){
+				
+					FunctionState f_j=funcStates.get(j);
+				}
+			}
+		}
 	}
 	
 /*	private void addingDomRelatedFunctionPoint(AccessedDOMNode accessedDomNode, String funcName, String pointName, long time){

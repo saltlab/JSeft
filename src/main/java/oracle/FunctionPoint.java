@@ -120,4 +120,17 @@ public class FunctionPoint {
 		
 	}
 	
+	public List<Variable> getReturnedVariables(){
+		
+		List<Variable> retVars=new ArrayList<Variable>();
+		for(Variable var:this.variables){
+			if(var.getVariableUsage().equals(variableUsageType.returnVal.toString())){
+				retVars.add(var);
+			}
+			if(this.pointName.equals("exit") && var.getVariableUsage().equals(variableUsageType.global.toString())){
+				retVars.add(var);
+			}
+		}
+		return retVars;
+	}
 }

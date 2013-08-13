@@ -54,7 +54,7 @@ public class AccessedDOMNode extends Node {
 	/**
 	 *  only for state abstraction
 	 */
-	public boolean isDOMNodeChanged(AccessedDOMNode domNode){
+	public boolean isSameDOMNode(AccessedDOMNode domNode){
 		
 		if(this.className.equals(domNode.className)
 					&& this.id.equals(domNode.id) && this.tagName.equals(domNode.tagName) && this.allAttributes.size()==domNode.allAttributes.size()){
