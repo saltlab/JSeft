@@ -224,6 +224,7 @@ public abstract class JsExecTraceAnalyser {
 	
 	
 	
+	protected abstract void functionStateAbstraction();
 	
 
 }

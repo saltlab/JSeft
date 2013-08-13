@@ -1,6 +1,7 @@
 package oracle;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -50,7 +51,40 @@ public class AccessedDOMNode extends Node {
 		
 	}
 	
-	
+	/**
+	 *  only for state abstraction
+	 */
+	public boolean isDOMNodeChanged(AccessedDOMNode domNode){
+		
+		if(this.className.equals(domNode.className)
+					&& this.id.equals(domNode.id) && this.tagName.equals(domNode.tagName) && this.allAttributes.size()==domNode.allAttributes.size()){
+			Set<Attribute> attrSet=domNode.allAttributes;
+			Iterator<Attribute> attrIter=attrSet.iterator();
+			
+			boolean sameAttr=false;
+			while(attrIter.hasNext()){
+				sameAttr=false;
+				Attribute attr=attrIter.next();
+				Iterator<Attribute> thisAttrIter=allAttributes.iterator();
+				while(thisAttrIter.hasNext()){
+					Attribute thisAttr=thisAttrIter.next();
+					if(thisAttr.sameAttrName(attr)){
+						sameAttr=true;
+						break;
+						
+					}
+				}
+				if(!sameAttr){
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
+		
+	}
 	
 	
 	@Override

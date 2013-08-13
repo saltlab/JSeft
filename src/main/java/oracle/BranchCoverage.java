@@ -11,5 +11,14 @@ public class BranchCoverage {
 		this.covered=covered;
 	}
 	
+	public boolean isSameCoverage(BranchCoverage brCov){
+		if(brCov.lineNo.equals(this.lineNo)){
+			if(!brCov.covered.equals(this.covered))
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
 	
 }

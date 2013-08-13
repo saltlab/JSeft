@@ -1,5 +1,7 @@
 package oracle;
 
+import java.util.ArrayList;
+
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class FunctionState {
@@ -17,6 +19,31 @@ public class FunctionState {
 	}
 	public FunctionPoint getFunctionExit(){
 		return functionExit;
+	}
+	
+	/**
+	 * just for state abstraction
+	 */
+	public boolean sameReturnType(FunctionState exitSt){
+		ArrayList<Variable> varList=exitSt.getFunctionExit().getVariables();
+		if(varList.size()!=functionExit.getVariables().size())
+			return false;
+		boolean same=false;
+		for(Variable var:varList){
+			same=false;
+			for(Variable thisVar:functionExit.getVariables()){
+				if(var.getType().equals(thisVar.getType())){
+					same=true;
+					break;
+					
+				}
+			}
+			if(!same){
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	@Override

@@ -25,6 +25,16 @@ public class Attribute {
 		return attrValue;
 	}
 	
+	/**
+	 * just for absrtaction
+	 */
+	public boolean sameAttrName(Attribute attr){
+		if(this.attrName.equals(attr.getAttrName())){
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString(){
 		return this.attrName+this.attrValue;

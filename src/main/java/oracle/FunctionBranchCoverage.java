@@ -17,4 +17,25 @@ public class FunctionBranchCoverage {
 	public void addCoveredBranch(BranchCoverage brCovg){
 		coveredBranches.add(brCovg);
 	}
+	
+	public boolean isSameFunctionBrCovg(FunctionBranchCoverage funcBrCov){
+		
+		boolean same=false;
+		List<BranchCoverage> funcBranches=funcBrCov.coveredBranches;
+		for(BranchCoverage br:funcBranches){
+			same=false;
+			for(BranchCoverage thisBr:coveredBranches){
+				if(thisBr.isSameCoverage(br)){
+					same=true;
+					break;
+				}
+			}
+			if(!same){
+				return false;
+			}
+		}
+		
+		return true;
+		
+	}
 }

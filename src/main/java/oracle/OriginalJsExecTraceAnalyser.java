@@ -308,7 +308,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					}
 					funcState=new FunctionState(entry, exit);
 					List<FunctionState> fStates=(List<FunctionState>) funcNameToFuncStateMap.get(funcName);
-					int test=0;
+					
 					if(entry!=null && exit==null){
 						
 						exit=new FunctionPoint("exit", entry.getVariables(), entry.getDomHtml(), entry.getTime(), entry.getFunctionBranchCoverage());
@@ -423,6 +423,11 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			functionListOfOriginalVersion.add(iter.next());
 		}
 	
+	}
+	
+	@Override
+	protected void functionStateAbstraction(){
+		
 	}
 	
 /*	private void addingDomRelatedFunctionPoint(AccessedDOMNode accessedDomNode, String funcName, String pointName, long time){
