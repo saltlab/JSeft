@@ -75,7 +75,7 @@ public class FunctionState {
 	/**
 	 * just for state abstraction
 	 */
-	public boolean isSimilarState_DOM_RetType(FunctionState fState){
+	public boolean similarState_DOM_RetType(FunctionState fState){
 		if(this.isSameAccessedDOMNodes(fState) && this.isSameReturnType(fState))
 			return true;
 		return false;

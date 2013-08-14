@@ -6,8 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -425,21 +427,81 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	
 	}
 	
-	@Override
-	protected void functionStateAbstraction(){
+	
+	private void createListOfSetOfStates(){
+		List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType=new ArrayList<ArrayList<FunctionState>>();
+		List<ArrayList<FunctionState>> listOfSetOfStates_BrCovg=new ArrayList<ArrayList<FunctionState>>();
 		Set<String> keys=funcNameToFuncStateMap.keySet();
 		Iterator<String> iter=keys.iterator();
+		
 		while(iter.hasNext()){
+			List<Integer> addedItemsIndex_DOM_RetType=new ArrayList<Integer>();
+			List<Integer> addedItemsIndex_BrCovg=new ArrayList<Integer>();
 			String funcName=iter.next();
 			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
 			for(int i=0;i<funcStates.size();i++){
 				FunctionState f_i=funcStates.get(i);
-				for(int j=0;j<funcStates.size();j++){
+				if(!addedItemsIndex_DOM_RetType.contains(i)){
 				
-					FunctionState f_j=funcStates.get(j);
+					ArrayList<FunctionState> stateSet_DOM_Ret=new ArrayList<FunctionState>();
+					stateSet_DOM_Ret.add(f_i);
+					addedItemsIndex_DOM_RetType.add(i);
+					for(int j=i+1;j<funcStates.size();j++){
+					
+						FunctionState f_j=funcStates.get(j);
+						if(f_j.similarState_DOM_RetType(f_i)){
+							stateSet_DOM_Ret.add(f_j);
+							addedItemsIndex_DOM_RetType.add(j);
+						}
+					}
+					listOfSetOfStates_DOM_RetType.add(stateSet_DOM_Ret);
+				}
+				if(!addedItemsIndex_BrCovg.contains(i)){
+					
+					ArrayList<FunctionState> stateSet_BrCovg=new ArrayList<FunctionState>();
+					stateSet_BrCovg.add(f_i);
+					addedItemsIndex_BrCovg.add(i);
+					for(int j=i+1;j<funcStates.size();j++){
+					
+						FunctionState f_j=funcStates.get(j);
+						if(f_j.sameBranchCoverage(f_i)){
+							stateSet_BrCovg.add(f_j);
+							addedItemsIndex_BrCovg.add(j);
+						}
+					}
+					listOfSetOfStates_BrCovg.add(stateSet_BrCovg);
 				}
 			}
 		}
+	}
+
+
+	private void setCoveringAlgo(	List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType,
+			List<ArrayList<FunctionState>> listOfSetOfStates_BrCovg){
+		List<Integer> indexOfRemovedSets_DOM_RetType=new ArrayList<Integer>();
+		List<Integer> indexOfRemovedSets_BrCovg=new ArrayList<Integer>();
+		int totalsize=listOfSetOfStates_DOM_RetType.size()+listOfSetOfStates_BrCovg.size();
+		Random rand=new Random(10);
+		int randIndex=rand.nextInt(totalsize);
+		List<FunctionState> funcStList_BrCovg;
+		List<FunctionState> funcStList_DOM_RetType;
+		if(randIndex>=listOfSetOfStates_DOM_RetType.size()){
+			randIndex=randIndex-listOfSetOfStates_DOM_RetType.size();
+			funcStList_BrCovg=listOfSetOfStates_BrCovg.get(randIndex);
+		}
+		else{
+			funcStList_DOM_RetType=listOfSetOfStates_DOM_RetType.get(randIndex);
+		}
+		
+		
+		
+		
+		
+	}
+	@Override
+	protected void functionStateAbstraction() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 /*	private void addingDomRelatedFunctionPoint(AccessedDOMNode accessedDomNode, String funcName, String pointName, long time){
