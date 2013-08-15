@@ -67,8 +67,8 @@ public class SameGameOrig {
 
 
 		String outputdir = "same-output";
-/*		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
-		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
+		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+/*		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
 		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
 		funcStateComparator.analysingOutputDiffs();

@@ -112,8 +112,16 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 								
 								String[] strArray=str.split(":");
 								String covered=strArray[strArray.length-1];
-								String funcName_lineNo=str.replace(":"+covered, "");
-								String lineNo=funcName_lineNo.split("_")[funcName_lineNo.length()-1];
+								String lineNo;
+								if(covered.equals("")){
+									lineNo="-1";
+									covered="-1";
+								}
+								else{
+									String funcName_lineNo=str.replace(":"+covered, "");
+									String[] funcName_lineNoArr=funcName_lineNo.split("_");
+									lineNo=funcName_lineNoArr[funcName_lineNoArr.length-1];
+								}
 								BranchCoverage brCov=new BranchCoverage(lineNo, covered);
 								funcBrnCovg.addCoveredBranch(brCov);
 							}
