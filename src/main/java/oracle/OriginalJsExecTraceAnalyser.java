@@ -476,8 +476,9 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	}
 
 
-	private void setCoveringAlgo(	List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType,
+	private List<FunctionState> setCoveringAlgo(	List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType,
 			List<ArrayList<FunctionState>> listOfSetOfStates_BrCovg){
+		List<FunctionState> allSelectedFunctioStates=new ArrayList<FunctionState>();
 		List<Integer> indexOfRemovedSets_DOM_RetType=new ArrayList<Integer>();
 		List<Integer> indexOfRemovedSets_BrCovg=new ArrayList<Integer>();
 		int totalsize=listOfSetOfStates_DOM_RetType.size()+listOfSetOfStates_BrCovg.size();
@@ -485,17 +486,118 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 		int randIndex=rand.nextInt(totalsize);
 		List<FunctionState> funcStList_BrCovg;
 		List<FunctionState> funcStList_DOM_RetType;
+		FunctionState selectedState;
+		boolean coverageStateSets=false;
 		if(randIndex>=listOfSetOfStates_DOM_RetType.size()){
 			randIndex=randIndex-listOfSetOfStates_DOM_RetType.size();
 			funcStList_BrCovg=listOfSetOfStates_BrCovg.get(randIndex);
+			selectedState=funcStList_BrCovg.get(rand.nextInt(funcStList_BrCovg.size()));
+			indexOfRemovedSets_BrCovg.add(randIndex);
+			listOfSetOfStates_BrCovg.remove(randIndex);
+			coverageStateSets=true;
+			
 		}
 		else{
-			funcStList_DOM_RetType=listOfSetOfStates_DOM_RetType.get(randIndex);
+			funcStList_DOM_RetType=listOfSetOfStates_DOM_RetType.get(randIndex);		
+			selectedState=funcStList_DOM_RetType.get(rand.nextInt(funcStList_DOM_RetType.size()));
+			indexOfRemovedSets_DOM_RetType.add(randIndex);
+			listOfSetOfStates_DOM_RetType.remove(randIndex);
+			coverageStateSets=false;
 		}
 		
 		
+		allSelectedFunctioStates.add(selectedState);
 		
+		if(coverageStateSets){
+			boolean setDeleted=false;
+			for(int i=0;i<listOfSetOfStates_DOM_RetType.size();i++){
+				setDeleted=false;
+				ArrayList<FunctionState> fs=listOfSetOfStates_DOM_RetType.get(i);
+				for(int j=0;j<fs.size();j++){
+					if(fs.get(j).equals(selectedState)){
+						listOfSetOfStates_DOM_RetType.remove(i);
+						setDeleted=true;
+						break;
+					}
+				}
+				if(setDeleted)
+					break;
+				
+			}
+		}
+		else{
+				
+			boolean setDeleted=false;
+			for(int i=0;i<listOfSetOfStates_BrCovg.size();i++){
+				setDeleted=false;
+				ArrayList<FunctionState> fs=listOfSetOfStates_BrCovg.get(i);
+				for(int j=0;j<fs.size();j++){
+					if(fs.get(j).equals(selectedState)){
+						listOfSetOfStates_BrCovg.remove(i);
+						setDeleted=true;
+						break;
+					}
+				}
+				if(setDeleted)
+					break;
+				
+			}
+				
+		}
+			
+			
+		while(listOfSetOfStates_BrCovg.size()!=0 || listOfSetOfStates_DOM_RetType.size()!=0){
+			boolean stateSelected=false;
+			for(int i=0;i<listOfSetOfStates_BrCovg.size();i++){
+					
+				ArrayList<FunctionState> fsList=listOfSetOfStates_BrCovg.get(i);
+				for(int j=0;j<fsList.size();j++){
+					FunctionState fs=fsList.get(j);
+					for(int count=0;count<listOfSetOfStates_DOM_RetType.size();count++){
+						if(listOfSetOfStates_DOM_RetType.get(count).contains(fs)){
+							
+							allSelectedFunctioStates.add(fs);
+							stateSelected=true;
+							coverageStateSets=true;
+							listOfSetOfStates_DOM_RetType.remove(count);
+							listOfSetOfStates_BrCovg.remove(i);
+							
+						}
+					}
+					if(stateSelected)
+						break;
+						
+				}
+				if(stateSelected)
+					break;
+			}
+			if(!stateSelected){
+				for(int i=0;i<listOfSetOfStates_DOM_RetType.size();i++){
+					ArrayList<FunctionState> fsList=listOfSetOfStates_DOM_RetType.get(i);
+					for(int j=0;j<fsList.size();j++){
+						FunctionState fs=fsList.get(j);
+						for(int count=0;count<listOfSetOfStates_BrCovg.size();count++){
+							if(listOfSetOfStates_BrCovg.get(count).contains(fs)){
+								
+								allSelectedFunctioStates.add(fs);
+								stateSelected=true;
+								coverageStateSets=false;
+								listOfSetOfStates_BrCovg.remove(count);
+								listOfSetOfStates_DOM_RetType.remove(i);
+							}
+						}
+						if(stateSelected)
+							break;
+							
+					}
+					if(stateSelected)
+						break;
+				}
+			}
+		}
 		
+			
+		return allSelectedFunctioStates;
 		
 	}
 	@Override
