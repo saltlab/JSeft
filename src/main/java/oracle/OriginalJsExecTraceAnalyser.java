@@ -344,7 +344,20 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			}
 		}
 		
-		getAbstractedListOfState();
+		
+		Set<String> keys=funcNameToFuncStateMap.keySet();
+		Iterator<String> funcIter=keys.iterator();
+		while(funcIter.hasNext()){
+			String funcName=iter.next();
+			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
+			List<FunctionState> desiredFuncStates=getAbstractedListOfState(funcStates);
+			for(FunctionState fs:funcStates){
+				if(!desiredFuncStates.contains(fs)){
+					funcNameToFuncStateMap.get(funcName).remove(fs);
+				}
+			}
+		}
+	
 	
 	}
 	
@@ -439,35 +452,31 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	}
 	
 	
-	private void getAbstractedListOfState(){
+	private List<FunctionState> getAbstractedListOfState(ArrayList<FunctionState> funcStates){
 		List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType=new ArrayList<ArrayList<FunctionState>>();
 		List<ArrayList<FunctionState>> listOfSetOfStates_BrCovg=new ArrayList<ArrayList<FunctionState>>();
-		Set<String> keys=funcNameToFuncStateMap.keySet();
-		Iterator<String> iter=keys.iterator();
+
+		List<Integer> addedItemsIndex_DOM_RetType=new ArrayList<Integer>();
+		List<Integer> addedItemsIndex_BrCovg=new ArrayList<Integer>();
 		
-		while(iter.hasNext()){
-			List<Integer> addedItemsIndex_DOM_RetType=new ArrayList<Integer>();
-			List<Integer> addedItemsIndex_BrCovg=new ArrayList<Integer>();
-			String funcName=iter.next();
-			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
-			for(int i=0;i<funcStates.size();i++){
-				FunctionState f_i=funcStates.get(i);
-				if(!addedItemsIndex_DOM_RetType.contains(i)){
+		for(int i=0;i<funcStates.size();i++){
+			FunctionState f_i=funcStates.get(i);
+			if(!addedItemsIndex_DOM_RetType.contains(i)){
 				
-					ArrayList<FunctionState> stateSet_DOM_Ret=new ArrayList<FunctionState>();
-					stateSet_DOM_Ret.add(f_i);
-					addedItemsIndex_DOM_RetType.add(i);
-					for(int j=i+1;j<funcStates.size();j++){
+				ArrayList<FunctionState> stateSet_DOM_Ret=new ArrayList<FunctionState>();
+				stateSet_DOM_Ret.add(f_i);
+				addedItemsIndex_DOM_RetType.add(i);
+				for(int j=i+1;j<funcStates.size();j++){
 					
-						FunctionState f_j=funcStates.get(j);
-						if(f_j.similarState_DOM_RetType(f_i)){
-							stateSet_DOM_Ret.add(f_j);
-							addedItemsIndex_DOM_RetType.add(j);
-						}
+					FunctionState f_j=funcStates.get(j);
+					if(f_j.similarState_DOM_RetType(f_i)){
+						stateSet_DOM_Ret.add(f_j);
+						addedItemsIndex_DOM_RetType.add(j);
 					}
-					listOfSetOfStates_DOM_RetType.add(stateSet_DOM_Ret);
 				}
-				if(!addedItemsIndex_BrCovg.contains(i)){
+				listOfSetOfStates_DOM_RetType.add(stateSet_DOM_Ret);
+			}
+			if(!addedItemsIndex_BrCovg.contains(i)){
 					
 					ArrayList<FunctionState> stateSet_BrCovg=new ArrayList<FunctionState>();
 					stateSet_BrCovg.add(f_i);
@@ -483,8 +492,8 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					listOfSetOfStates_BrCovg.add(stateSet_BrCovg);
 				}
 			}
-			setCoveringAlgo(listOfSetOfStates_DOM_RetType, listOfSetOfStates_BrCovg);
-		}
+			return setCoveringAlgo(listOfSetOfStates_DOM_RetType, listOfSetOfStates_BrCovg);
+		
 		
 		
 	}
