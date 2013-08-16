@@ -343,6 +343,9 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				}
 			}
 		}
+		
+		getAbstractedListOfState();
+	
 	}
 	
 
@@ -436,7 +439,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 	}
 	
 	
-	private void createListOfSetOfStates(){
+	private void getAbstractedListOfState(){
 		List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType=new ArrayList<ArrayList<FunctionState>>();
 		List<ArrayList<FunctionState>> listOfSetOfStates_BrCovg=new ArrayList<ArrayList<FunctionState>>();
 		Set<String> keys=funcNameToFuncStateMap.keySet();
@@ -480,12 +483,16 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					listOfSetOfStates_BrCovg.add(stateSet_BrCovg);
 				}
 			}
+			setCoveringAlgo(listOfSetOfStates_DOM_RetType, listOfSetOfStates_BrCovg);
 		}
+		
+		
 	}
 
 
-	private List<FunctionState> setCoveringAlgo(	List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType,
+	private List<FunctionState> setCoveringAlgo(List<ArrayList<FunctionState>> listOfSetOfStates_DOM_RetType,
 			List<ArrayList<FunctionState>> listOfSetOfStates_BrCovg){
+	
 		List<FunctionState> allSelectedFunctioStates=new ArrayList<FunctionState>();
 		List<Integer> indexOfRemovedSets_DOM_RetType=new ArrayList<Integer>();
 		List<Integer> indexOfRemovedSets_BrCovg=new ArrayList<Integer>();
@@ -569,6 +576,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							coverageStateSets=true;
 							listOfSetOfStates_DOM_RetType.remove(count);
 							listOfSetOfStates_BrCovg.remove(i);
+							break;
 							
 						}
 					}
@@ -592,6 +600,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 								coverageStateSets=false;
 								listOfSetOfStates_BrCovg.remove(count);
 								listOfSetOfStates_DOM_RetType.remove(i);
+								break;
 							}
 						}
 						if(stateSelected)
@@ -601,7 +610,33 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 					if(stateSelected)
 						break;
 				}
+				
+				
 			}
+			if(listOfSetOfStates_BrCovg.size()!=0 && !stateSelected){
+				int randomIndex_br=rand.nextInt(listOfSetOfStates_BrCovg.size());
+				ArrayList <FunctionState> listOfStates=listOfSetOfStates_BrCovg.get(randomIndex_br);
+				FunctionState fs=listOfStates.get(rand.nextInt(listOfStates.size()));
+				allSelectedFunctioStates.add(fs);
+				stateSelected=true;
+				coverageStateSets=true;
+				listOfSetOfStates_BrCovg.remove(randomIndex_br);
+		
+			
+			}
+			else
+				if(listOfSetOfStates_DOM_RetType.size()!=0 && !stateSelected){
+					int randomIndex_domRetType=rand.nextInt(listOfSetOfStates_DOM_RetType.size());
+					ArrayList <FunctionState> listOfStates=listOfSetOfStates_DOM_RetType.get(randomIndex_domRetType);
+					FunctionState fs=listOfStates.get(rand.nextInt(listOfStates.size()));
+					allSelectedFunctioStates.add(fs);
+					stateSelected=true;
+					coverageStateSets=false;
+					listOfSetOfStates_DOM_RetType.remove(randomIndex_domRetType);
+			
+				
+				}
+			
 		}
 		
 			
