@@ -21,6 +21,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.crawljax.util.Helper;
+import com.google.common.base.Charsets;
 
 import executionTracer.DOMExecutionTracer;
 import executionTracer.DOM_JS_ExecutionTracer;
@@ -40,6 +41,7 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	private boolean domModify=false;
 	private boolean domMuteModify=false;
 	private boolean dom_js_modify=false;
+	private boolean noModification=false;
 	private String outputfolder;
 
 
@@ -49,6 +51,10 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	 * @param modify
 	 *            The JSASTModifier to run over all JavaScript.
 	 */
+	public JSModifyProxyPlugin(){
+		excludeFilenamePatterns = new ArrayList<String>();
+		this.noModification=true;
+	}
 	public JSModifyProxyPlugin(JSASTModifier modify) {
 		
 		excludeFilenamePatterns = new ArrayList<String>();
@@ -238,6 +244,9 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	 * @return The modified JavaScript
 	 */
 	private synchronized String modifyJS(String input, String scopename) {
+		System.out.println(scopename);
+		if(this.noModification)
+			return input;
 		
 		/*this line should be removed when it is used for collecting exec
 		 * traces, mutating, and testing jquery library*/
@@ -251,8 +260,9 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	/*	if(!scopename.equals("http://localhost:8080/jquery/dist/jquery.js"))
 			return input;
 	*/	
-		
-		
+	/*	if(!scopename.contains("joint.js"))
+			return input;
+	*/		
 		try {
 		
 			AstRoot ast = null;
@@ -339,8 +349,9 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	 * @return The modified response.
 	 */
 	private Response createResponse(Response response, Request request) {
-		String type = response.getHeader("Content-Type");
 		
+		String type = response.getHeader("Content-Type");
+		System.out.println("URL:"+request.getURL().toString());
 		if (request.getURL().toString().contains("?thisisanexecutiontracingcall")) {
 			LOGGER.info("Execution trace request " + request.getURL().toString());
 			JSExecutionTracer.addPoint(new String(request.getContent()));

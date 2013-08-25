@@ -156,7 +156,7 @@ public class TunnelOrig {
 		//	crawler.click("td");
 			crawler.click("p");
 		
-			crawler.setWaitTimeAfterEvent(5000,TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterEvent(5000);
 	//		crawler.setWaitTimeAfterReloadUrl(20000,TimeUnit.MILLISECONDS);
 	//		crawler.setMaximumRuntime(20,TimeUnit.SECONDS);
 		

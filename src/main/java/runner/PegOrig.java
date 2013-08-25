@@ -167,8 +167,8 @@ public class PegOrig {
 			
 		//	crawler.click("a");
 			crawler.click("input").withAttribute("name", "solve");
-			crawler.setWaitTimeAfterEvent(10000,TimeUnit.MILLISECONDS);
-			crawler.setWaitTimeAfterReloadUrl(1000,TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterEvent(10000);
+			crawler.setWaitTimeAfterReloadUrl(1000);
 		//	crawler.setMaximumRuntime(30,TimeUnit.SECONDS);
 		
 		}else{

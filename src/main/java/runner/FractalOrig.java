@@ -160,7 +160,7 @@ public class FractalOrig {
 		//	crawler.click("a").withAttribute("id", "tog_play");
 			crawler.click("a");
 		//	crawler.setMaximumRuntime(20,TimeUnit.SECONDS);
-			crawler.setWaitTimeAfterEvent(5000,TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterEvent(5000);
 		//	crawler.setWaitTimeAfterReloadUrl(20000,TimeUnit.MILLISECONDS);
 	//		crawler.setMaximumRuntime(1,TimeUnit.SECONDS);
 		

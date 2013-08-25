@@ -222,11 +222,15 @@ function AddDomNodeProps(elementArray){
 
 }
 
-function stripScripts(html) {
-
-	
+function stripScripts(bodyHtml) {
+	var html;
+	if(bodyHtml.length>0)
+		html=bodyHtml[0].innerHTML;
+	else
+		return "";
     var div = document.createElement('div');
     div.innerHTML = html;
+    **removejscssfile("joint.js", "js", div);
     var scripts = div.getElementsByTagName('script');
     var i = scripts.length;
     while (i--) {
@@ -237,6 +241,17 @@ function stripScripts(html) {
  
 	
  }
+
+
+function removejscssfile(filename, filetype, div){
+	 var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist from
+	 var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+	 var allsuspects=div.getElementsByTagName(targetelement)
+	 for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+	  if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(filename)!=-1)
+	   allsuspects[i].parentNode.removeChild(allsuspects[i]) //remove element by calling parentNode.removeChild()
+	 }
+}
 
 function pushIfItDoesNotExist(domNode,instrumentationArray){
 	found=jQuery.inArray(domNode,instrumentationArray)
@@ -288,7 +303,7 @@ function initializeBranchCovgArray(functionName){
 function detectCoveredBranch(currCondition, funcName_lineNo){
 	if(brnCovgArray[funcName_lineNo]==1 || brnCovgArray[funcName_lineNo]==0)
 		return currCondition;
-	if(currCondition==true){
+	if(currCondition){
 		brnCovgArray[funcName_lineNo]=1;
 		
 	}
@@ -328,3 +343,6 @@ function getFunctionBrnCovgArray(funcName){
 
 	return tempBrnCovgArray;
 }
+
+
+

@@ -159,8 +159,8 @@ public class PhormerOrig {
 		//	crawler.click("a").withAttribute("id", "tog_play");
 		//	crawler.click("a");
 		//	crawler.setMaximumRuntime(20,TimeUnit.SECONDS);
-			crawler.setWaitTimeAfterEvent(100,TimeUnit.MILLISECONDS);
-			crawler.setWaitTimeAfterReloadUrl(100,TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterEvent(100);
+			crawler.setWaitTimeAfterReloadUrl(100);
 	//		crawler.setMaximumRuntime(90,TimeUnit.SECONDS);
 			
 			crawler.clickDefaultElements();

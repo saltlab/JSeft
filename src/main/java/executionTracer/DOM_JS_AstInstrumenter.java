@@ -59,6 +59,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		excludeVariableNamesList.add("that");
 		excludeVariableNamesList.add("stmCovgArray");
 		excludeVariableNamesList.add("brnCovgArray");
+		excludeVariableNamesList.add("scope");  /* just for jointLondon*/
 	}
 
 	/**
@@ -196,6 +197,9 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 */				
 				
 				}
+				else{
+					htmlCode= ", new Array('DOM', {})";
+				}
 				if(htmlCode.length()>0){
 				
 					code+=htmlCode;
@@ -247,7 +251,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 						")));";
 			}
 		
-		//	System.out.println(code + "\n");
+			System.out.println(code + "\n");
 			return parse(code);
 		
 		
@@ -290,7 +294,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			/* post to the proxy server */
 			code =
 			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + "'" + ", getFunctionBrnCovgArray" + "(" + "'"+ name + "'" +")" 
-			                + ", new Array(stripScripts(document.getElementsByTagName(\"body\")[0].innerHTML))" + ", new Array(";
+			                + ", new Array(stripScripts(document.getElementsByTagName(\"body\")))" + ", new Array(";
 
 			String vars = "";
 			Iterator<String> iter=variables.iterator();
@@ -336,7 +340,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 	 * @return True if we should add instrumentation code.
 	 */
 	private boolean shouldInstrument(String name) {
-		if (name == null || name.split("::")[1].equals("$")) {
+		if (name == null || name.split("::")[1].equals("$") || name.contains("this.")) {
 			return false;
 		}
 
@@ -519,7 +523,9 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 
 	@Override
 	protected AstNode createNodeToLogDomNodes(String domNode, String shouldLog) {
-		String code="pushIfItDoesNotExist" + "(" + domNode + "," + "instrumentationArray"+ ")" +";"; 
+		String code="";
+		if(!domNode.equals("document"))
+			code="pushIfItDoesNotExist" + "(" + domNode + "," + "instrumentationArray"+ ")" +";"; 
 		return parse(code);
 	}
 

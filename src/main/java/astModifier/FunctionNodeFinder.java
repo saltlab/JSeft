@@ -52,12 +52,55 @@ public class FunctionNodeFinder implements  NodeVisitor {
 				return ((Name)funcAssignLeft).getIdentifier();
 			}
 			
+	/*		if(funcAssignLeft instanceof PropertyGet){
+				
+				String funcName=""; 
+				String constructorName="";
+				int newcounter=0;
+				while(funcAssignLeft instanceof PropertyGet && ((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
+					newcounter++;
+					String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
+					funcName= "()"+"."+ memberName+funcName; 
+					if(funcAssignLeft.getEnclosingFunction().getParent() instanceof Assignment){
+						Assignment assign=(Assignment) funcAssignLeft.getEnclosingFunction().getParent();
+						funcAssignLeft=assign.getLeft();
+				
+					}
+					else{
+						constructorName=funcAssignLeft.getEnclosingFunction().getFunctionName().getIdentifier();
+					}
+						
+				}
+				
+				if(constructorName.equals("")){
+					if(funcAssignLeft instanceof PropertyGet){
+						constructorName=funcAssignLeft.toSource();
+					
+					}
+					else if(funcAssignLeft instanceof VariableDeclaration){
+						constructorName=((VariableDeclaration)funcAssignLeft).getVariables().get(0).toSource();
+					}
+				}
+				String newWord="";
+				for(int i=0;i<newcounter;i++)
+					newWord+="new ";
+				newWord+=constructorName;
+				String newFuncName=newWord;
+				
+
+				return(newFuncName);
+					
+			}
+	*/		
 			if(funcAssignLeft instanceof PropertyGet){
 				if(((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
-					String constructorName=f.getEnclosingFunction().getFunctionName().getIdentifier();
-					String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
-					String funcName="new " + constructorName + "()" + "." + memberName; 
-					return(funcName);
+					Name name=f.getEnclosingFunction().getFunctionName();
+					if(name!=null){
+						String constructorName=name.getIdentifier();
+						String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
+						String funcName="new " + constructorName + "()" + "." + memberName; 
+						return(funcName);
+					}
 				}
 				
 			}

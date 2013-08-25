@@ -154,9 +154,9 @@ public class SymbolOrig {
 	*/	//	crawler.click("div");
 		//	crawler.click("td");
 		
-			crawler.setWaitTimeAfterEvent(100,TimeUnit.MILLISECONDS);
-			crawler.setWaitTimeAfterReloadUrl(500,TimeUnit.MILLISECONDS);
-			crawler.setMaximumRuntime(20,TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterEvent(100);
+			crawler.setWaitTimeAfterReloadUrl(500);
+			crawler.setMaximumRuntime(20, TimeUnit.SECONDS);
 		
 		}else{
 			// this is just for the TuduList application

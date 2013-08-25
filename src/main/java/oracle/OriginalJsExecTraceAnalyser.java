@@ -130,13 +130,19 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 							
 						}
 						else if(line.contains("variable::")){
-							variableName=line.split("::")[1];
+							if(line.split("::").length==1)
+								variableName="shabnam_unknown_var";
+							else
+								variableName=line.split("::")[1];
 						}
 						else if(line.contains("type::")){
 							type=line.split("::")[1];
 						}
 						else if(line.contains("value::")){
-							value=line.split("::")[1];
+							if(line.split("::").length==1)
+								value="shabnam_unknown_value";
+							else
+								value=line.split("::")[1];
 						}
 						
 						else if(line.contains("variableUsage::")){
@@ -344,20 +350,26 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			}
 		}
 		
-		
+		int totalNoStatesBeforeAbstraction=0;
+		int totalNoStatesAfterAbstraction=0;
 		Set<String> keys=funcNameToFuncStateMap.keySet();
 		Iterator<String> funcIter=keys.iterator();
 		while(funcIter.hasNext()){
-			String funcName=iter.next();
+			String funcName=funcIter.next();
 			ArrayList<FunctionState> funcStates=new ArrayList<FunctionState>(funcNameToFuncStateMap.get(funcName));
+			totalNoStatesBeforeAbstraction+=funcStates.size();
 			List<FunctionState> desiredFuncStates=getAbstractedListOfState(funcStates);
 			for(FunctionState fs:funcStates){
 				if(!desiredFuncStates.contains(fs)){
 					funcNameToFuncStateMap.get(funcName).remove(fs);
 				}
 			}
+			
+			totalNoStatesAfterAbstraction+=funcNameToFuncStateMap.get(funcName).size();
 		}
-	
+		
+		System.out.println("No of states before abstraction: " +totalNoStatesBeforeAbstraction);
+		System.out.println("No of states after abstraction: " +totalNoStatesAfterAbstraction);
 	
 	}
 	

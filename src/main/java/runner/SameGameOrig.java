@@ -153,7 +153,7 @@ public class SameGameOrig {
 			crawler.click("input").withAttribute("type", "submit");
 			crawler.click("div");
 	*/		crawler.click("td");
-			crawler.setWaitTimeAfterEvent(2000, TimeUnit.MILLISECONDS);
+			crawler.setWaitTimeAfterEvent(2000);
 		}else{
 			// this is just for the TuduList application
 			Form form=new Form();

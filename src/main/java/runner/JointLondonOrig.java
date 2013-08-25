@@ -45,14 +45,14 @@ import executionTracer.DOM_JS_AstInstrumenter;
 import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
-public class GhostOrig {
+public class JointLondonOrig {
 	
-	private static final String URL = "http://localhost:8080//Ghostbusters/Ghostbusters.htm";	
+	private static final String URL = "http://localhost:8080/jointLondon/www.jointlondon.com/index.html";	
 	/* No limit on max depth or max state*/
 	private static final int MAX_DEPTH = 0;
 	private static final int MAX_NUMBER_STATES = 0;
 
-	private GhostOrig() {
+	private JointLondonOrig() {
 
 	}
 
@@ -66,8 +66,8 @@ public class GhostOrig {
 	public static void main(String[] args) throws IOException {
 
 
-		String outputdir = "ghost-output";
-		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+		String outputdir = "jointLondon-output";
+/*		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
 		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
 		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
@@ -77,7 +77,7 @@ public class GhostOrig {
 		testSuite.writeQunitTestSuiteToFile();
 		int test=0;
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
-		CrawljaxConfiguration config = getCrawljaxConfiguration();
+*/		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
 
 
@@ -97,7 +97,8 @@ public class GhostOrig {
 //			p.excludeDefaults();
 //			web.addPlugin(p);
 //		}
-		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
+		JSModifyProxyPlugin p = new JSModifyProxyPlugin();
+//		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
 		
@@ -112,12 +113,14 @@ public class GhostOrig {
 
 
 		try {
-			CrawljaxController crawljax = new CrawljaxController(config);
+			
 			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
 			for(int i=0;i<allPath.size();i++){
+				CrawljaxController crawljax = new CrawljaxController(config);
 				Globals.allPath=allPath.get(0);
 				crawljax.run();
+	
 				break;
 			}
 				
@@ -144,18 +147,19 @@ public class GhostOrig {
 		boolean tudu = false; 
 
 		if (!tudu){
+		
 			//defining clickables
-	
-	/*		crawler.click("a");
+			crawler.click("a");
+			crawler.click("input");
 			crawler.click("div");
-			crawler.click("span");
+			crawler.click("button");
 			crawler.click("img");
-			crawler.click("input").withAttribute("type", "submit");
-	*/		crawler.click("div");
-	//		crawler.click("td");
-	//		crawler.setWaitTimeAfterEvent(1000, TimeUnit.MILLISECONDS);
-			crawler.setWaitTimeAfterReloadUrl(20000);
-
+	/*		crawler.click("input").withAttribute("type", "submit");
+				crawler.click("span");
+			crawler.click("div");
+			crawler.click("td");
+	*/		crawler.setWaitTimeAfterEvent(100);
+	//		crawler.setWaitTimeAfterReloadUrl(100);
 		}else{
 			// this is just for the TuduList application
 			Form form=new Form();
@@ -193,7 +197,7 @@ public class GhostOrig {
 		if (!tudu)
 			crawler.setInputSpecification(getInputSpecification());
 
-		crawler.setClickOnce(false);		
+		crawler.setClickOnce(true);		
 		crawler.setMaximumStates(MAX_NUMBER_STATES);
 		crawler.setDepth(MAX_DEPTH);
 

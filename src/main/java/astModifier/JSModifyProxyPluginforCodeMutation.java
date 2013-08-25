@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.crawljax.util.Helper;
+import com.google.common.base.Charsets;
 
 import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;

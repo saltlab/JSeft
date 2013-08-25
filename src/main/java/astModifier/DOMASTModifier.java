@@ -110,7 +110,7 @@ public abstract class DOMASTModifier implements NodeVisitor {
 	 */
 	public AstNode parse(String code) {
 		Parser p = new Parser(compilerEnvirons, null);
-		System.out.print(code+"*******\n");
+	//	System.out.print(code+"*******\n");
 		return p.parse(code, null, 0);
 		
 	}

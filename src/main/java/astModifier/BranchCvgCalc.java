@@ -92,7 +92,7 @@ public class BranchCvgCalc implements NodeVisitor {
 			ForLoop forstm=(ForLoop) node;
 			AstNode currentCondition=forstm.getCondition();
 			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() +  ", " + "'"  + getFunctionName(node.getEnclosingFunction()) + "_" + forstm.getLineno() + "'"  +")";
-			System.out.println(newConditonSource);
+//			System.out.println(newConditonSource);
 			ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newConditonSource).getFirstChild();
 			forstm.setCondition(wrappedCondition.getExpression());
 				
@@ -107,9 +107,12 @@ public class BranchCvgCalc implements NodeVisitor {
 			SwitchStatement switchstm=(SwitchStatement) node;
 			List<SwitchCase> currentCases=switchstm.getCases();
 			for(SwitchCase currCase:currentCases){
-				String newCaseSource="detectCoveredBranch"+"(" + currCase.getExpression().toSource()  + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + currCase.getLineno() + "'" +")";
-				ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newCaseSource).getFirstChild();
-				currCase.setExpression(wrappedCondition.getExpression());
+				
+				if(!currCase.isDefault()){
+					String newCaseSource="detectCoveredBranch"+"(" + currCase.getExpression().toSource()  + ", " + "'" + getFunctionName(node.getEnclosingFunction()) + "_" + currCase.getLineno() + "'" +")";
+					ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newCaseSource).getFirstChild();
+					currCase.setExpression(wrappedCondition.getExpression());
+				}
 			}
 			
 			
@@ -151,12 +154,55 @@ public class BranchCvgCalc implements NodeVisitor {
 				return ((Name)funcAssignLeft).getIdentifier();
 			}
 			
+	/*		if(funcAssignLeft instanceof PropertyGet){
+				
+				String funcName=""; 
+				String constructorName="";
+				int newcounter=0;
+				while(funcAssignLeft instanceof PropertyGet && ((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
+					newcounter++;
+					String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
+					funcName= "()"+"."+ memberName+funcName; 
+					if(funcAssignLeft.getEnclosingFunction().getParent() instanceof Assignment){
+						Assignment assign=(Assignment) funcAssignLeft.getEnclosingFunction().getParent();
+						funcAssignLeft=assign.getLeft();
+				
+					}
+					else{
+						constructorName=funcAssignLeft.getEnclosingFunction().getFunctionName().getIdentifier();
+					}
+						
+				}
+				
+				if(constructorName.equals("")){
+					if(funcAssignLeft instanceof PropertyGet){
+						constructorName=funcAssignLeft.toSource();
+					
+					}
+					else if(funcAssignLeft instanceof VariableDeclaration){
+						constructorName=((VariableDeclaration)funcAssignLeft).getVariables().get(0).toSource();
+					}
+				}
+				String newWord="";
+				for(int i=0;i<newcounter;i++)
+					newWord+="new ";
+				newWord+=constructorName;
+				String newFuncName=newWord;
+				
+
+				return(newFuncName);
+					
+			}
+	*/		
 			if(funcAssignLeft instanceof PropertyGet){
 				if(((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
-					String constructorName=f.getEnclosingFunction().getFunctionName().getIdentifier();
-					String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
-					String funcName="new " + constructorName + "()" + "." + memberName; 
-					return(funcName);
+					Name name=f.getEnclosingFunction().getFunctionName();
+					if(name!=null){
+						String constructorName=name.getIdentifier();
+						String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
+						String funcName="new " + constructorName + "()" + "." + memberName; 
+						return(funcName);
+					}
 				}
 				
 			}
