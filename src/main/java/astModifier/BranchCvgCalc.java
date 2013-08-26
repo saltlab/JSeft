@@ -154,7 +154,7 @@ public class BranchCvgCalc implements NodeVisitor {
 				return ((Name)funcAssignLeft).getIdentifier();
 			}
 			
-	/*		if(funcAssignLeft instanceof PropertyGet){
+			if(funcAssignLeft instanceof PropertyGet){
 				
 				String funcName=""; 
 				String constructorName="";
@@ -187,14 +187,14 @@ public class BranchCvgCalc implements NodeVisitor {
 				for(int i=0;i<newcounter;i++)
 					newWord+="new ";
 				newWord+=constructorName;
-				String newFuncName=newWord;
+				String newFuncName=newWord + funcName;
 				
 
 				return(newFuncName);
 					
 			}
-	*/		
-			if(funcAssignLeft instanceof PropertyGet){
+			
+	/*		if(funcAssignLeft instanceof PropertyGet){
 				if(((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
 					Name name=f.getEnclosingFunction().getFunctionName();
 					if(name!=null){
@@ -207,7 +207,7 @@ public class BranchCvgCalc implements NodeVisitor {
 				
 			}
 				
-		}
+*/		}
 		
 	
 		Name functionName = f.getFunctionName();

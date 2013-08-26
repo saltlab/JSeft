@@ -163,7 +163,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				return ((Name)funcAssignLeft).getIdentifier();
 			}
 			
-	/*		if(funcAssignLeft instanceof PropertyGet){
+			if(funcAssignLeft instanceof PropertyGet){
 				
 				String funcName=""; 
 				String constructorName="";
@@ -206,8 +206,8 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		}
 				
 		
-	*/	
-			if(funcAssignLeft instanceof PropertyGet){
+		
+	/*		if(funcAssignLeft instanceof PropertyGet){
 				if(((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
 					Name name=f.getEnclosingFunction().getFunctionName();
 					if(name!=null){
@@ -221,7 +221,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 			}
 				
 		}
-		Name functionName = f.getFunctionName();
+	*/	Name functionName = f.getFunctionName();
 
 		if (functionName == null) {
 			return "anonymous" + f.getLineno();

@@ -260,9 +260,9 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	/*	if(!scopename.equals("http://localhost:8080/jquery/dist/jquery.js"))
 			return input;
 	*/	
-	/*	if(!scopename.contains("joint.js"))
+		if(!scopename.contains("joint.js"))
 			return input;
-	*/		
+			
 		try {
 		
 			AstRoot ast = null;

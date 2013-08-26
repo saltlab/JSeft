@@ -118,7 +118,7 @@ public class JointLondonOrig {
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
 			for(int i=0;i<allPath.size();i++){
 				CrawljaxController crawljax = new CrawljaxController(config);
-				Globals.allPath=allPath.get(0);
+				Globals.allPath=allPath.get(2);
 				crawljax.run();
 	
 				break;

@@ -230,7 +230,7 @@ function stripScripts(bodyHtml) {
 		return "";
     var div = document.createElement('div');
     div.innerHTML = html;
-    **removejscssfile("joint.js", "js", div);
+    removejscssfile("joint.js", "js", div);
     var scripts = div.getElementsByTagName('script');
     var i = scripts.length;
     while (i--) {
@@ -254,12 +254,19 @@ function removejscssfile(filename, filetype, div){
 }
 
 function pushIfItDoesNotExist(domNode,instrumentationArray){
-	found=jQuery.inArray(domNode,instrumentationArray)
-	if(found==-1){
-		instrumentationArray.push(domNode);
-	}
-	else{
-		instrumentationArray[found]=domNode;
+	if($(domNode).get(0)==$('body').get(0))
+		return;
+	var bool=false;
+	for(var i=0;i<$(domNode).get().length;i++){
+		for(var j=0;j<instrumentationArray.length;j++)
+			if($(instrumentationArray[j]).get(0)==$(domNode).get(i)){
+				instrumentationArray[j]=$(domNode).get(i);
+				bool=true;
+				break;
+			}
+		if(bool==false)
+			instrumentationArray.push($(domNode).get(i));
+		
 	}
 }
 

@@ -60,6 +60,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		excludeVariableNamesList.add("stmCovgArray");
 		excludeVariableNamesList.add("brnCovgArray");
 		excludeVariableNamesList.add("scope");  /* just for jointLondon*/
+		excludeVariableNamesList.add("JOINT");  /* just for jointLondon*/
 	}
 
 	/**
