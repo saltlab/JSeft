@@ -230,7 +230,8 @@ function stripScripts(bodyHtml) {
 		return "";
     var div = document.createElement('div');
     div.innerHTML = html;
-    removejscssfile("joint.js", "js", div);
+    removejscssfile("script.js", "js", div);
+    removejscssfile("plugins.js", "js", div);
     var scripts = div.getElementsByTagName('script');
     var i = scripts.length;
     while (i--) {

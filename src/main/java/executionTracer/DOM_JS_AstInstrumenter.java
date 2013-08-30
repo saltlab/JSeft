@@ -59,8 +59,13 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		excludeVariableNamesList.add("that");
 		excludeVariableNamesList.add("stmCovgArray");
 		excludeVariableNamesList.add("brnCovgArray");
+		excludeVariableNamesList.add("detectCoveredBranch"); 
+		excludeVariableNamesList.add("function"); 
+		excludeVariableNamesList.add("eval"); 
 		excludeVariableNamesList.add("scope");  /* just for jointLondon*/
 		excludeVariableNamesList.add("JOINT");  /* just for jointLondon*/
+	
+	
 	}
 
 	/**
@@ -119,18 +124,20 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		String vars = "";
 		Set<String> variable=new HashSet<String>();
 		TreeSet<String> returnValues=new TreeSet<String>();
-		variable=getGlobalVarsInScopeAtExitPoint(function);
+//		variable=getGlobalVarsInScopeAtExitPoint(function);
+		
 /*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.returnVal.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
-*/		
-		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
-		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
+*/	
+		
+//		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
+//		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
 		HashSet<String> variables=new HashSet<String>();
 		
 		variables.addAll(variable);
-		variables.addAll(objectVars);
-		variables.addAll(globVars);
+//		variables.addAll(objectVars);
+//		variables.addAll(globVars);
 		
 		
 		
@@ -266,15 +273,16 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		if(getFunctionName(function).contains("anonymous"))
 			return parse("/* empty */");
 		TreeSet<String> variables = new TreeSet<String>();
-		variables.addAll(getVariablesNamesInScope(function));
+//		variables.addAll(getVariablesNamesInScope(function));
 /*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.global.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
 */		
-		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
-		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
-		variables.addAll(objectVars);
-		variables.addAll(globVars);
+
+//		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
+//		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
+//		variables.addAll(objectVars);
+//		variables.addAll(globVars);
 
 		name = getFunctionName(function);
 		List<AstNode> inputs=function.getParams();
@@ -294,7 +302,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 			/* TODO: this uses JSON.stringify which only works in Firefox? make browser indep. */
 			/* post to the proxy server */
 			code =
-			        "send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + "'" + ", getFunctionBrnCovgArray" + "(" + "'"+ name + "'" +")" 
+			        "send(new Array('" + getScopeName().replace("'", "\"") + "." + name + inputstrs + "', '" + postfix + "'" + ", getFunctionBrnCovgArray" + "(" + "'"+ name + "'" +")" 
 			                + ", new Array(stripScripts(document.getElementsByTagName(\"body\")))" + ", new Array(";
 
 			String vars = "";
@@ -329,6 +337,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 					
 					")));";
 		}
+		System.out.println(code);
 		return parse(code);
 	}
 

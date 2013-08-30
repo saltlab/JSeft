@@ -250,7 +250,7 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		
 		/*this line should be removed when it is used for collecting exec
 		 * traces, mutating, and testing jquery library*/
-		input = input.replaceAll("[\r\n]","\n\n");
+	//	input = input.replaceAll("[\r\n]","\n\n");
 		if (!shouldModify(scopename)) {
 			return input;
 		}
@@ -260,9 +260,14 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	/*	if(!scopename.equals("http://localhost:8080/jquery/dist/jquery.js"))
 			return input;
 	*/	
-		if(!scopename.contains("joint.js"))
+	/*	if(!scopename.contains("joint.js"))
 			return input;
-			
+	*/		
+	/*	if(!scopename.contains("script.js"))
+			return input;
+	*/
+		if(!scopename.contains("jquery.tiny_mce.js"))
+			return input;
 		try {
 		
 			AstRoot ast = null;
@@ -278,9 +283,9 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 			ast = rhinoParser.parse(new String(input), scopename, 0);
 
 			if(this.jsModify){
-				BranchCvgCalc brnCvgCalc=new BranchCvgCalc(ast);
+		/*		BranchCvgCalc brnCvgCalc=new BranchCvgCalc(ast);
 				ast.visit(brnCvgCalc);
-				modifier.setScopeName(scopename);
+		*/		modifier.setScopeName(scopename);
 
 				modifier.start();
 

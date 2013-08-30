@@ -179,6 +179,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 					}
 					else{
 						constructorName=funcAssignLeft.getEnclosingFunction().getFunctionName().getIdentifier();
+						break;
 					}
 						
 				}
@@ -337,8 +338,10 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		
 
 		if (node instanceof FunctionNode) {
+			
 			func = (FunctionNode) node;
-
+			if(func.getParent() instanceof ObjectProperty
+					 && !(((ObjectProperty)func.getParent()).getLeft() instanceof StringLiteral)){ //just for tinymce
 			/* this is function enter */
 			AstNode instumentationArrayNode=createInstrumentationArrayLocalVariable();
 			AstNode newNode = createEnterNode(func, ProgramPoint.ENTERPOSTFIX, func.getLineno());
@@ -351,14 +354,14 @@ public abstract class JSASTModifier implements NodeVisitor  {
 			node = (AstNode) func.getBody().getLastChild();
 			/* if this is not a return statement, we need to add logging here also */
 			if (!(node instanceof ReturnStatement)) {
-				newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
+		//		newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
 				/* add as last statement */
 				func.getBody().addChildToBack(newNode);
 				
 			}
 
 		} 
-		
+		}
         else if (node instanceof SwitchCase) {
             //Add block around all statements in the switch case
             SwitchCase sc = (SwitchCase)node;
@@ -378,15 +381,28 @@ public abstract class JSASTModifier implements NodeVisitor  {
             }
         }
 		else if (node instanceof ReturnStatement) {
-			
+			/*added for tinymce*/
+			if(((ReturnStatement) node).getReturnValue()!=null && !((ReturnStatement) node).getReturnValue().toSource().contains("function") ){
+				String newRetVal="var shabnamGen="+((ReturnStatement) node).getReturnValue().toSource()+";";
+				AstNode newRetValNode=parse(newRetVal);
+				AstNode parentOfNode = makeSureBlockExistsAround(node);
+	
+				/* the parent is something we can prepend to */
+				parentOfNode.addChildBefore(newRetValNode, node);
+				Name nameNode=new Name();
+				nameNode.setIdentifier("shabnamGen");
+				((ReturnStatement) node).setReturnValue(nameNode);
+			}
 			func = node.getEnclosingFunction();
+			if(func.getParent() instanceof ObjectProperty
+					 && !(((ObjectProperty)func.getParent()).getLeft() instanceof StringLiteral)){ //just for tinymce
 
-			AstNode newNode = createExitNode(func, (ReturnStatement)node, ProgramPoint.EXITPOSTFIX, node.getLineno());
+		//	AstNode newNode = createExitNode(func, (ReturnStatement)node, ProgramPoint.EXITPOSTFIX, node.getLineno());
 
 			AstNode parent = makeSureBlockExistsAround(node);
 
 			/* the parent is something we can prepend to */
-			parent.addChildBefore(newNode, node);
+	//		parent.addChildBefore(newNode, node);
 			
 			
 /*			if(node.getEnclosingFunction().equals(enclosedFunc)){
@@ -409,7 +425,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				
 			}
 */			
-			
+		}	
 		}
 		else if (node instanceof Name) {
 				

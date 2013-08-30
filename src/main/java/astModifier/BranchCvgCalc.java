@@ -91,8 +91,12 @@ public class BranchCvgCalc implements NodeVisitor {
 			
 			ForLoop forstm=(ForLoop) node;
 			AstNode currentCondition=forstm.getCondition();
-			String newConditonSource="detectCoveredBranch"+"(" + currentCondition.toSource() +  ", " + "'"  + getFunctionName(node.getEnclosingFunction()) + "_" + forstm.getLineno() + "'"  +")";
-//			System.out.println(newConditonSource);
+			String condSource=currentCondition.toSource();
+			if(condSource.equals(""))
+				condSource="true";
+			String newConditonSource="detectCoveredBranch"+"(" + condSource +  ", " + "'"  + getFunctionName(node.getEnclosingFunction()) + "_" + forstm.getLineno() + "'"  +")";
+			System.out.println(newConditonSource);
+			
 			ExpressionStatement wrappedCondition=(ExpressionStatement)parse(newConditonSource).getFirstChild();
 			forstm.setCondition(wrappedCondition.getExpression());
 				
@@ -170,6 +174,7 @@ public class BranchCvgCalc implements NodeVisitor {
 					}
 					else{
 						constructorName=funcAssignLeft.getEnclosingFunction().getFunctionName().getIdentifier();
+						break;
 					}
 						
 				}

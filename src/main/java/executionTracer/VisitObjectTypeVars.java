@@ -60,6 +60,7 @@ public class VisitObjectTypeVars implements NodeVisitor{
 			
 			objectVars.add(varUsage + "::" + node.getParent().toSource().replaceAll("\\[.*\\]", ""));
 			
+		
 		}
 		return true;
 		

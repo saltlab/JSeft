@@ -26,6 +26,7 @@ public class FunctionNodeFinder implements  NodeVisitor {
 			FunctionNode func=(FunctionNode) node;
 			String funcName=getFunctionName(func);
 			functionNodeNames.add(funcName);
+			
 		}
 		return true;
 	}
@@ -59,8 +60,10 @@ public class FunctionNodeFinder implements  NodeVisitor {
 				int newcounter=0;
 				while(funcAssignLeft instanceof PropertyGet && ((PropertyGet)funcAssignLeft).getLeft().toSource().equals("this")){
 					newcounter++;
+					
 					String memberName=((PropertyGet)funcAssignLeft).getRight().toSource();
 					funcName= "()"+"."+ memberName+funcName; 
+				
 					if(funcAssignLeft.getEnclosingFunction().getParent() instanceof Assignment){
 						Assignment assign=(Assignment) funcAssignLeft.getEnclosingFunction().getParent();
 						funcAssignLeft=assign.getLeft();
@@ -68,6 +71,7 @@ public class FunctionNodeFinder implements  NodeVisitor {
 					}
 					else{
 						constructorName=funcAssignLeft.getEnclosingFunction().getFunctionName().getIdentifier();
+						break;
 					}
 						
 				}
