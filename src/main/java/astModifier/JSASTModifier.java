@@ -31,6 +31,7 @@ import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.ThrowStatement;
 import org.mozilla.javascript.ast.TryStatement;
 import org.mozilla.javascript.ast.VariableDeclaration;
+import org.mozilla.javascript.ast.VariableInitializer;
 import org.mozilla.javascript.ast.WhileLoop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -337,12 +338,12 @@ public abstract class JSASTModifier implements NodeVisitor  {
 
 		
 
-		if (node instanceof FunctionNode) {
+		if (node instanceof FunctionNode && !getFunctionName((FunctionNode)(node)).contains("anonymous")) {
 			
 			func = (FunctionNode) node;
-			if(func.getParent() instanceof ObjectProperty
+/*			if(func.getParent() instanceof ObjectProperty
 					 && !(((ObjectProperty)func.getParent()).getLeft() instanceof StringLiteral)){ //just for tinymce
-			/* this is function enter */
+*/			/* this is function enter */
 			AstNode instumentationArrayNode=createInstrumentationArrayLocalVariable();
 			AstNode newNode = createEnterNode(func, ProgramPoint.ENTERPOSTFIX, func.getLineno());
 
@@ -354,13 +355,13 @@ public abstract class JSASTModifier implements NodeVisitor  {
 			node = (AstNode) func.getBody().getLastChild();
 			/* if this is not a return statement, we need to add logging here also */
 			if (!(node instanceof ReturnStatement)) {
-		//		newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
+				newNode = createExitNode(func, null,ProgramPoint.EXITPOSTFIX, node.getLineno());
 				/* add as last statement */
 				func.getBody().addChildToBack(newNode);
 				
 			}
 
-		} 
+//		} 
 		}
         else if (node instanceof SwitchCase) {
             //Add block around all statements in the switch case
@@ -380,7 +381,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
                 sc.setStatements(blockStatement);
             }
         }
-		else if (node instanceof ReturnStatement) {
+		else if (node instanceof ReturnStatement && !getFunctionName(node.getEnclosingFunction()).contains("anonymous")) {
 			/*added for tinymce*/
 			if(((ReturnStatement) node).getReturnValue()!=null && !((ReturnStatement) node).getReturnValue().toSource().contains("function") ){
 				String newRetVal="var shabnamGen="+((ReturnStatement) node).getReturnValue().toSource()+";";
@@ -394,38 +395,19 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				((ReturnStatement) node).setReturnValue(nameNode);
 			}
 			func = node.getEnclosingFunction();
-			if(func.getParent() instanceof ObjectProperty
+/*			if(func.getParent() instanceof ObjectProperty
 					 && !(((ObjectProperty)func.getParent()).getLeft() instanceof StringLiteral)){ //just for tinymce
-
-		//	AstNode newNode = createExitNode(func, (ReturnStatement)node, ProgramPoint.EXITPOSTFIX, node.getLineno());
+*/
+			AstNode newNode = createExitNode(func, (ReturnStatement)node, ProgramPoint.EXITPOSTFIX, node.getLineno());
 
 			AstNode parent = makeSureBlockExistsAround(node);
 
 			/* the parent is something we can prepend to */
-	//		parent.addChildBefore(newNode, node);
+			parent.addChildBefore(newNode, node);
 			
 			
-/*			if(node.getEnclosingFunction().equals(enclosedFunc)){
 			
-				TreeSet<String> props=domProps.get(getFunctionName(enclosedFunc));
-				if(props!=null){
-					Iterator<String> iter=props.iterator();
-					while(iter.hasNext()){
-						String obj=iter.next();
-						AstNode newnode=createPointNode(enclosedFunc,obj, node.getLineno() + 1);
-						
-						parent.addChildBefore(newnode, node);
-			
-					}
-					domPropAdded=false;
-					enclosedFunc=null;
-						
-				}
-				
-				
-			}
-*/			
-		}	
+//		}	
 		}
 		else if (node instanceof Name) {
 				
@@ -474,6 +456,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 								}
 							
 							objectAndFunction=objectAndFunction.replace(" ", "____");
+							
 							AstNode parent = makeSureBlockExistsAround(getLineNode(node));		
 							if(parent instanceof ReturnStatement){
 								parent.addChildBefore(
@@ -623,7 +606,8 @@ public abstract class JSASTModifier implements NodeVisitor  {
 
 	private AstNode getLineNode(AstNode node) {
 		while ((!(node instanceof ExpressionStatement) && !(node instanceof Assignment))
-		        && !(node.getParent() instanceof ReturnStatement)) {
+		        && !(node.getParent() instanceof ReturnStatement) && !(node instanceof VariableInitializer) && !(node instanceof IfStatement)) {
+			
 			node = node.getParent();
 		}
 		if(node.getParent() instanceof ReturnStatement)

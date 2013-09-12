@@ -76,7 +76,7 @@ public class TunnelOrig {
 		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
 		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
 		testSuite.writeQunitTestSuiteToFile();
-		int test=0;
+		
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);

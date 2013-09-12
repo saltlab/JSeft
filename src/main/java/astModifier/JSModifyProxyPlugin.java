@@ -204,6 +204,8 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 		excludeFilenamePatterns.add(".*admin.js?.*");
 		
 		excludeFilenamePatterns.add(".*pegsDraw.js?.*");
+		excludeFilenamePatterns.add(".*cycle.js?.*");
+		excludeFilenamePatterns.add(".*prototypes.js?.*");
 	}
 	
 
@@ -244,31 +246,47 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 	 * @return The modified JavaScript
 	 */
 	private synchronized String modifyJS(String input, String scopename) {
-		System.out.println(scopename);
+		
 		if(this.noModification)
 			return input;
-		
+/*		if(!scopename.contains("jquery-tabs.js"))
+			return input;
+*/
+/*		if(scopename.contains("jquery.history.js") || 
+				scopename.contains("jquery-1.8.3.min.js") ||
+				scopename.contains("prototypes.js") || scopename.contains("cycle.js"))
+			return input;
+*/
+/*		if(!scopename.contains("bunnies.js"))
+			return input;
+*/
+	/*	if(!scopename.contains("same-game.js"))
+			return input;
+*/
+/*		if(!scopename.contains("jquery.wymeditor.js"))
+			return input;
+*/		
 		/*this line should be removed when it is used for collecting exec
-		 * traces, mutating, and testing jquery library*/
+		 /* traces, mutating, and testing jquery library*/
 	//	input = input.replaceAll("[\r\n]","\n\n");
-		if (!shouldModify(scopename)) {
+	/*	if (!shouldModify(scopename)) {
 			return input;
 		}
-		
+	*/	
 		/* this line is just for collecting exec traces from jquery while it is being used by
 		 * some other application--remove it when you want to collect traces from the application itself */
 	/*	if(!scopename.equals("http://localhost:8080/jquery/dist/jquery.js"))
 			return input;
 	*/	
-	/*	if(!scopename.contains("joint.js"))
+		if(!scopename.contains("joint.js"))
 			return input;
-	*/		
+			
 	/*	if(!scopename.contains("script.js"))
 			return input;
 	*/
-		if(!scopename.contains("jquery.tiny_mce.js"))
+	/*	if(!scopename.contains("tiny_mce_src.js"))
 			return input;
-		try {
+	*/	try {
 		
 			AstRoot ast = null;
 
@@ -281,12 +299,12 @@ public class JSModifyProxyPlugin extends ProxyPlugin {
 			/* parse some script and save it in AST */
 //			System.out.print(input+"*****\n");
 			ast = rhinoParser.parse(new String(input), scopename, 0);
-
+			
 			if(this.jsModify){
-		/*		BranchCvgCalc brnCvgCalc=new BranchCvgCalc(ast);
+				BranchCvgCalc brnCvgCalc=new BranchCvgCalc(ast);
 				ast.visit(brnCvgCalc);
-		*/		modifier.setScopeName(scopename);
-
+				modifier.setScopeName(scopename);
+				
 				modifier.start();
 
 				/* recurse through AST */

@@ -18,6 +18,7 @@ import qunitGenerator.QunitTestSuite;
 import astModifier.JSModifyProxyPlugin;
 
 import com.crawljax.browser.EmbeddedBrowser.BrowserType;
+import com.crawljax.condition.UrlCondition;
 import com.crawljax.core.CrawljaxController;
 import com.crawljax.core.configuration.CrawlSpecification;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
@@ -47,10 +48,10 @@ import executionTracer.JSExecutionTracer;
 
 public class SimpleCartOrig {
 	
-	private static final String URL = "http://localhost:8080/cartDemo/cartDemo.html";	
+	private static final String URL = "http://localhost:8080/cartDemo.html";	
 	/* No limit on max depth or max state*/
-	private static final int MAX_DEPTH = 0;
-	private static final int MAX_NUMBER_STATES = 0;
+	private static final int MAX_DEPTH = 2;
+	private static final int MAX_NUMBER_STATES = 50;
 
 	private SimpleCartOrig() {
 
@@ -67,15 +68,15 @@ public class SimpleCartOrig {
 
 
 		String outputdir = "simpleCart-output";
-//		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
-//		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
+/*		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
-/*		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
+		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
 		funcStateComparator.analysingOutputDiffs();
 		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
 		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
 		testSuite.writeQunitTestSuiteToFile();
-		int test=0;
+		
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 */		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -116,13 +117,13 @@ public class SimpleCartOrig {
 			
 			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
-			for(int i=0;i<allPath.size();i++){
+//			for(int i=0;i<allPath.size();i++){
 				CrawljaxController crawljax = new CrawljaxController(config);
-				Globals.allPath=allPath.get(3);
+//				Globals.allPath=allPath.get(i);
 				crawljax.run();
 	
-				break;
-			}
+				
+//			}
 				
 
 		} catch (Exception e) {
@@ -196,10 +197,10 @@ public class SimpleCartOrig {
 		if (!tudu)
 			crawler.setInputSpecification(getInputSpecification());
 
-		crawler.setClickOnce(true);		
+		crawler.setClickOnce(false);		
 		crawler.setMaximumStates(MAX_NUMBER_STATES);
 		crawler.setDepth(MAX_DEPTH);
-
+		crawler.addCrawlCondition("", new UrlCondition("cartdemo.html"));
 		return crawler;
 	}
 

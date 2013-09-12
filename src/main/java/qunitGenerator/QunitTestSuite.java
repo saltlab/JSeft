@@ -52,9 +52,12 @@ public class QunitTestSuite {
 		
 		}
 		
+		int totalNoOfAssertions=0;
 		for(QunitTestCase testCase:qunitTestCases){
 			testSuiteCode+=testCase.getTestCaseCode() +"\n\n";
+			totalNoOfAssertions+=testCase.getQunitAssertions().size();
 		}
+		System.out.println(totalNoOfAssertions);
 	}
 	
 	public List<QunitTestCase> getQunitTestCases(){

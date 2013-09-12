@@ -28,7 +28,7 @@ import com.crawljax.core.state.StateMachine;
 import com.crawljax.util.Helper;
 
 public class DOM_JS_ExecutionTracer 
-	implements OnFireEventSuccessPlugin, /*OnNewStatePlugin,*//*PreStateCrawlingPlugin,*/ PreCrawlingPlugin, GeneratesOutput {
+	implements OnFireEventSuccessPlugin, /*OnNewStatePlugin,*/PreStateCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput {
 
 		private static final int ONE_SEC = 1000;
 		
@@ -103,8 +103,10 @@ public class DOM_JS_ExecutionTracer
 				LOGGER.info("Parsing JavaScript execution trace");
 			
 				
-				session.getBrowser().executeJavaScript("sendReally();");
-				Thread.sleep(ONE_SEC);
+		//		session.getBrowser().executeJavaScript("sendReally();");
+		/*		session.getBrowser().executeJavaScript(
+						 "if (window.jscoverage_report) {jscoverage_report();}");
+		*/		Thread.sleep(ONE_SEC);
 				DOM_JS_Trace trace=new DOM_JS_Trace();
 				String result = trace.getTraceRecord(points);
 			
@@ -256,6 +258,15 @@ public class DOM_JS_ExecutionTracer
 				e.printStackTrace();
 			}
 		
+		}
+
+		@Override
+		public void preStateCrawling(CrawlSession session,
+				List<CandidateElement> arg1) {
+			session.getBrowser().executeJavaScript(
+					 "if (window.jscoverage_report) {jscoverage_report();}");
+			// TODO Auto-generated method stub
+			
 		}
 
 /*		@Override

@@ -154,6 +154,9 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 						else if(line.contains("node::")){
 							String node=line.split("node::")[1];
 							ObjectMapper mapper = new ObjectMapper();
+					
+							if(node.contains("\"className\":{}"))
+									node=node.replace("\"className\":{}", "\"className\":\"\"");
 						    AccessedDOMNode domNode = mapper.readValue(node, AccessedDOMNode.class);  
 						    mapper.writeValueAsString(domNode);
 						    domNode.makeAllAttributes();
@@ -338,6 +341,8 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 				}
 				else{
 					entry=funcPoint;
+					if(i==0)
+						break;
 					exit=funcPoints.get(i-1);
 					funcPoints.remove(entry);
 					funcPoints.remove(exit);
@@ -350,7 +355,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 			}
 		}
 		
-		int totalNoStatesBeforeAbstraction=0;
+/*		int totalNoStatesBeforeAbstraction=0;
 		int totalNoStatesAfterAbstraction=0;
 		Set<String> keys=funcNameToFuncStateMap.keySet();
 		Iterator<String> funcIter=keys.iterator();
@@ -370,7 +375,7 @@ public class OriginalJsExecTraceAnalyser extends JsExecTraceAnalyser{
 		
 		System.out.println("No of states before abstraction: " +totalNoStatesBeforeAbstraction);
 		System.out.println("No of states after abstraction: " +totalNoStatesAfterAbstraction);
-	
+*/	
 	}
 	
 

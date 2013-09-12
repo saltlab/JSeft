@@ -47,7 +47,7 @@ import executionTracer.JSExecutionTracer;
 
 public class FractalOrig {
 	
-	private static final String URL = "http://localhost:8080/fractal-viewer/www/index.php";	
+	private static final String URL = "http://localhost:8080/index.html";	
 //	private static final String URL="http://127.0.0.1/fractal-viewer/www/";
 	/* No limit on max depth or max state*/
 	private static final int MAX_DEPTH = 2;
@@ -69,7 +69,7 @@ public class FractalOrig {
 
 
 		String outputdir = "fractal-output";
-	/*	OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
 		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
 		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
@@ -77,7 +77,7 @@ public class FractalOrig {
 		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
 		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
 		testSuite.writeQunitTestSuiteToFile();
-	*/
+	
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -99,7 +99,8 @@ public class FractalOrig {
 //			p.excludeDefaults();
 //			web.addPlugin(p);
 //		}
-		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
+		JSModifyProxyPlugin p = new JSModifyProxyPlugin();
+	//	JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
 		

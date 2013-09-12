@@ -124,20 +124,20 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		String vars = "";
 		Set<String> variable=new HashSet<String>();
 		TreeSet<String> returnValues=new TreeSet<String>();
-//		variable=getGlobalVarsInScopeAtExitPoint(function);
+		variable=getGlobalVarsInScopeAtExitPoint(function);
 		
 /*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.returnVal.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
 */	
 		
-//		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
-//		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
+	//	HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
+	//	HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
 		HashSet<String> variables=new HashSet<String>();
 		
 		variables.addAll(variable);
-//		variables.addAll(objectVars);
-//		variables.addAll(globVars);
+	//	variables.addAll(objectVars);
+	//	variables.addAll(globVars);
 		
 		
 		
@@ -206,7 +206,7 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				
 				}
 				else{
-					htmlCode= ", new Array('DOM', {})";
+					htmlCode= ", new Array('DOM', [{}])";
 				}
 				if(htmlCode.length()>0){
 				
@@ -250,15 +250,16 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				code += vars + ")));";
 			} else {
 			/* no variables to instrument here, so just return an empty node */
-				code = "/* empty */";
+			//	code = "/* empty */";
+				vars ="addVariable('" + "retunedVal"+ "', " +"\"shabnam\"" + ", " + "'" + variableUsageType.returnVal + "'" + ")" +	")));";
+				code+=vars;
 			}
-			if(code.equals("/* empty */")){
-				code="send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + "'"+
-						", new Array(addVariable('" + "retunedVal"+ "', " +"\"shabnam\"" + ", " + "'" + variableUsageType.returnVal + "'" + ")" +
-						
-						")));";
-			}
-		
+			
+//			if(code.equals("/* empty */")){
+//				code=
+//						"send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix + "'"+", getFunctionBrnCovgArray" + "(" + "'"+ name + "'" +")"  +
+//						", new Array(addVariable('" + "retunedVal"+ "', " +"\"shabnam\"" + ", " + "'" + variableUsageType.returnVal + "'" + ")" +")));";
+//			}
 			System.out.println(code + "\n");
 			return parse(code);
 		
@@ -273,16 +274,16 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 		if(getFunctionName(function).contains("anonymous"))
 			return parse("/* empty */");
 		TreeSet<String> variables = new TreeSet<String>();
-//		variables.addAll(getVariablesNamesInScope(function));
+		variables.addAll(getVariablesNamesInScope(function));
 /*		VisitObjectTypeVars visitObjectTypeVars=new VisitObjectTypeVars(variableUsageType.global.toString());
 		function.visit(visitObjectTypeVars);
 		HashSet<String> objectVars=visitObjectTypeVars.getObjectVars();
 */		
 
-//		HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
-//		HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
-//		variables.addAll(objectVars);
-//		variables.addAll(globVars);
+	//	HashSet<String> objectVars=findObjectTypeVarsInScope(function, variableUsageType.global.toString());
+	//	HashSet<String> globVars=findGlobalVarsInScope(function, variableUsageType.global.toString());
+	//	variables.addAll(objectVars);
+	//	variables.addAll(globVars);
 
 		name = getFunctionName(function);
 		List<AstNode> inputs=function.getParams();
@@ -325,18 +326,19 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				code += vars + ")));";
 			} else {
 				/* no variables to instrument here, so just return an empty node */
-				code = "/* empty */";
+				vars ="addVariable("+"\"shabnam\"" + ", " + "'shabnam'"+ ", "+ "'"+ variableUsageType.global + "'" + ")" +	")));";
+				code+=vars;
 			}
 	
 		}
-		if(code.equals("/* empty */")){
-			code="send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix
-	                + "', new Array(stripScripts(\"empty\"))" + ", new Array(" 
+//		if(code.equals("/* empty */")){
+//			code="send(new Array('" + getScopeName() + "." + name + inputstrs + "', '" + postfix
+//	                + "', new Array(stripScripts(\"empty\"))" + ", new Array(" 
 					
-					+ "addVariable('" + "shabnam"+ "', " +"\"shabnam\"" + ", " + "'" + variableUsageType.global.toString() + "'" + ")" +
+//					+ "addVariable('" + "shabnam"+ "', " +"\"shabnam\"" + ", " + "'" + variableUsageType.global.toString() + "'" + ")" +
 					
-					")));";
-		}
+//					")));";
+//		}
 		System.out.println(code);
 		return parse(code);
 	}
@@ -361,6 +363,8 @@ public class DOM_JS_AstInstrumenter extends JSASTModifier{
 				return false;
 			}
 		}
+		if(name.equals("window"))
+			return false;
 
 		return true;
 	}

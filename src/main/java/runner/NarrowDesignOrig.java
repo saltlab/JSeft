@@ -47,7 +47,7 @@ import executionTracer.JSExecutionTracer;
 
 public class NarrowDesignOrig {
 	
-	private static final String URL = "http://localhost:8080/narrowdesign/www.narrowdesign.com/index.html";	
+	private static final String URL = "http://localhost:8080/index.html";	
 	/* No limit on max depth or max state*/
 	private static final int MAX_DEPTH = 0;
 	private static final int MAX_NUMBER_STATES = 0;
@@ -67,7 +67,7 @@ public class NarrowDesignOrig {
 
 
 		String outputdir = "narrowdesign-output";
-/*		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
+		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
 		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
 		FunctionStateComparator funcStateComparator=new FunctionStateComparator();
@@ -75,13 +75,13 @@ public class NarrowDesignOrig {
 		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
 		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
 		testSuite.writeQunitTestSuiteToFile();
-		int test=0;
+	
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
-*/		CrawljaxConfiguration config = getCrawljaxConfiguration();
+		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
 
 
-		ProxyConfiguration prox = new ProxyConfiguration();
+//		ProxyConfiguration prox = new ProxyConfiguration();
 		WebScarabWrapper web = new WebScarabWrapper();
 	
 		DOM_JS_AstInstrumenter a=new DOM_JS_AstInstrumenter();
@@ -97,10 +97,10 @@ public class NarrowDesignOrig {
 //			p.excludeDefaults();
 //			web.addPlugin(p);
 //		}
-		JSModifyProxyPlugin p = new JSModifyProxyPlugin();
+//		JSModifyProxyPlugin p = new JSModifyProxyPlugin();
 //		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
-		p.excludeDefaults();
-		web.addPlugin(p);
+//		p.excludeDefaults();
+//		web.addPlugin(p);
 		
 				
 //		DOMMuteExecutionTracer tracer = new DOMMuteExecutionTracer("domMuteExecutiontrace",stateName);
@@ -109,7 +109,7 @@ public class NarrowDesignOrig {
 		tracer.setOutputFolder(outputdir);
 		config.addPlugin(tracer);
 		config.addPlugin(web);
-		config.setProxyConfiguration(prox);
+	//	config.setProxyConfiguration(prox);
 
 
 		try {
@@ -118,10 +118,10 @@ public class NarrowDesignOrig {
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
 			for(int i=0;i<allPath.size();i++){
 				CrawljaxController crawljax = new CrawljaxController(config);
-				Globals.allPath=allPath.get(2);
+				Globals.allPath=allPath.get(i);
 				crawljax.run();
 	
-				break;
+	//			break;
 			}
 				
 
@@ -158,7 +158,7 @@ public class NarrowDesignOrig {
 				crawler.click("span");
 			crawler.click("div");
 			crawler.click("td");
-	*/		crawler.setWaitTimeAfterEvent(3000);
+	*/		crawler.setWaitTimeAfterEvent(1000);
 	//		crawler.setWaitTimeAfterReloadUrl(100);
 		}else{
 			// this is just for the TuduList application

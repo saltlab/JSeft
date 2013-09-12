@@ -45,14 +45,14 @@ import executionTracer.DOM_JS_AstInstrumenter;
 import executionTracer.DOM_JS_ExecutionTracer;
 import executionTracer.JSExecutionTracer;
 
-public class SameGameOrig {
-	
-	private static final String URL = "http://localhost:8080//same-game/same-game.htm";	
-	/* No limit on max depth or max state*/
-	private static final int MAX_DEPTH = 0;
-	private static final int MAX_NUMBER_STATES = 0;
+public class BunnyHuntOrig {
 
-	private SameGameOrig() {
+	private static final String URL = "http://localhost:8080/BunnyHunt/index.html";	
+	/* No limit on max depth or max state*/
+	private static final int MAX_DEPTH = 4;
+	private static final int MAX_NUMBER_STATES = 300;
+
+	private BunnyHuntOrig() {
 
 	}
 
@@ -66,7 +66,7 @@ public class SameGameOrig {
 	public static void main(String[] args) throws IOException {
 
 
-		String outputdir = "same-output";
+		String outputdir = "bunnyHunt-output";
 		OriginalJsExecTraceAnalyser jsExecTraceAnalyser=new OriginalJsExecTraceAnalyser(outputdir);
 		MutatedJsExecTraceAnalyser mutatedJsExectraceAnalyser=new MutatedJsExecTraceAnalyser(outputdir);
 //		Dom_Mut_Analyser dom_Mut_Analyser=new Dom_Mut_Analyser(outputdir);
@@ -75,7 +75,7 @@ public class SameGameOrig {
 		ArrayListMultimap<String, ArrayListMultimap<FunctionPoint, Oracle>> oracleMultimap=funcStateComparator.getOracleMultimap();
 		QunitTestSuite testSuite=new QunitTestSuite(oracleMultimap, outputdir);
 		testSuite.writeQunitTestSuiteToFile();
-	
+		
 //		System.setProperty("webdriver.firefox.bin" ,"/ubc/ece/home/am/grads/shabnamm/program-files/firefox18/firefox/firefox");
 		CrawljaxConfiguration config = getCrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
@@ -97,7 +97,8 @@ public class SameGameOrig {
 //			p.excludeDefaults();
 //			web.addPlugin(p);
 //		}
-		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
+		JSModifyProxyPlugin p = new JSModifyProxyPlugin();
+//		JSModifyProxyPlugin p = new JSModifyProxyPlugin(a);
 		p.excludeDefaults();
 		web.addPlugin(p);
 		
@@ -112,13 +113,15 @@ public class SameGameOrig {
 
 
 		try {
-			CrawljaxController crawljax = new CrawljaxController(config);
+			
 			String filenameAndPath =  Helper.addFolderSlashIfNeeded(outputdir) + "allPossiblePath" + ".txt";
 			ArrayList<AllPath> allPath=readAllPossiblePathFile(filenameAndPath);
 	//		for(int i=0;i<allPath.size();i++){
-	//			Globals.allPath=allPath.get(0);
+				CrawljaxController crawljax = new CrawljaxController(config);
+	//			Globals.allPath=allPath.get(i);
 				crawljax.run();
-	//			break;
+	
+		//		break;
 	//		}
 				
 
@@ -144,16 +147,24 @@ public class SameGameOrig {
 		boolean tudu = false; 
 
 		if (!tudu){
+			
+	//		crawler.click("button").withAttribute("id", "openInWindowButton");
 			//defining clickables
-	
-	/*		crawler.click("a");
+			
+			crawler.click("input");
+			crawler.click("div").withAttribute("id", "bunny%");
+	//		crawler.click("li");
+	//		crawler.click("span");
+	//		crawler.click("input");
+	//		crawler.click("div");
+	//		crawler.click("button");
+	//		crawler.click("img");
+	/*		crawler.click("input").withAttribute("type", "submit");
+			
 			crawler.click("div");
-			crawler.click("span");
-			crawler.click("img");
-			crawler.click("input").withAttribute("type", "submit");
-			crawler.click("div");
-	*/		crawler.click("td");
-			crawler.setWaitTimeAfterEvent(500);
+			crawler.click("td");
+	*/		crawler.setWaitTimeAfterEvent(700);
+			crawler.setWaitTimeAfterReloadUrl(1000);
 		}else{
 			// this is just for the TuduList application
 			Form form=new Form();
