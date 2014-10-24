@@ -1,4 +1,4 @@
-Pythia: 
+JSeft: 
 =======
 
-Generating Test Cases with Oracles for JavaScript Applications
+Automated Generation of Test Cases for JavaScript Applications
