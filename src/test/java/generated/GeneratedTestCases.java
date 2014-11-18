@@ -31,8 +31,8 @@ public class GeneratedTestCases {
 	private static CrawljaxConfiguration getTestConfiguration() {
 		CrawljaxConfiguration config = new CrawljaxConfiguration();
 		CrawlSpecification crawler = new CrawlSpecification(URL);
-		crawler.setWaitTimeAfterEvent(2000, TimeUnit.MILLISECONDS);
-		crawler.setWaitTimeAfterReloadUrl(1000, TimeUnit.MILLISECONDS);
+		crawler.setWaitTimeAfterEvent(2000);
+		crawler.setWaitTimeAfterReloadUrl(1000);
 		config.setCrawlSpecification(crawler);
 		config.addPlugin(new com.crawljax.plugins.testcasegenerator.TestSuiteGenerator());
 		return config;
